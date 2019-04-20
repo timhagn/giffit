@@ -1,0 +1,41 @@
+{
+  "name": "gatsby-transformer-webpconv",
+  "version": "0.0.1",
+  "description": "Gatsby transformer plugin for images using gifsicle & webp-converter.",
+  "author": "Tim Hagn <mail@timhagn.com>",
+  "dependencies": {
+    "@babel/runtime": "^7.4.3",
+    "bluebird": "^3.5.4",
+    "fs-extra": "^7.0.1",
+    "probe-image-size": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "babel-preset-gatsby-package": "^0.1.4",
+    "cross-env": "^5.2.0"
+  },
+  "homepage": "https://github.com/timhagn/gatsby-transformer-webpconv#readme",
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "image",
+    "gif",
+    "webp",
+    "converter",
+    "gif2webp",
+    "gifsicle"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": "https://github.com/timhagn/gatsby-transformer-webpconv",
+  "scripts": {
+    "build": "# npm run format && babel d --out-dir . --ignore **/__tests__",
+    "format": "prettier --write \"src/*.js\"",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w d --out-dir . --ignore **/__tests__",
+    "test": "jest --env=jsdom",
+    "test:update": "jest --env=jsdom -u --coverage"
+  },
+  "private": true
+}
