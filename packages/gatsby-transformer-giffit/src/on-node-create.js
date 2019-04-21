@@ -3,7 +3,7 @@ const supportedExtensions = {
   // webp: true,
 }
 
-module.exports = async function onCreateNode({ node, actions, createNodeId }) {
+async function onCreateNode({ node, actions, createNodeId }) {
   const { createNode, createParentChildLink } = actions
 
   if (!supportedExtensions[node.extension]) {
@@ -23,3 +23,5 @@ module.exports = async function onCreateNode({ node, actions, createNodeId }) {
   createNode(imageNode)
   createParentChildLink({ parent: node, child: imageNode })
 }
+
+exports.onCreateNode = onCreateNode

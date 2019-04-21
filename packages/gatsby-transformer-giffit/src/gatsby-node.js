@@ -1,7 +1,7 @@
 const fs = require(`fs-extra`)
 
-exports.onCreateNode = require(`./on-node-create`)
-exports.setFieldsOnGraphQLNodeType = require(`./extend-node-type`)
+const onCreateNode = require(`./on-node-create`)
+const setFieldsOnGraphQLNodeType = require(`./extend-node-type`)
 
 exports.onPreExtractQueries = async ({ store, getNodesByType }) => {
   const program = store.getState().program
@@ -18,3 +18,6 @@ exports.onPreExtractQueries = async ({ store, getNodesByType }) => {
     `${program.directory}/.cache/fragments/image-webpconv-fragments.js`
   )
 }
+
+exports.onCreateNode = onCreateNode
+exports.setFieldsOnGraphQLNodeType = setFieldsOnGraphQLNodeType
