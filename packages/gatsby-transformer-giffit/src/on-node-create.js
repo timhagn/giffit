@@ -1,10 +1,6 @@
 const supportedExtensions = {
-  jpeg: true,
-  jpg: true,
-  png: true,
-  webp: true,
-  tif: true,
-  tiff: true,
+  gif: true,
+  // webp: true,
 }
 
 module.exports = async function onCreateNode({ node, actions, createNodeId }) {
@@ -15,17 +11,15 @@ module.exports = async function onCreateNode({ node, actions, createNodeId }) {
   }
 
   const imageNode = {
-    id: createNodeId(`${node.id} >> ImageSharp`),
+    id: createNodeId(`${node.id} >> ImageWebpConv`),
     children: [],
     parent: node.id,
     internal: {
       contentDigest: `${node.internal.contentDigest}`,
-      type: `ImageSharp`,
+      type: `ImageWebpConv`,
     },
   }
 
   createNode(imageNode)
   createParentChildLink({ parent: node, child: imageNode })
-
-  return
 }

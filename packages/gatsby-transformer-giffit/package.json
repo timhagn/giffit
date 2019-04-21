@@ -27,10 +27,14 @@
     "gifsicle"
   ],
   "license": "MIT",
-  "main": "index.js",
+  "peerDependencies": {
+    "gatsby": "^2.0.33",
+    "gatsby-plugin-webpconv": "^0.0.1"
+  },
   "repository": "https://github.com/timhagn/gatsby-transformer-webpconv",
   "scripts": {
-    "build": "# npm run format && babel d --out-dir . --ignore **/__tests__",
+    "build": "npm run format && babel src --out-dir . --ignore **/__tests__",
+    "clean": "gatsby clean",
     "format": "prettier --write \"src/*.js\"",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w d --out-dir . --ignore **/__tests__",
