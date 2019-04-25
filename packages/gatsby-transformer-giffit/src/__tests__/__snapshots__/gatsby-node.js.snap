@@ -8,7 +8,7 @@ Array [
       "id": "uuid-from-gatsby",
       "internal": Object {
         "contentDigest": "whatever",
-        "type": "ImageSharp",
+        "type": "ImageWebpConv",
       },
       "parent": "whatever",
     },
@@ -25,13 +25,13 @@ Array [
         "id": "uuid-from-gatsby",
         "internal": Object {
           "contentDigest": "whatever",
-          "type": "ImageSharp",
+          "type": "ImageWebpConv",
         },
         "parent": "whatever",
       },
       "parent": Object {
         "children": Array [],
-        "extension": "png",
+        "extension": "gif",
         "id": "whatever",
         "internal": Object {
           "contentDigest": "whatever",

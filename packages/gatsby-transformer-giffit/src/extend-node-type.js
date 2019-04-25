@@ -15,12 +15,13 @@ const {
   // traceSVG,
 } = require(`gatsby-plugin-webpconv`)
 
+// const sharp = require(`sharp`)
 const fs = require(`fs`)
 const fsExtra = require(`fs-extra`)
 const imageSize = require(`probe-image-size`)
 const path = require(`path`)
 
-const DEFAULT_PNG_COMPRESSION_SPEED = 4
+// const DEFAULT_PNG_COMPRESSION_SPEED = 4
 
 const {
   ImageWebpConvFormatType,
@@ -31,21 +32,21 @@ const {
 } = require(`./types`)
 
 function toArray(buf) {
-  var arr = new Array(buf.length)
+  let arr = new Array(buf.length)
 
-  for (var i = 0; i < buf.length; i++) {
+  for (let i = 0; i < buf.length; i++) {
     arr[i] = buf[i]
   }
 
   return arr
 }
 
-const getTracedSVG = async ({ file, image, fieldArgs }) =>
-  traceSVG({
-    file,
-    args: { ...fieldArgs.traceSVG },
-    fileArgs: fieldArgs,
-  })
+// const getTracedSVG = async ({ file, image, fieldArgs }) =>
+//   traceSVG({
+//     file,
+//     args: { ...fieldArgs.traceSVG },
+//     fileArgs: fieldArgs,
+//   })
 
 const fixedNodeType = ({
   type,
@@ -55,59 +56,62 @@ const fixedNodeType = ({
   name,
   cache,
 }) => {
+  const FixedType = new GraphQLObjectType({
+    name: name,
+    fields: {
+      base64: { type: GraphQLString },
+      // tracedSVG: {
+      //   type: GraphQLString,
+      //   resolve: parent => getTracedSVG(parent),
+      // },
+      aspectRatio: { type: GraphQLFloat },
+      width: { type: GraphQLFloat },
+      height: { type: GraphQLFloat },
+      src: { type: GraphQLString },
+      srcSet: { type: GraphQLString },
+      // srcWebp: {
+      //   type: GraphQLString,
+      //   resolve: ({ file, image, fieldArgs }) => {
+      //     // If the file is already in webp format or should explicitly
+      //     // be converted to webp, we do not create additional webp files
+      //     if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
+      //       return null
+      //     }
+      //     const args = { ...fieldArgs, pathPrefix, toFormat: `webp` }
+      //     return Promise.resolve(
+      //       fixed({
+      //         file,
+      //         args,
+      //         reporter,
+      //         cache,
+      //       })
+      //     ).then(({ src }) => src)
+      //   },
+      // },
+      // srcSetWebp: {
+      //   type: GraphQLString,
+      //   resolve: ({ file, image, fieldArgs }) => {
+      //     if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
+      //       return null
+      //     }
+      //     const args = { ...fieldArgs, pathPrefix, toFormat: `webp` }
+      //     return Promise.resolve(
+      //       fixed({
+      //         file,
+      //         args,
+      //         reporter,
+      //         cache,
+      //       })
+      //     ).then(({ srcSet }) => srcSet)
+      //   },
+      // },
+      originalName: { type: GraphQLString },
+    },
+  })
+
   return {
-    type: new GraphQLObjectType({
-      name: name,
-      fields: {
-        base64: { type: GraphQLString },
-        // tracedSVG: {
-        //   type: GraphQLString,
-        //   resolve: parent => getTracedSVG(parent),
-        // },
-        aspectRatio: { type: GraphQLFloat },
-        width: { type: GraphQLFloat },
-        height: { type: GraphQLFloat },
-        src: { type: GraphQLString },
-        srcSet: { type: GraphQLString },
-        srcWebp: {
-          type: GraphQLString,
-          resolve: ({ file, image, fieldArgs }) => {
-            // If the file is already in webp format or should explicitly
-            // be converted to webp, we do not create additional webp files
-            if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
-              return null
-            }
-            const args = { ...fieldArgs, pathPrefix, toFormat: `webp` }
-            return Promise.resolve(
-              fixed({
-                file,
-                args,
-                reporter,
-                cache,
-              })
-            ).then(({ src }) => src)
-          },
-        },
-        srcSetWebp: {
-          type: GraphQLString,
-          resolve: ({ file, image, fieldArgs }) => {
-            if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
-              return null
-            }
-            const args = { ...fieldArgs, pathPrefix, toFormat: `webp` }
-            return Promise.resolve(
-              fixed({
-                file,
-                args,
-                reporter,
-                cache,
-              })
-            ).then(({ srcSet }) => srcSet)
-          },
-        },
-        originalName: { type: GraphQLString },
-      },
-    }),
+    // Deferring the type at least get's me to the "InputType" Error...
+    type: () => FixedType,
     args: {
       width: {
         type: GraphQLInt,
@@ -118,6 +122,14 @@ const fixedNodeType = ({
       base64Width: {
         type: GraphQLInt,
       },
+      // jpegProgressive: {
+      //   type: GraphQLBoolean,
+      //   defaultValue: true,
+      // },
+      // pngCompressionSpeed: {
+      //   type: GraphQLInt,
+      //   defaultValue: DEFAULT_PNG_COMPRESSION_SPEED,
+      // },
       // grayscale: {
       //   type: GraphQLBoolean,
       //   defaultValue: false,
@@ -131,14 +143,14 @@ const fixedNodeType = ({
       //   defaultValue: false,
       // },
       quality: {
-        type: GraphQLInt,
+        type: () => GraphQLInt,
       },
       toFormat: {
-        type: ImageWebpConvFormatType,
+        type: () => ImageWebpConvFormatType,
         defaultValue: ``,
       },
       toFormatBase64: {
-        type: ImageWebpConvFormatType,
+        type: () => ImageWebpConvFormatType,
         defaultValue: ``,
       },
       // cropFocus: {
@@ -172,13 +184,13 @@ const fixedNodeType = ({
 }
 
 // const fluidNodeType = ({
-//   type,
-//   pathPrefix,
-//   getNodeAndSavePathDependency,
-//   reporter,
-//   name,
-//   cache,
-// }) => {
+//                          type,
+//                          pathPrefix,
+//                          getNodeAndSavePathDependency,
+//                          reporter,
+//                          name,
+//                          cache,
+//                        }) => {
 //   return {
 //     type: new GraphQLObjectType({
 //       name: name,
@@ -339,37 +351,43 @@ module.exports = ({
     cache,
   }
 
-  // TODO: Remove resolutionsNode and sizesNode for Gatsby v3
   const fixedNode = fixedNodeType({
     name: `ImageWebpConvFixed`,
     ...nodeOptions,
   })
-  const resolutionsNode = fixedNodeType({
-    name: `ImageWebpConvResolutions`,
-    ...nodeOptions,
-  })
-  resolutionsNode.deprecationReason = `Resolutions was deprecated in Gatsby v2. It's been renamed to "fixed" https://example.com/write-docs-and-fix-this-example-link`
-
   // const fluidNode = fluidNodeType({ name: `ImageWebpConvFluid`, ...nodeOptions })
-  // const sizesNode = fluidNodeType({ name: `ImageWebpConvSizes`, ...nodeOptions })
-  // sizesNode.deprecationReason = `Sizes was deprecated in Gatsby v2. It's been renamed to "fluid" https://example.com/write-docs-and-fix-this-example-link`
+
+  const ImageWebpConvOriginal = new GraphQLObjectType({
+    name: `ImageWebpConvOriginal`,
+    fields: {
+      width: { type: GraphQLInt },
+      height: { type: GraphQLInt },
+      src: { type: GraphQLString },
+    },
+  })
+
+  const ImageWebpConvResize = new GraphQLObjectType({
+    name: `ImageWebpConvResize`,
+    fields: {
+      src: { type: GraphQLString },
+      // tracedSVG: {
+      //   type: GraphQLString,
+      //   resolve: parent => getTracedSVG(parent),
+      // },
+      width: { type: GraphQLInt },
+      height: { type: GraphQLInt },
+      aspectRatio: { type: GraphQLFloat },
+      originalName: { type: GraphQLString },
+    },
+  })
 
   return {
-    fixed: fixedNode,
-    resolutions: resolutionsNode,
+    fixed: () => fixedNode,
     // fluid: fluidNode,
-    // sizes: sizesNode,
     original: {
-      type: new GraphQLObjectType({
-        name: `ImageWebpConvOriginal`,
-        fields: {
-          width: { type: GraphQLFloat },
-          height: { type: GraphQLFloat },
-          src: { type: GraphQLString },
-        },
-      }),
+      type: () => ImageWebpConvOriginal,
       args: {},
-      async resolve(image, fieldArgs, context) {
+      resolve: async (image, fieldArgs, context) => {
         const details = getNodeAndSavePathDependency(image.parent, context.path)
         const dimensions = imageSize.sync(
           toArray(fs.readFileSync(details.absolutePath))
@@ -405,20 +423,7 @@ module.exports = ({
       },
     },
     resize: {
-      type: new GraphQLObjectType({
-        name: `ImageWebpConvResize`,
-        fields: {
-          src: { type: GraphQLString },
-          // tracedSVG: {
-          //   type: GraphQLString,
-          //   resolve: parent => getTracedSVG(parent),
-          // },
-          width: { type: GraphQLInt },
-          height: { type: GraphQLInt },
-          aspectRatio: { type: GraphQLFloat },
-          originalName: { type: GraphQLString },
-        },
-      }),
+      type: () => ImageWebpConvResize,
       args: {
         width: {
           type: GraphQLInt,
@@ -429,6 +434,18 @@ module.exports = ({
         quality: {
           type: GraphQLInt,
         },
+        // jpegProgressive: {
+        //   type: GraphQLBoolean,
+        //   defaultValue: true,
+        // },
+        // pngCompressionLevel: {
+        //   type: GraphQLInt,
+        //   defaultValue: 9,
+        // },
+        // pngCompressionSpeed: {
+        //   type: GraphQLInt,
+        //   defaultValue: DEFAULT_PNG_COMPRESSION_SPEED,
+        // },
         // grayscale: {
         //   type: GraphQLBoolean,
         //   defaultValue: false,

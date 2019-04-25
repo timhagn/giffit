@@ -1,9 +1,9 @@
-const { onCreateNode } = require(`../gatsby-node`)
+const { onCreateNode } = require(`../gatsby-node.js`)
 
 describe(`Process image nodes correctly`, () => {
   it(`correctly creates an ImageSharp node from a file image node`, async () => {
     const node = {
-      extension: `png`,
+      extension: `gif`,
       id: `whatever`,
       children: [],
       internal: {

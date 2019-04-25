@@ -1,5 +1,5 @@
 const {
-  GraphQLInputObjectType,
+  GraphQLObjectType,
   GraphQLBoolean,
   GraphQLString,
   GraphQLInt,
