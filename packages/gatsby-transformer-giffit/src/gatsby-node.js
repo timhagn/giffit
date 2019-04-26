@@ -15,7 +15,9 @@ exports.onPreExtractQueries = async ({ store, getNodesByType }) => {
   // We have ImageWebpConv nodes so let's add our fragments to .cache/fragments.
   await fs.copy(
     require.resolve(
-      `${program.directory}/plugins/gatsby-transformer-webpconv/fragments.js`
+      `${
+        program.directory
+        }/plugins/gatsby-transformer-webpconv/fragments.js`
     ),
     `${program.directory}/.cache/fragments/image-webpconv-fragments.js`
   )
@@ -31,8 +33,7 @@ const supportedExtensions = {
 }
 
 /**
- * TODO: Look further into export vs. module.exports...
- * TODO:  ImageWebpConv.fixed provided incorrect OutputType: '"ImageWebpConvFixed"'
+ * TODO: Why does it work in the `plugins` subfolder of a site but not here?
  *
  {
   allSitePlugin(filter: { name: { regex: "/webpconv|sharp/" } }) {
@@ -77,23 +78,23 @@ const sourceNodes = async ({ actions }) => {
     type imageWebpConvFixed {
       base64: String
       aspectRatio: Float
-      width: Float
-      height: Float
+      width: Int
+      height: Int
       src: String
       srcSet: String
       originalName: String
     }
 
     type imageWebpConvOriginal {
-      width: Float
-      height: Float
+      width: Int
+      height: Int
       src: String
     }
 
     type imageWebpConvResize {
       src: String
-      width: Float
-      height: Float
+      width: Int
+      height: Int
       aspectRatio: Float
       originalName: String
     }
