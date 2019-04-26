@@ -16,7 +16,7 @@ Error: ImageWebpConv.fixed@width provided incorrect InputType: '"Int"'
 or even:
 
 ```error
-Error: ImageWebpConv.fixed provided incorrect OutputType: '"ImageWebpConvFixed  "'
+Error: ImageWebpConv.fixed provided incorrect OutputType: '"ImageWebpConvFixed"'
 ```
 
 I think the problem is a `babel` one, though it doesn't work with the 
@@ -24,3 +24,6 @@ non-transpiled `src` files either oO.
 
 Any help would be wholeheartedly appreciated!
 Thanks in advance!  
+
+P.S.: "-webpconv" is a development name, I'm open for suggestions. Though 
+"-gif2webp" just sounds a little lame - what do you think ; )?
