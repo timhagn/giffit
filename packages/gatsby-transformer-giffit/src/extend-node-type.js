@@ -143,7 +143,7 @@ const fixedNodeType = ({
       //   defaultValue: false,
       // },
       quality: {
-        type: () => GraphQLInt,
+        type: GraphQLInt,
       },
       toFormat: {
         type: () => ImageWebpConvFormatType,
@@ -358,8 +358,8 @@ module.exports = ({
   const ImageWebpConvOriginal = new GraphQLObjectType({
     name: `ImageWebpConvOriginal`,
     fields: {
-      width: { type: GraphQLInt },
-      height: { type: GraphQLInt },
+      width: { type: GraphQLFloat },
+      height: { type: GraphQLFloat },
       src: { type: GraphQLString },
     },
   })
@@ -372,8 +372,8 @@ module.exports = ({
       //   type: GraphQLString,
       //   resolve: parent => getTracedSVG(parent),
       // },
-      width: { type: GraphQLInt },
-      height: { type: GraphQLInt },
+      width: { type: GraphQLFloat },
+      height: { type: GraphQLFloat },
       aspectRatio: { type: GraphQLFloat },
       originalName: { type: GraphQLString },
     },

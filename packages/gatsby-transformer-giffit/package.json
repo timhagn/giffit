@@ -5,6 +5,7 @@
   "author": "Tim Hagn <mail@timhagn.com>",
   "dependencies": {
     "@babel/runtime": "^7.4.3",
+    "@babel/types": "^7.4.0",
     "fs-extra": "^7.0.1",
     "probe-image-size": "^4.0.0"
   },
