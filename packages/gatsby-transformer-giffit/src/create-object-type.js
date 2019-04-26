@@ -1,12 +1,12 @@
 // const Promise = require(`bluebird`)
-const {
-  GraphQLObjectType,
-  GraphQLList,
-  GraphQLBoolean,
-  GraphQLString,
-  GraphQLInt,
-  GraphQLFloat,
-} = require(`gatsby/graphql`)
+// const {
+//   GraphQLObjectType,
+//   GraphQLList,
+//   GraphQLBoolean,
+//   GraphQLString,
+//   GraphQLInt,
+//   GraphQLFloat,
+// } = require(`gatsby/graphql`)
 const {
   queueImageResizing,
   base64,
@@ -162,21 +162,23 @@ const fixedNodeType = ({
       //   defaultValue: 0,
       // },
     },
-    resolve: async (image, fieldArgs, context) => {
+    resolve: (image, fieldArgs, context) => {
       const file = getNodeAndSavePathDependency(image.parent, context.path)
       const args = { ...fieldArgs, pathPrefix }
-      const fixedImage = await fixed({
-        file,
-        args,
-        reporter,
-        cache,
-      })
-
-      return Object.assign({}, fixedImage, {
-        fieldArgs: args,
-        image,
-        file,
-      })
+      return Promise.resolve(
+        fixed({
+          file,
+          args,
+          reporter,
+          cache,
+        })
+      ).then(o =>
+        Object.assign({}, o, {
+          fieldArgs: args,
+          image,
+          file,
+        })
+      )
     },
   }
 }
@@ -350,13 +352,13 @@ module.exports = ({
   }
 
   const fixedNode = fixedNodeType({
-    name: `imageWebpConvFixed`,
+    name: `ImageWebpConvFixed`,
     ...nodeOptions,
   })
   // const fluidNode = fluidNodeType({ name: `ImageWebpConvFluid`, ...nodeOptions })
 
   const ImageWebpConvOriginal = new GraphQLObjectType({
-    name: `imageWebpConvOriginal`,
+    name: `ImageWebpConvOriginal`,
     fields: {
       width: { type: GraphQLInt },
       height: { type: GraphQLInt },
@@ -365,7 +367,7 @@ module.exports = ({
   })
 
   const ImageWebpConvResize = new GraphQLObjectType({
-    name: `imageWebpConvResize`,
+    name: `ImageWebpConvResize`,
     fields: {
       src: { type: GraphQLString },
       // tracedSVG: {
@@ -473,25 +475,31 @@ module.exports = ({
         //   defaultValue: 0,
         // },
       },
-      resolve: async (image, fieldArgs, context) => {
+      resolve: (image, fieldArgs, context) => {
         const file = getNodeAndSavePathDependency(image.parent, context.path)
         const args = { ...fieldArgs, pathPrefix }
-        if (fieldArgs.base64) {
-          return await base64({
-            file,
-            cache,
-          })
-        } else {
-          const o = queueImageResizing({
-            file,
-            args,
-          })
-          return Object.assign({}, o, {
-            image,
-            file,
-            fieldArgs: args,
-          })
-        }
+        return new Promise(resolve => {
+          if (fieldArgs.base64) {
+            resolve(
+              base64({
+                file,
+                cache,
+              })
+            )
+          } else {
+            const o = queueImageResizing({
+              file,
+              args,
+            })
+            resolve(
+              Object.assign({}, o, {
+                image,
+                file,
+                fieldArgs: args,
+              })
+            )
+          }
+        })
       },
     },
   }
