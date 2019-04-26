@@ -54,6 +54,7 @@ node_modules/
 yarn.lock
 package-lock.json
 /types.js
+/index.js
 /on-node-create.js
 /GifToWebp.js
 /gatsby-node.js

@@ -13,18 +13,16 @@ exports.onPreExtractQueries = async ({ store, getNodesByType }) => {
   }
 
   // We have ImageWebpConv nodes so let's add our fragments to .cache/fragments.
-  // await fs.copy(
-  //   require.resolve(
-  //     `${
-  //       program.directory
-  //     }/node_modules/gatsby-transformer-webpconv/fragments.js`
-  //   ),
-  //   `${program.directory}/.cache/fragments/image-webpconv-fragments.js`
-  // )
   await fs.copy(
-    require.resolve(`gatsby-transformer-webpconv/src/fragments.js`),
+    require.resolve(
+      `${program.directory}/plugins/gatsby-transformer-webpconv/fragments.js`
+    ),
     `${program.directory}/.cache/fragments/image-webpconv-fragments.js`
   )
+  // await fs.copy(
+  //   require.resolve(`gatsby-transformer-webpconv/src/fragments.js`),
+  //   `${program.directory}/.cache/fragments/image-webpconv-fragments.js`
+  // )
 }
 
 const supportedExtensions = {
@@ -76,7 +74,7 @@ const onCreateNode = async ({ node, actions, ...helpers }) => {
 const sourceNodes = async ({ actions }) => {
   const { createTypes } = actions
   const typeDefs = `
-    type ImageWebpConvFixed___NODE {
+    type imageWebpConvFixed {
       base64: String
       aspectRatio: Float
       width: Float
@@ -86,13 +84,13 @@ const sourceNodes = async ({ actions }) => {
       originalName: String
     }
 
-    type ImageWebpConvOriginal {
+    type imageWebpConvOriginal {
       width: Float
       height: Float
       src: String
     }
 
-    type ImageWebpConvResize {
+    type imageWebpConvResize {
       src: String
       width: Float
       height: Float

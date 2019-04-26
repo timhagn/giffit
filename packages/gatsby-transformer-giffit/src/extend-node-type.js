@@ -350,13 +350,13 @@ module.exports = ({
   }
 
   const fixedNode = fixedNodeType({
-    name: `imageWebpConvFixed`,
+    name: `ImageWebpConvFixed`,
     ...nodeOptions,
   })
   // const fluidNode = fluidNodeType({ name: `ImageWebpConvFluid`, ...nodeOptions })
 
   const ImageWebpConvOriginal = new GraphQLObjectType({
-    name: `imageWebpConvOriginal`,
+    name: `ImageWebpConvOriginal`,
     fields: {
       width: { type: GraphQLInt },
       height: { type: GraphQLInt },
@@ -365,7 +365,7 @@ module.exports = ({
   })
 
   const ImageWebpConvResize = new GraphQLObjectType({
-    name: `imageWebpConvResize`,
+    name: `ImageWebpConvResize`,
     fields: {
       src: { type: GraphQLString },
       // tracedSVG: {
