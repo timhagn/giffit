@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`gatsby-plugin-webpconv base64 converts image to base64 1`] = `null`;
+
+exports[`gatsby-plugin-webpconv image quirks handles padding bytes correctly 1`] = `
+Object {
+  "hUnits": "px",
+  "height": 1000,
+  "mime": "image/jpeg",
+  "type": "jpg",
+  "wUnits": "px",
+  "width": 746,
+}
+`;
+
+exports[`gatsby-plugin-webpconv tracedSVG runs on demand 1`] = `
+Object {
+  "aspectRatio": 1,
+  "base64": undefined,
+  "height": 100,
+  "originalName": undefined,
+  "src": "/static/1234/ce66d/test.png",
+  "srcSet": "/static/1234/ce66d/test.png 1x",
+  "width": 100,
+}
+`;
