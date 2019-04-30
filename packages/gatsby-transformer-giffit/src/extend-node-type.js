@@ -49,13 +49,13 @@ function toArray(buf) {
 //   })
 
 const fixedNodeType = ({
-  type,
-  pathPrefix,
-  getNodeAndSavePathDependency,
-  reporter,
-  name,
-  cache,
-}) => {
+                         type,
+                         pathPrefix,
+                         getNodeAndSavePathDependency,
+                         reporter,
+                         name,
+                         cache,
+                       }) => {
   const FixedType = new GraphQLObjectType({
     name: name,
     fields: {
@@ -69,42 +69,40 @@ const fixedNodeType = ({
       height: { type: GraphQLInt },
       src: { type: GraphQLString },
       srcSet: { type: GraphQLString },
-      // srcWebp: {
-      //   type: GraphQLString,
-      //   resolve: ({ file, image, fieldArgs }) => {
-      //     // If the file is already in webp format or should explicitly
-      //     // be converted to webp, we do not create additional webp files
-      //     if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
-      //       return null
-      //     }
-      //     const args = { ...fieldArgs, pathPrefix, toFormat: `webp` }
-      //     return Promise.resolve(
-      //       fixed({
-      //         file,
-      //         args,
-      //         reporter,
-      //         cache,
-      //       })
-      //     ).then(({ src }) => src)
-      //   },
-      // },
-      // srcSetWebp: {
-      //   type: GraphQLString,
-      //   resolve: ({ file, image, fieldArgs }) => {
-      //     if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
-      //       return null
-      //     }
-      //     const args = { ...fieldArgs, pathPrefix, toFormat: `webp` }
-      //     return Promise.resolve(
-      //       fixed({
-      //         file,
-      //         args,
-      //         reporter,
-      //         cache,
-      //       })
-      //     ).then(({ srcSet }) => srcSet)
-      //   },
-      // },
+      srcWebp: {
+        type: GraphQLString,
+        resolve: async ({ file, image, fieldArgs }) => {
+          // If the file is already in webp format or should explicitly
+          // be converted to webp, we do not create additional webp files
+          if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
+            return null
+          }
+          const args = { ...fieldArgs, pathPrefix, toFormat: `webp` }
+          const fixedImage = await fixed({
+              file,
+              args,
+              reporter,
+              cache,
+            })
+          return fixedImage.src
+        },
+      },
+      srcSetWebp: {
+        type: GraphQLString,
+        resolve: async ({ file, image, fieldArgs }) => {
+          if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
+            return null
+          }
+          const args = { ...fieldArgs, pathPrefix, toFormat: `webp` }
+          const fixedImage = await fixed({
+            file,
+            args,
+            reporter,
+            cache,
+          })
+          return fixedImage.srcSet
+        },
+      },
       originalName: { type: GraphQLString },
     },
   })
@@ -331,12 +329,12 @@ const fixedNodeType = ({
 // }
 
 module.exports = ({
-  type,
-  pathPrefix,
-  getNodeAndSavePathDependency,
-  reporter,
-  cache,
-}) => {
+                    type,
+                    pathPrefix,
+                    getNodeAndSavePathDependency,
+                    reporter,
+                    cache,
+                  }) => {
   if (type.name !== `ImageWebpConv`) {
     return {}
   }
@@ -392,7 +390,7 @@ module.exports = ({
         )
         const imageName = `${details.name}-${image.internal.contentDigest}${
           details.ext
-        }`
+          }`
         const publicPath = path.join(
           process.cwd(),
           `public`,
@@ -406,7 +404,7 @@ module.exports = ({
               console.error(
                 `error copying file from ${
                   details.absolutePath
-                } to ${publicPath}`,
+                  } to ${publicPath}`,
                 err
               )
             }

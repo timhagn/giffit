@@ -21,17 +21,18 @@ export const gatsbyImageWebpConvFixed = graphql`
 //   }
 // `
 //
-// export const gatsbyImageWebpConvFixedPreferWebp = graphql`
-//   fragment GatsbyImageWebpConvFixed_withWebp on ImageWebpConvFixed {
-//     base64
-//     width
-//     height
-//     src
-//     srcSet
-//     srcWebp
-//     srcSetWebp
-//   }
-// `
+
+export const gatsbyImageWebpConvFixedPreferWebp = graphql`
+  fragment GatsbyImageWebpConvFixed_withWebp on ImageWebpConvFixed {
+    base64
+    width
+    height
+    src
+    srcSet
+    srcWebp
+    srcSetWebp
+  }
+`
 //
 // export const gatsbyImageWebpConvFixedPreferWebpTracedSVG = graphql`
 //   fragment GatsbyImageWebpConvFixed_withWebp_tracedSVG on ImageWebpConvFixed {
