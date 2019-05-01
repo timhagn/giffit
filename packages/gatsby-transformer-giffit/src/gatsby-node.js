@@ -15,9 +15,7 @@ exports.onPreExtractQueries = async ({ store, getNodesByType }) => {
   // We have ImageWebpConv nodes so let's add our fragments to .cache/fragments.
   await fs.copy(
     require.resolve(
-      `${
-        program.directory
-      }/plugins/gatsby-transformer-webpconv/fragments.js`
+      `${program.directory}/plugins/gatsby-transformer-webpconv/fragments.js`
     ),
     `${program.directory}/.cache/fragments/image-webpconv-fragments.js`
   )

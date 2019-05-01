@@ -49,13 +49,13 @@ function toArray(buf) {
 //   })
 
 const fixedNodeType = ({
-                         type,
-                         pathPrefix,
-                         getNodeAndSavePathDependency,
-                         reporter,
-                         name,
-                         cache,
-                       }) => {
+  type,
+  pathPrefix,
+  getNodeAndSavePathDependency,
+  reporter,
+  name,
+  cache,
+}) => {
   const FixedType = new GraphQLObjectType({
     name: name,
     fields: {
@@ -79,11 +79,11 @@ const fixedNodeType = ({
           }
           const args = { ...fieldArgs, pathPrefix, toFormat: `webp` }
           const fixedImage = await fixed({
-              file,
-              args,
-              reporter,
-              cache,
-            })
+            file,
+            args,
+            reporter,
+            cache,
+          })
           return fixedImage.src
         },
       },
@@ -329,12 +329,12 @@ const fixedNodeType = ({
 // }
 
 module.exports = ({
-                    type,
-                    pathPrefix,
-                    getNodeAndSavePathDependency,
-                    reporter,
-                    cache,
-                  }) => {
+  type,
+  pathPrefix,
+  getNodeAndSavePathDependency,
+  reporter,
+  cache,
+}) => {
   if (type.name !== `ImageWebpConv`) {
     return {}
   }
@@ -390,7 +390,7 @@ module.exports = ({
         )
         const imageName = `${details.name}-${image.internal.contentDigest}${
           details.ext
-          }`
+        }`
         const publicPath = path.join(
           process.cwd(),
           `public`,
@@ -404,7 +404,7 @@ module.exports = ({
               console.error(
                 `error copying file from ${
                   details.absolutePath
-                  } to ${publicPath}`,
+                } to ${publicPath}`,
                 err
               )
             }
