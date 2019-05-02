@@ -1,0 +1,2 @@
+// FooBar
+"use strict";

@@ -36,6 +36,9 @@
     "gatsby": "^2.3.0",
     "gatsby-plugin-webpconv": "^0.0.1"
   },
+  "resolutions": {
+    "gatsby/graphql": "^2.3.0"
+  },
   "engines": {
     "node": ">= 10"
   },

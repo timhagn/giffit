@@ -28,7 +28,7 @@ node_modules
 *.un~
 yarn.lock
 package-lock.json
-src
+# src
 flow-typed
 decls
 examples

@@ -13,7 +13,7 @@ module.exports = {
       'babel-preset-gatsby-package',
       {
         browser: false,
-        debug: true,
+        // debug: true,
       },
     ],
   ],
