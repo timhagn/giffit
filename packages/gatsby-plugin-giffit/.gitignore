@@ -53,10 +53,10 @@ node_modules/
 .serverless/
 yarn.lock
 package-lock.json
-/index.js
-/gatsby-node.js
-/GifToWebp.js
-/plugin-options.js
-/process-file.js
-/report-error.js
-/scheduler.js
+#/index.js
+#/gatsby-node.js
+#/GifToWebp.js
+#/plugin-options.js
+#/process-file.js
+#/report-error.js
+#/scheduler.js
