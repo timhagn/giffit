@@ -17,9 +17,9 @@
 </p>
 
 `gatsby-plugin-giffit` & `gatsby-transformer-giffit` are a Gatsby plugin and 
-transformer which for (animated) GIFs (**_shall soon_**) provide,  
-what Gatsby's own `gatsby-plugin-sharp` & `gatsby-transformer-sharp`do for the 
-rest of your images.  
+transformer which for (animated) GIFs (**_shall soon_**) provide, what Gatsby's 
+own `gatsby-plugin-sharp` & `gatsby-transformer-sharp`do for the rest of 
+your images.  
 
 Optimized sizes and conversion to WebP for browsers that support it as well as
 a single extracted Base64 encoded GIF-animation frame as a preview during load
