@@ -1,34 +1,42 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 const fs = require(`fs-extra`);
 
 exports.setFieldsOnGraphQLNodeType = require(`./extend-node-type`);
 
-exports.onPreExtractQueries = async ({
-  store,
-  getNodesByType
-}) => {
-  const program = store.getState().program; // Check if there are any ImageWebpConv nodes. If so add fragments for ImageWebpConv.
-  // The fragment will cause an error if there are no ImageWebpConv nodes.
+exports.onPreExtractQueries =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(function* ({
+    store,
+    getNodesByType
+  }) {
+    const program = store.getState().program; // Check if there are any ImageWebpConv nodes. If so add fragments for ImageWebpConv.
+    // The fragment will cause an error if there are no ImageWebpConv nodes.
 
-  if (getNodesByType(`ImageWebpConv`).length === 0) {
-    console.error('No ImageWebpConv nodes...');
-    return;
-  } // We have ImageWebpConv nodes so let's add our fragments to .cache/fragments.
+    if (getNodesByType(`ImageWebpConv`).length === 0) {
+      console.error('No ImageWebpConv nodes...');
+      return;
+    }
 
+    yield fs.copy(require.resolve(`gatsby-transformer-webpconv/src/fragments.js`), `${program.directory}/.cache/fragments/image-webpconv-fragments.js`);
+  });
 
-  await fs.copy(require.resolve(`${program.directory}/plugins/gatsby-transformer-webpconv/fragments.js`), `${program.directory}/.cache/fragments/image-webpconv-fragments.js`); // await fs.copy(
-  //   require.resolve(`gatsby-transformer-webpconv/src/fragments.js`),
-  //   `${program.directory}/.cache/fragments/image-webpconv-fragments.js`
-  // )
-};
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
 
 const supportedExtensions = {
   gif: true // webp: true,
 
   /**
-   * TODO: Look further into export vs. module.exports...
-   * TODO:  ImageWebpConv.fixed provided incorrect OutputType: '"ImageWebpConvFixed"'
    *
    {
     allSitePlugin(filter: { name: { regex: "/webpconv|sharp/" } }) {
@@ -48,47 +56,51 @@ const supportedExtensions = {
 
 };
 
-const onCreateNode = async ({
-  node,
-  actions,
-  ...helpers
-}) => {
-  const {
-    createNode,
-    createParentChildLink
-  } = actions;
-  const {
-    createNodeId,
-    createContentDigest
-  } = helpers;
+const onCreateNode =
+/*#__PURE__*/
+function () {
+  var _ref2 = (0, _asyncToGenerator2.default)(function* (_ref3) {
+    let node = _ref3.node,
+        actions = _ref3.actions,
+        helpers = (0, _objectWithoutPropertiesLoose2.default)(_ref3, ["node", "actions"]);
+    const createNode = actions.createNode,
+          createParentChildLink = actions.createParentChildLink;
+    const createNodeId = helpers.createNodeId,
+          createContentDigest = helpers.createContentDigest;
 
-  if (!supportedExtensions[node.extension]) {
-    return;
-  }
-
-  const imageNode = {
-    id: createNodeId(`${node.id} >>> ImageWebpConv`),
-    children: [],
-    parent: node.id,
-    internal: {
-      contentDigest: createContentDigest(node),
-      type: `ImageWebpConv`
+    if (!supportedExtensions[node.extension]) {
+      return;
     }
-  };
-  createNode(imageNode);
-  createParentChildLink({
-    parent: node,
-    child: imageNode
-  });
-};
 
-const sourceNodes = async ({
-  actions
-}) => {
-  const {
-    createTypes
-  } = actions;
-  const typeDefs = `
+    const imageNode = {
+      id: createNodeId(`${node.id} >>> ImageWebpConv`),
+      children: [],
+      parent: node.id,
+      internal: {
+        contentDigest: createContentDigest(node),
+        type: `ImageWebpConv`
+      }
+    };
+    createNode(imageNode);
+    createParentChildLink({
+      parent: node,
+      child: imageNode
+    });
+  });
+
+  return function onCreateNode(_x2) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+const sourceNodes =
+/*#__PURE__*/
+function () {
+  var _ref4 = (0, _asyncToGenerator2.default)(function* ({
+    actions
+  }) {
+    const createTypes = actions.createTypes;
+    const typeDefs = `
     type imageWebpConvFixed {
       base64: String
       aspectRatio: Float
@@ -115,8 +127,13 @@ const sourceNodes = async ({
       originalName: String
     }
   `;
-  createTypes(typeDefs);
-};
+    createTypes(typeDefs);
+  });
+
+  return function sourceNodes(_x3) {
+    return _ref4.apply(this, arguments);
+  };
+}();
 
 exports.sourceNodes = sourceNodes;
 exports.onCreateNode = onCreateNode;
