@@ -1,0 +1,36 @@
+{
+  "name": "gatsby-giffit",
+  "version": "0.0.1",
+  "description": "Gatsby plugin & transformer for processing images using gifsicle & webp-converter.",
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "image",
+    "gif",
+    "webp",
+    "converter",
+    "gif2webp",
+    "gifsicle"
+  ],
+  "author": "Tim Hagn <mail@timhagn.com>",
+  "homepage": "https://github.com/timhagn/gatsby-giffit",
+  "license": "MIT",
+  "main": "lib/gatsby-giffit.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timhagn/gatsby-giffit.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/timhagn/gatsby-giffit/issues"
+  }
+}
