@@ -1,7 +1,7 @@
 {
   "name": "gatsby-plugin-giffit",
   "version": "0.0.1",
-  "description": "Gatsby plugin for processing images using gifsicle & webp-converter.",
+  "description": "Gatsby Plugin and Transformer to easily work with optimized animated GIFs.",
   "author": "Tim Hagn <mail@timhagn.com>",
   "dependencies": {
     "@babel/runtime": "^7.4.4",
