@@ -1,6 +1,7 @@
 const execFileSync = require('child_process').execFileSync
 const fs = require('fs')
 const temp = require('temp')
+const gifFrames = require('gif-frames')
 const gifsicle = require('gifsicle')
 const gif2webp = require('webp-converter/gwebp')
 
@@ -13,7 +14,11 @@ export default class GifToWebp {
   gif2webpArgs = []
 
   constructor(file) {
-    this.file = file
+    if (typeof file === `object`) {
+      this.file = file.absolutePath
+    } else {
+      this.file = file
+    }
   }
 
   /**
@@ -66,6 +71,28 @@ export default class GifToWebp {
     } else {
       // Add option to resize to set width & height.
       this.gifsicleArgs.push(`--resize ${width}x${height}`)
+    }
+  }
+
+  /**
+   * Returns a base64 encoded string with the first gif frame.
+   * @return {Promise<null|*>}
+   */
+  async toBase64() {
+    let fileToProcess = this.file
+    if (this.gifsicleArgs.length !== 0) {
+      fileToProcess = temp.path({ suffix: '.gif' })
+      await this.toGif(fileToProcess)
+    }
+    const gifFrameOptions = {
+      url: fileToProcess,
+      frames: 0,
+      cumulative: true,
+    }
+    try {
+      return await gifFrames(gifFrameOptions)
+    } catch (error) {
+      throw error
     }
   }
 

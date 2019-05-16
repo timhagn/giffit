@@ -106,9 +106,9 @@ function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
           imagesFinished += 1
 
           // only show progress on build
-          if (reportStatus) {
+          // if (reportStatus) {
             bar.tick()
-          }
+          // }
 
           actions.setJob(
             {

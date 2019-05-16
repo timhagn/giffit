@@ -15,6 +15,8 @@ const fs = require('fs');
 
 const temp = require('temp');
 
+const gifFrames = require('gif-frames');
+
 const gifsicle = require('gifsicle');
 
 const gif2webp = require('webp-converter/gwebp');
@@ -29,7 +31,12 @@ class GifToWebp {
     (0, _defineProperty2.default)(this, "gifsicleArgs", []);
     (0, _defineProperty2.default)(this, "gif2webpArgs", []);
     (0, _defineProperty2.default)(this, "uniqueArgs", arr => arr.filter((elem, index, self) => index === self.indexOf(elem)));
-    this.file = file;
+
+    if (typeof file === `object`) {
+      this.file = file.absolutePath;
+    } else {
+      this.file = file;
+    }
   }
   /**
    * Selects if metadata should be stripped.
@@ -84,6 +91,38 @@ class GifToWebp {
     }
   }
   /**
+   * Returns a base64 encoded string with the first gif frame.
+   * @return {Promise<null|*>}
+   */
+
+
+  toBase64() {
+    var _this = this;
+
+    return (0, _asyncToGenerator2.default)(function* () {
+      let fileToProcess = _this.file;
+
+      if (_this.gifsicleArgs.length !== 0) {
+        fileToProcess = temp.path({
+          suffix: '.gif'
+        });
+        yield _this.toGif(fileToProcess);
+      }
+
+      const gifFrameOptions = {
+        url: fileToProcess,
+        frames: 0,
+        cumulative: true
+      };
+
+      try {
+        return yield gifFrames(gifFrameOptions);
+      } catch (error) {
+        throw error;
+      }
+    })();
+  }
+  /**
    * Processes a gif with the given options.
    * @param outputPath    string    Path to save the processed gif to.
    * @return {Promise<void>}
@@ -91,10 +130,10 @@ class GifToWebp {
 
 
   toGif(outputPath) {
-    var _this = this;
+    var _this2 = this;
 
     return (0, _asyncToGenerator2.default)(function* () {
-      const currentGifsicleArgs = [`--no-warnings`, `--output`, outputPath, ..._this.uniqueArgs(_this.gifsicleArgs), _this.file];
+      const currentGifsicleArgs = [`--no-warnings`, `--output`, outputPath, ..._this2.uniqueArgs(_this2.gifsicleArgs), _this2.file];
 
       try {
         yield execFileSync(gifsicle, currentGifsicleArgs.flat(), {});
@@ -111,20 +150,20 @@ class GifToWebp {
 
 
   toWebp(outputPath) {
-    var _this2 = this;
+    var _this3 = this;
 
     return (0, _asyncToGenerator2.default)(function* () {
       try {
         let tempFileName = ``;
 
-        if (_this2.gifsicleArgs.length !== 0) {
+        if (_this3.gifsicleArgs.length !== 0) {
           tempFileName = temp.path({
             suffix: '.gif'
           });
-          yield _this2.toGif(tempFileName);
+          yield _this3.toGif(tempFileName);
         }
 
-        const currentGif2webpArgs = [..._this2.uniqueArgs(_this2.gif2webpArgs), `-mt`, `-quiet`, tempFileName || _this2.file, `-o`, outputPath];
+        const currentGif2webpArgs = [..._this3.uniqueArgs(_this3.gif2webpArgs), `-mt`, `-quiet`, tempFileName || _this3.file, `-o`, outputPath];
         yield execFileSync(gif2webp(), currentGif2webpArgs.flat(), {});
 
         if (tempFileName !== ``) {

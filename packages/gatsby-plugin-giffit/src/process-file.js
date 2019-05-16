@@ -1,4 +1,4 @@
-import Gifsicle from './GifToWebp'
+import GifToWebp from './GifToWebp'
 import { reportError } from './report-error'
 
 const fs = require(`fs-extra`)
@@ -52,7 +52,7 @@ const argsWhitelist = [
  * @param options
  */
 exports.processFile = (file, transforms, options = {}) => {
-  const processGif = new Gifsicle(file)
+  const processGif = new GifToWebp(file)
 
   // Keep Metadata
   if (!options.stripMetadata) {

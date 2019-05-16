@@ -1,3 +1,5 @@
+import GifToWebp from './GifToWebp'
+
 try {
   const webp = require(`webp-converter`)
 } catch (error) {
@@ -173,24 +175,36 @@ async function generateBase64({ file, args, reporter }) {
     width: defaultBase64Width(),
   })
 
-  const gifFrameOptions = {
-    url: file.absolutePath,
-    frames: 0,
-    cumulative: true,
-  }
+  const processGif = new GifToWebp(file)
+  processGif.resize(options.width, options.height)
 
   let frameData
   try {
-    frameData = await gifFrames(gifFrameOptions)
+    frameData = await processGif.toBase64()
   } catch (err) {
     reportError(`Failed to process image ${file.absolutePath}`, err, reporter)
     return null
   }
 
-  const buffer = frameData[0].getImage()
+  // const gifFrameOptions = {
+  //   url: file.absolutePath,
+  //   frames: 0,
+  //   cumulative: true,
+  // }
+  //
+  // let frameData
+  // try {
+  //   frameData = await gifFrames(gifFrameOptions)
+  // } catch (err) {
+  //   reportError(`Failed to process image ${file.absolutePath}`, err, reporter)
+  //   return null
+  // }
+
+  const imageBuffer = frameData[0].getImage()
+  const base64String = imageBuffer.read().toString(`base64`)
 
   return {
-    src: `data:image/jpg;base64,${buffer.read().toString(`base64`)}`,
+    src: `data:image/jpg;base64,${base64String}`,
     width: frameData[0].frameInfo.width,
     height: frameData[0].frameInfo.height,
     aspectRatio: frameData[0].frameInfo.width / frameData[0].frameInfo.height,

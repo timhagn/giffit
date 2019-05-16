@@ -6,6 +6,8 @@ var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runt
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
+var _GifToWebp = _interopRequireDefault(require("./GifToWebp"));
+
 try {
   const webp = require(`webp-converter`);
 } catch (error) {
@@ -186,23 +188,34 @@ function _generateBase() {
     const options = healOptions(pluginOptions, args, file.extension, {
       width: defaultBase64Width()
     });
-    const gifFrameOptions = {
-      url: file.absolutePath,
-      frames: 0,
-      cumulative: true
-    };
+    const processGif = new _GifToWebp.default(file);
+    processGif.resize(options.width, options.height);
     let frameData;
 
     try {
-      frameData = yield gifFrames(gifFrameOptions);
+      frameData = yield processGif.toBase64();
     } catch (err) {
       reportError(`Failed to process image ${file.absolutePath}`, err, reporter);
       return null;
-    }
+    } // const gifFrameOptions = {
+    //   url: file.absolutePath,
+    //   frames: 0,
+    //   cumulative: true,
+    // }
+    //
+    // let frameData
+    // try {
+    //   frameData = await gifFrames(gifFrameOptions)
+    // } catch (err) {
+    //   reportError(`Failed to process image ${file.absolutePath}`, err, reporter)
+    //   return null
+    // }
 
-    const buffer = frameData[0].getImage();
+
+    const imageBuffer = frameData[0].getImage();
+    const base64String = imageBuffer.read().toString(`base64`);
     return {
-      src: `data:image/jpg;base64,${buffer.read().toString(`base64`)}`,
+      src: `data:image/jpg;base64,${base64String}`,
       width: frameData[0].frameInfo.width,
       height: frameData[0].frameInfo.height,
       aspectRatio: frameData[0].frameInfo.width / frameData[0].frameInfo.height,
