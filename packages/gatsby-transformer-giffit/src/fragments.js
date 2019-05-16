@@ -1,8 +1,8 @@
 /* eslint-disable */
 import { graphql } from 'gatsby'
 
-export const gatsbyImageWebpConvFixed = graphql`
-  fragment GatsbyImageWebpConvFixed on ImageWebpConvFixed {
+export const gatsbyImageGifFitFixed = graphql`
+  fragment GatsbyImageGifFitFixed on ImageGifFitFixed {
     base64
     width
     height
@@ -11,8 +11,8 @@ export const gatsbyImageWebpConvFixed = graphql`
   }
 `
 
-// export const gatsbyImageWebpConvFixedTracedSVG = graphql`
-//   fragment GatsbyImageWebpConvFixed_tracedSVG on ImageWebpConvFixed {
+// export const gatsbyImageGifFitFixedTracedSVG = graphql`
+//   fragment GatsbyImageGifFitFixed_tracedSVG on ImageGifFitFixed {
 //     tracedSVG
 //     width
 //     height
@@ -22,8 +22,8 @@ export const gatsbyImageWebpConvFixed = graphql`
 // `
 //
 
-export const gatsbyImageWebpConvFixedPreferWebp = graphql`
-  fragment GatsbyImageWebpConvFixed_withWebp on ImageWebpConvFixed {
+export const gatsbyImageGifFitFixedPreferWebp = graphql`
+  fragment GatsbyImageGifFitFixed_withWebp on ImageGifFitFixed {
     base64
     width
     height
@@ -34,8 +34,8 @@ export const gatsbyImageWebpConvFixedPreferWebp = graphql`
   }
 `
 //
-// export const gatsbyImageWebpConvFixedPreferWebpTracedSVG = graphql`
-//   fragment GatsbyImageWebpConvFixed_withWebp_tracedSVG on ImageWebpConvFixed {
+// export const gatsbyImageGifFitFixedPreferWebpTracedSVG = graphql`
+//   fragment GatsbyImageGifFitFixed_withWebp_tracedSVG on ImageGifFitFixed {
 //     tracedSVG
 //     width
 //     height
@@ -46,8 +46,8 @@ export const gatsbyImageWebpConvFixedPreferWebp = graphql`
 //   }
 // `
 //
-// export const gatsbyImageWebpConvFixedNoBase64 = graphql`
-//   fragment GatsbyImageWebpConvFixed_noBase64 on ImageWebpConvFixed {
+// export const gatsbyImageGifFitFixedNoBase64 = graphql`
+//   fragment GatsbyImageGifFitFixed_noBase64 on ImageGifFitFixed {
 //     width
 //     height
 //     src
@@ -55,8 +55,8 @@ export const gatsbyImageWebpConvFixedPreferWebp = graphql`
 //   }
 // `
 //
-// export const gatsbyImageWebpConvFixedPreferWebpNoBase64 = graphql`
-//   fragment GatsbyImageWebpConvFixed_withWebp_noBase64 on ImageWebpConvFixed {
+// export const gatsbyImageGifFitFixedPreferWebpNoBase64 = graphql`
+//   fragment GatsbyImageGifFitFixed_withWebp_noBase64 on ImageGifFitFixed {
 //     width
 //     height
 //     src
@@ -66,8 +66,8 @@ export const gatsbyImageWebpConvFixedPreferWebp = graphql`
 //   }
 // `
 //
-// export const gatsbyImageWebpConvFluid = graphql`
-//   fragment GatsbyImageWebpConvFluid on ImageWebpConvFluid {
+// export const gatsbyImageGifFitFluid = graphql`
+//   fragment GatsbyImageGifFitFluid on ImageGifFitFluid {
 //     base64
 //     aspectRatio
 //     src
@@ -76,8 +76,8 @@ export const gatsbyImageWebpConvFixedPreferWebp = graphql`
 //   }
 // `
 //
-// export const gatsbyImageWebpConvFluidTracedSVG = graphql`
-//   fragment GatsbyImageWebpConvFluid_tracedSVG on ImageWebpConvFluid {
+// export const gatsbyImageGifFitFluidTracedSVG = graphql`
+//   fragment GatsbyImageGifFitFluid_tracedSVG on ImageGifFitFluid {
 //     tracedSVG
 //     aspectRatio
 //     src
@@ -86,8 +86,8 @@ export const gatsbyImageWebpConvFixedPreferWebp = graphql`
 //   }
 // `
 //
-// export const gatsbyImageWebpConvFluidPreferWebp = graphql`
-//   fragment GatsbyImageWebpConvFluid_withWebp on ImageWebpConvFluid {
+// export const gatsbyImageGifFitFluidPreferWebp = graphql`
+//   fragment GatsbyImageGifFitFluid_withWebp on ImageGifFitFluid {
 //     base64
 //     aspectRatio
 //     src
@@ -98,8 +98,8 @@ export const gatsbyImageWebpConvFixedPreferWebp = graphql`
 //   }
 // `
 //
-// export const gatsbyImageWebpConvFluidPreferWebpTracedSVG = graphql`
-//   fragment GatsbyImageWebpConvFluid_withWebp_tracedSVG on ImageWebpConvFluid {
+// export const gatsbyImageGifFitFluidPreferWebpTracedSVG = graphql`
+//   fragment GatsbyImageGifFitFluid_withWebp_tracedSVG on ImageGifFitFluid {
 //     tracedSVG
 //     aspectRatio
 //     src
@@ -110,8 +110,8 @@ export const gatsbyImageWebpConvFixedPreferWebp = graphql`
 //   }
 // `
 //
-// export const gatsbyImageWebpConvFluidNoBase64 = graphql`
-//   fragment GatsbyImageWebpConvFluid_noBase64 on ImageWebpConvFluid {
+// export const gatsbyImageGifFitFluidNoBase64 = graphql`
+//   fragment GatsbyImageGifFitFluid_noBase64 on ImageGifFitFluid {
 //     aspectRatio
 //     src
 //     srcSet
@@ -119,8 +119,8 @@ export const gatsbyImageWebpConvFixedPreferWebp = graphql`
 //   }
 // `
 //
-// export const gatsbyImageWebpConvFluidPreferWebpNoBase64 = graphql`
-//   fragment GatsbyImageWebpConvFluid_withWebp_noBase64 on ImageWebpConvFluid {
+// export const gatsbyImageGifFitFluidPreferWebpNoBase64 = graphql`
+//   fragment GatsbyImageGifFitFluid_withWebp_noBase64 on ImageGifFitFluid {
 //     aspectRatio
 //     src
 //     srcSet

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`gatsby-plugin-webpconv base64 converts image to base64 1`] = `null`;
+exports[`gatsby-plugin-giffit base64 converts image to base64 1`] = `null`;
 
-exports[`gatsby-plugin-webpconv image quirks handles padding bytes correctly 1`] = `
+exports[`gatsby-plugin-giffit image quirks handles padding bytes correctly 1`] = `
 Object {
   "hUnits": "px",
   "height": 1000,
@@ -13,7 +13,7 @@ Object {
 }
 `;
 
-exports[`gatsby-plugin-webpconv tracedSVG runs on demand 1`] = `
+exports[`gatsby-plugin-giffit tracedSVG runs on demand 1`] = `
 Object {
   "aspectRatio": 1,
   "base64": undefined,

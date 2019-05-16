@@ -79,7 +79,7 @@ function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
       id: `processing image ${job.inputPath}`,
       imagesCount: _.values(toProcess[inputFileKey]).length,
     },
-    { name: `gatsby-plugin-webpconv` }
+    { name: `gatsby-plugin-giffit` }
   )
 
   // We're now processing the file's jobs.
@@ -107,7 +107,7 @@ function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
 
           // only show progress on build
           // if (reportStatus) {
-            bar.tick()
+          bar.tick()
           // }
 
           actions.setJob(
@@ -115,7 +115,7 @@ function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
               id: `processing image ${job.inputPath}`,
               imagesFinished,
             },
-            { name: `gatsby-plugin-webpconv` }
+            { name: `gatsby-plugin-giffit` }
           )
         })
     )
@@ -123,7 +123,7 @@ function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
     Promise.all(promises).then(() => {
       actions.endJob(
         { id: `processing image ${job.inputPath}` },
-        { name: `gatsby-plugin-webpconv` }
+        { name: `gatsby-plugin-giffit` }
       )
       cb()
     })

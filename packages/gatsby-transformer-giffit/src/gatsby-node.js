@@ -5,16 +5,16 @@ exports.setFieldsOnGraphQLNodeType = require(`./extend-node-type`)
 exports.onPreExtractQueries = async ({ store, getNodesByType }) => {
   const program = store.getState().program
 
-  // Check if there are any ImageWebpConv nodes. If so add fragments for ImageWebpConv.
-  // The fragment will cause an error if there are no ImageWebpConv nodes.
-  if (getNodesByType(`ImageWebpConv`).length === 0) {
-    console.error('No ImageWebpConv nodes...')
+  // Check if there are any ImageGifFit nodes. If so add fragments for ImageGifFit.
+  // The fragment will cause an error if there are no ImageGifFit nodes.
+  if (getNodesByType(`ImageGifFit`).length === 0) {
+    console.error('No ImageGifFit nodes...')
     return
   }
 
   await fs.copy(
-    require.resolve(`gatsby-transformer-webpconv/src/fragments.js`),
-    `${program.directory}/.cache/fragments/image-webpconv-fragments.js`
+    require.resolve(`gatsby-transformer-giffit/src/fragments.js`),
+    `${program.directory}/.cache/fragments/image-giffit-fragments.js`
   )
 }
 
@@ -26,7 +26,7 @@ const supportedExtensions = {
 /**
  *
  {
-  allSitePlugin(filter: { name: { regex: "/webpconv|sharp/" } }) {
+  allSitePlugin(filter: { name: { regex: "/giffit|sharp/" } }) {
     edges {
       node {
         id
@@ -49,12 +49,12 @@ const onCreateNode = async ({ node, actions, ...helpers }) => {
   }
 
   const imageNode = {
-    id: createNodeId(`${node.id} >>> ImageWebpConv`),
+    id: createNodeId(`${node.id} >>> ImageGifFit`),
     children: [],
     parent: node.id,
     internal: {
       contentDigest: createContentDigest(node),
-      type: `ImageWebpConv`,
+      type: `ImageGifFit`,
     },
   }
 
@@ -65,7 +65,7 @@ const onCreateNode = async ({ node, actions, ...helpers }) => {
 const sourceNodes = async ({ actions }) => {
   const { createTypes } = actions
   const typeDefs = `
-    type imageWebpConvFixed {
+    type imageGifFitFixed {
       base64: String
       aspectRatio: Float
       width: Int
@@ -77,13 +77,13 @@ const sourceNodes = async ({ actions }) => {
       originalName: String
     }
 
-    type imageWebpConvOriginal {
+    type imageGifFitOriginal {
       width: Int
       height: Int
       src: String
     }
 
-    type imageWebpConvResize {
+    type imageGifFitResize {
       src: String
       width: Int
       height: Int

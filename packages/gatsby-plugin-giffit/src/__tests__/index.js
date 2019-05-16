@@ -20,7 +20,7 @@ const {
 const { scheduleJob } = require(`../scheduler.js`)
 scheduleJob.mockResolvedValue(Promise.resolve())
 
-describe(`gatsby-plugin-webpconv`, () => {
+describe(`gatsby-plugin-giffit`, () => {
   const args = {
     duotone: false,
     grayscale: false,

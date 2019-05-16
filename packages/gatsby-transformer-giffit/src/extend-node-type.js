@@ -13,7 +13,7 @@ const {
   // fluid,
   fixed,
   // traceSVG,
-} = require(`gatsby-plugin-webpconv`)
+} = require(`gatsby-plugin-giffit`)
 
 // const sharp = require(`sharp`)
 const fs = require(`fs`)
@@ -24,7 +24,7 @@ const path = require(`path`)
 // const DEFAULT_PNG_COMPRESSION_SPEED = 4
 
 const {
-  ImageWebpConvFormatType,
+  ImageGifFitFormatType,
   // ImageCropFocusType,
   // DuotoneGradientType,
   // PotraceType,
@@ -144,11 +144,11 @@ const fixedNodeType = ({
         type: GraphQLInt,
       },
       toFormat: {
-        type: () => ImageWebpConvFormatType,
+        type: () => ImageGifFitFormatType,
         defaultValue: ``,
       },
       toFormatBase64: {
-        type: () => ImageWebpConvFormatType,
+        type: () => ImageGifFitFormatType,
         defaultValue: ``,
       },
       // cropFocus: {
@@ -274,11 +274,11 @@ const fixedNodeType = ({
 //         type: GraphQLInt,
 //       },
 //       toFormat: {
-//         type: ImageWebpConvFormatType,
+//         type: ImageGifFitFormatType,
 //         defaultValue: ``,
 //       },
 //       toFormatBase64: {
-//         type: ImageWebpConvFormatType,
+//         type: ImageGifFitFormatType,
 //         defaultValue: ``,
 //       },
 //       cropFocus: {
@@ -335,7 +335,7 @@ module.exports = ({
   reporter,
   cache,
 }) => {
-  if (type.name !== `ImageWebpConv`) {
+  if (type.name !== `ImageGifFit`) {
     return {}
   }
 
@@ -348,13 +348,13 @@ module.exports = ({
   }
 
   const fixedNode = fixedNodeType({
-    name: `ImageWebpConvFixed`,
+    name: `ImageGifFitFixed`,
     ...nodeOptions,
   })
-  // const fluidNode = fluidNodeType({ name: `ImageWebpConvFluid`, ...nodeOptions })
+  // const fluidNode = fluidNodeType({ name: `ImageGifFitFluid`, ...nodeOptions })
 
-  const ImageWebpConvOriginal = new GraphQLObjectType({
-    name: `ImageWebpConvOriginal`,
+  const ImageGifFitOriginal = new GraphQLObjectType({
+    name: `ImageGifFitOriginal`,
     fields: {
       width: { type: GraphQLInt },
       height: { type: GraphQLInt },
@@ -362,8 +362,8 @@ module.exports = ({
     },
   })
 
-  const ImageWebpConvResize = new GraphQLObjectType({
-    name: `ImageWebpConvResize`,
+  const ImageGifFitResize = new GraphQLObjectType({
+    name: `ImageGifFitResize`,
     fields: {
       src: { type: GraphQLString },
       // tracedSVG: {
@@ -381,7 +381,7 @@ module.exports = ({
     fixed: () => fixedNode,
     // fluid: fluidNode,
     original: {
-      type: () => ImageWebpConvOriginal,
+      type: () => ImageGifFitOriginal,
       args: {},
       resolve: async (image, fieldArgs, context) => {
         const details = getNodeAndSavePathDependency(image.parent, context.path)
@@ -419,7 +419,7 @@ module.exports = ({
       },
     },
     resize: {
-      type: () => ImageWebpConvResize,
+      type: () => ImageGifFitResize,
       args: {
         width: {
           type: GraphQLInt,
@@ -459,7 +459,7 @@ module.exports = ({
         //   defaultValue: false,
         // },
         toFormat: {
-          type: ImageWebpConvFormatType,
+          type: ImageGifFitFormatType,
           defaultValue: ``,
         },
         // cropFocus: {

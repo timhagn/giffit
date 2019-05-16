@@ -11,7 +11,7 @@ try {
       - Try to reinstall packages and look for errors during installation
       - Consult "webp-converter" README and / or issue page at https://github.com/scionoftech/webp-converter
       
-      If neither of the above work, please open an issue in https://github.com/timhagn/gatsby-plugin-webpconv/issues
+      If neither of the above work, please open an issue in https://github.com/timhagn/gatsby-plugin-giffit/issues
     `
   )
   console.log()
@@ -30,7 +30,7 @@ try {
       - Try to reinstall packages and look for errors during installation
       - Consult "gifsicle" README and / or issue page at https://github.com/imagemin/gifsicle-bin
       
-      If neither of the above work, please open an issue in https://github.com/timhagn/gatsby-plugin-webpconv/issues
+      If neither of the above work, please open an issue in https://github.com/timhagn/gatsby-plugin-giffit/issues
     `
   )
   console.log()

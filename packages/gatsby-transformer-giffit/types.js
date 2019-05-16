@@ -10,8 +10,8 @@ const _require = require(`gatsby/graphql`),
 // const { Potrace } = require(`potrace`)
 
 
-const ImageWebpConvFormatType = new GraphQLEnumType({
-  name: `ImageWebpConvFormat`,
+const ImageGifFitFormatType = new GraphQLEnumType({
+  name: `ImageGifFitFormat`,
   values: {
     NO_CHANGE: {
       value: ``
@@ -87,7 +87,7 @@ const ImageWebpConvFormatType = new GraphQLEnumType({
 // })
 
 module.exports = {
-  ImageWebpConvFormatType // ImageFitType,
+  ImageGifFitFormatType // ImageFitType,
   // ImageCropFocusType,
   // DuotoneGradientType,
   // PotraceType,

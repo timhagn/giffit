@@ -1,10 +1,10 @@
-# Contributing to `gatsby-transformer-webpconv`
+# Contributing to `gatsby-transformer-giffit`
 
 _**First of all, thanks for your time reading this and contributing : )!**_   
 Contributors are always welcome here and can't be thanked enough for their work!
 
 The following shall be some rough guidelines to get you going on your quest to 
-contribute to `gatsby-transformer-webpconv`.
+contribute to `gatsby-transformer-giffit`.
 
 ## Your Gain from Contributing
 
@@ -39,7 +39,7 @@ enhancement you'd really want to see in the next version of this package?
 Or just have a question pertaining some functionality?
 
 At the moment every one of these cases is tracked as a [GitHub issue](https://guides.github.com/features/issues/).
-Already know how to handle them? Head over to the [issue section](https://github.com/timhagn/gatsby-transformer-webpconv/issues),
+Already know how to handle them? Head over to the [issue section](https://github.com/timhagn/gatsby-transformer-giffit/issues),
 and please try first to search for any open or closed issues which might already 
 have addressed your's. 
   
@@ -47,7 +47,7 @@ Haven't found one? Open a new issue and follow the template guidelines there!
 
 ### Pull Requests
 
-First of all fork [gatsby-transformer-webpconv](https://github.com/timhagn/gatsby-transformer-webpconv)
+First of all fork [gatsby-transformer-giffit](https://github.com/timhagn/gatsby-transformer-giffit)
 and clone your fork of it. For textual changes (typos, documentation, addition)
 just write them and read below about creating a PR.
 

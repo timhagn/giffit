@@ -13,7 +13,7 @@ const _require = require(`gatsby/graphql`),
       GraphQLInt = _require.GraphQLInt,
       GraphQLFloat = _require.GraphQLFloat;
 
-const _require2 = require(`gatsby-plugin-webpconv`),
+const _require2 = require(`gatsby-plugin-giffit`),
       queueImageResizing = _require2.queueImageResizing,
       base64 = _require2.base64,
       fixed = _require2.fixed; // const sharp = require(`sharp`)
@@ -29,7 +29,7 @@ const path = require(`path`); // const DEFAULT_PNG_COMPRESSION_SPEED = 4
 
 
 const _require3 = require(`./types`),
-      ImageWebpConvFormatType = _require3.ImageWebpConvFormatType;
+      ImageGifFitFormatType = _require3.ImageGifFitFormatType;
 
 function toArray(buf) {
   let arr = new Array(buf.length);
@@ -188,11 +188,11 @@ const fixedNodeType = ({
         type: GraphQLInt
       },
       toFormat: {
-        type: () => ImageWebpConvFormatType,
+        type: () => ImageGifFitFormatType,
         defaultValue: ``
       },
       toFormatBase64: {
-        type: () => ImageWebpConvFormatType,
+        type: () => ImageGifFitFormatType,
         defaultValue: ``
       } // cropFocus: {
       //   type: ImageCropFocusType,
@@ -325,11 +325,11 @@ const fixedNodeType = ({
 //         type: GraphQLInt,
 //       },
 //       toFormat: {
-//         type: ImageWebpConvFormatType,
+//         type: ImageGifFitFormatType,
 //         defaultValue: ``,
 //       },
 //       toFormatBase64: {
-//         type: ImageWebpConvFormatType,
+//         type: ImageGifFitFormatType,
 //         defaultValue: ``,
 //       },
 //       cropFocus: {
@@ -387,7 +387,7 @@ module.exports = ({
   reporter,
   cache
 }) => {
-  if (type.name !== `ImageWebpConv`) {
+  if (type.name !== `ImageGifFit`) {
     return {};
   }
 
@@ -399,11 +399,11 @@ module.exports = ({
     cache
   };
   const fixedNode = fixedNodeType(Object.assign({
-    name: `ImageWebpConvFixed`
-  }, nodeOptions)); // const fluidNode = fluidNodeType({ name: `ImageWebpConvFluid`, ...nodeOptions })
+    name: `ImageGifFitFixed`
+  }, nodeOptions)); // const fluidNode = fluidNodeType({ name: `ImageGifFitFluid`, ...nodeOptions })
 
-  const ImageWebpConvOriginal = new GraphQLObjectType({
-    name: `ImageWebpConvOriginal`,
+  const ImageGifFitOriginal = new GraphQLObjectType({
+    name: `ImageGifFitOriginal`,
     fields: {
       width: {
         type: GraphQLInt
@@ -416,8 +416,8 @@ module.exports = ({
       }
     }
   });
-  const ImageWebpConvResize = new GraphQLObjectType({
-    name: `ImageWebpConvResize`,
+  const ImageGifFitResize = new GraphQLObjectType({
+    name: `ImageGifFitResize`,
     fields: {
       src: {
         type: GraphQLString
@@ -444,7 +444,7 @@ module.exports = ({
     fixed: () => fixedNode,
     // fluid: fluidNode,
     original: {
-      type: () => ImageWebpConvOriginal,
+      type: () => ImageGifFitOriginal,
       args: {},
       resolve: function () {
         var _resolve4 = (0, _asyncToGenerator2.default)(function* (image, fieldArgs, context) {
@@ -476,7 +476,7 @@ module.exports = ({
       }()
     },
     resize: {
-      type: () => ImageWebpConvResize,
+      type: () => ImageGifFitResize,
       args: {
         width: {
           type: GraphQLInt
@@ -516,7 +516,7 @@ module.exports = ({
         //   defaultValue: false,
         // },
         toFormat: {
-          type: ImageWebpConvFormatType,
+          type: ImageGifFitFormatType,
           defaultValue: ``
         } // cropFocus: {
         //   type: ImageCropFocusType,

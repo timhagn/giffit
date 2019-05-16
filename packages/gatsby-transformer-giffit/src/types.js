@@ -9,8 +9,8 @@ const {
 // const sharp = require(`sharp`)
 // const { Potrace } = require(`potrace`)
 
-const ImageWebpConvFormatType = new GraphQLEnumType({
-  name: `ImageWebpConvFormat`,
+const ImageGifFitFormatType = new GraphQLEnumType({
+  name: `ImageGifFitFormat`,
   values: {
     NO_CHANGE: { value: `` },
     GIF: { value: `gif` },
@@ -85,7 +85,7 @@ const ImageWebpConvFormatType = new GraphQLEnumType({
 // })
 
 module.exports = {
-  ImageWebpConvFormatType,
+  ImageGifFitFormatType,
   // ImageFitType,
   // ImageCropFocusType,
   // DuotoneGradientType,
