@@ -50,6 +50,9 @@ node_modules/
 .vscode/
 *.sw*
 
+/lerna-debug.log
+
 .serverless/
 yarn.lock
 package-lock.json
+

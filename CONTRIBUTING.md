@@ -1,10 +1,10 @@
-# Contributing to `gatsby-transformer-giffit`
+# Contributing to `gatsby-giffit`
 
 _**First of all, thanks for your time reading this and contributing : )!**_   
 Contributors are always welcome here and can't be thanked enough for their work!
 
 The following shall be some rough guidelines to get you going on your quest to 
-contribute to `gatsby-transformer-giffit`.
+contribute to `gatsby-giffit`.
 
 ## Your Gain from Contributing
 
@@ -39,7 +39,7 @@ enhancement you'd really want to see in the next version of this package?
 Or just have a question pertaining some functionality?
 
 At the moment every one of these cases is tracked as a [GitHub issue](https://guides.github.com/features/issues/).
-Already know how to handle them? Head over to the [issue section](https://github.com/timhagn/gatsby-transformer-giffit/issues),
+Already know how to handle them? Head over to the [issue section](https://github.com/timhagn/gatsby-giffit/issues),
 and please try first to search for any open or closed issues which might already 
 have addressed your's. 
   
@@ -47,13 +47,41 @@ Haven't found one? Open a new issue and follow the template guidelines there!
 
 ### Pull Requests
 
-First of all fork [gatsby-transformer-giffit](https://github.com/timhagn/gatsby-transformer-giffit)
-and clone your fork of it. For textual changes (typos, documentation, addition)
-just write them and read below about creating a PR.
-
+First of all fork [gatsby-giffit](https://github.com/timhagn/gatsby-giffit)
+and `git clone --depth=1` your fork of it. For textual changes (typos, 
+documentation, addition) just write them and read below about creating a PR.
  
-To change or add some code execute either `yarn` or `npm install` in your cloned 
-forks folder first, to get yourself up and running for development.
+To change or add some code execute `yarn bootstrap` in your cloned 
+forks folder first, to get yourself up and running for development.  
+A quick `yarn test` tells you if everything is working.
+
+Though `yarn link` doesn't work with `lerna`, we can (ab)use Gatsby's own
+[`gatsby-dev-cli`](https://www.gatsbyjs.org/packages/gatsby-dev-cli/) to debug
+`gatsby-plugin-giffit` or `gatsby-transformer-giffit`:
+
+First install `gatsby-dev-cli` globally like this:
+
+```
+npm install -g gatsby-dev-cli
+```
+
+Now go to to your projects or `gbitest`'s folder and instead of setting the path
+to a clone of the `gatsby` repo, set the link path to your own cloned fork:
+
+```
+gatsby-dev --set-path-to-repo /your/path/to/your/fork/of/gatsby-giffit
+```
+
+Afterwards, to copy both packages over into your `node_modules` run:
+
+```
+gatsby-dev (--copy-all)
+```
+
+**But be sure to have added one or both of them to your `package.json`, else 
+Gatsby won't find them!**  
+The `--copy-all` option tells `gatsby-dev` to include the `src`, which is
+important fot the next step.
 
 *But now you are good to go and make some changes!*
 (Afterwards, to finalize them before you push em, you may want to run 
@@ -76,8 +104,9 @@ All tests are run with `jest` / `jest-dom` and `react-testing-library`
 at the moment, transformed through `babel-jest`.
   
 To get an overview of the tests already existing, run either `yarn test` or 
-`npm run test` and head over to the [test folder](src/__tests__) to see where
-you may help out with some changes : )!
+`npm run test` and head over to [gatsby-plugin-giffit's test folder](packages/gatsby-plugin-giffit/src/__tests__)
+or [gatsby-transformer-giffit's test folder](packages/gatsby-transformer-giffit/src/__tests__)
+to see where you may help out with some changes : )!
 
 ### Final thoughts
 
