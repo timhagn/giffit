@@ -1,7 +1,7 @@
-# gatsby-transformer-giffit
+# gatsby-plugin-giffit
 
-This transformer interacts with `gatsby-plugin-giffit` in this repo to process 
-provided GIFs and return a fixed / fluid structure like `gatsby-transformer-sharp`.
+This plugin processes provided GIFs and returns a fixed / fluid structure like 
+`gatsby-plugin-sharp`.
 
 Optimized sizes and conversion to WebP for browsers that support it as well as
 a single extracted Base64 encoded GIF-animation frame as a preview during load
