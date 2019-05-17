@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Gatsby Plugin and Transformer to easily work with optimized animated GIFs.",
   "author": "Tim Hagn <mail@timhagn.com>",
+  "bugs": {
+    "url": "https://github.com/timhagn/gatsby-giffit/issues"
+  },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
     "async": "^2.6.2",
@@ -20,7 +23,7 @@
     "react": "16.x",
     "react-dom": "16.x"
   },
-  "homepage": "https://github.com/timhagn/gatsby-plugin-giffit#readme",
+  "homepage": "https://github.com/timhagn/gatsby-giffit/tree/master/packages/gatsby-plugin-giffit#readme",
   "keywords": [
     "gatsby",
     "gatsby-plugin",
@@ -33,7 +36,7 @@
   ],
   "license": "MIT",
   "main": "index.js",
-  "repository": "https://github.com/timhagn/gatsby-plugin-giffit",
+  "repository": "https://github.com/timhagn/gatsby-giffit/tree/master/packages/gatsby-plugin-giffit",
   "scripts": {
     "build": "npm run format && babel src --out-dir . --ignore **/__tests__",
     "format": "prettier --write \"src/*.js\"",
