@@ -368,3 +368,4 @@ exports.base64 = base64
 exports.resolutions = fixed
 exports.fixed = fixed
 exports.getImageSize = getImageSize
+exports.queueImageResizing = queueImageResizing

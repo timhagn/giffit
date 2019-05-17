@@ -77,19 +77,19 @@ describe(`createArgsDigest`, () => {
 
     testHashEqual(`unrelated argument`, { foo: `bar` })
 
-    testHashEqual(`png option change when using jpg`, {
-      pngCompressionLevel: defaultArgsBaseline.pngCompressionLevel + 1,
-    })
-    testHashEqual(
-      `jpg option change when using png`,
-      {
-        toFormat: `png`,
-        jpegProgressive: !defaultArgsBaseline.jpegProgressive,
-      },
-      {
-        toFormat: `png`,
-      }
-    )
+    // testHashEqual(`png option change when using jpg`, {
+    //   pngCompressionLevel: defaultArgsBaseline.pngCompressionLevel + 1,
+    // })
+    // testHashEqual(
+    //   `jpg option change when using png`,
+    //   {
+    //     toFormat: `png`,
+    //     jpegProgressive: !defaultArgsBaseline.jpegProgressive,
+    //   },
+    //   {
+    //     toFormat: `png`,
+    //   }
+    // )
     describe(`not used arguments`, () => {
       testHashEqual(`maxWidth`, { maxWidth: 500 })
       testHashEqual(`base64`, { base64: true })

@@ -21,7 +21,11 @@ let totalJobs = 0;
 const q = queue((task, callback) => {
   task(callback);
 }, 1);
+const GREEN = `\u001b[42m \u001b[0m`;
+const RED = `\u001b[41m \u001b[0m`;
 const bar = new ProgressBar(`Generating animated image thumbnails [:bar] :current/:total :elapsed secs :percent`, {
+  complete: RED,
+  incomplete: GREEN,
   total: 0,
   width: 30
 });
