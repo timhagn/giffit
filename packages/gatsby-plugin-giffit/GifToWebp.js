@@ -5,8 +5,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.default = void 0;
 
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
 const execFileSync = require('child_process').execFileSync;
@@ -96,31 +94,27 @@ class GifToWebp {
    */
 
 
-  toBase64() {
-    var _this = this;
+  async toBase64() {
+    let fileToProcess = this.file;
 
-    return (0, _asyncToGenerator2.default)(function* () {
-      let fileToProcess = _this.file;
+    if (this.gifsicleArgs.length !== 0) {
+      fileToProcess = temp.path({
+        suffix: '.gif'
+      });
+      await this.toGif(fileToProcess);
+    }
 
-      if (_this.gifsicleArgs.length !== 0) {
-        fileToProcess = temp.path({
-          suffix: '.gif'
-        });
-        yield _this.toGif(fileToProcess);
-      }
+    const gifFrameOptions = {
+      url: fileToProcess,
+      frames: 0,
+      cumulative: true
+    };
 
-      const gifFrameOptions = {
-        url: fileToProcess,
-        frames: 0,
-        cumulative: true
-      };
-
-      try {
-        return yield gifFrames(gifFrameOptions);
-      } catch (error) {
-        throw error;
-      }
-    })();
+    try {
+      return await gifFrames(gifFrameOptions);
+    } catch (error) {
+      throw error;
+    }
   }
   /**
    * Processes a gif with the given options.
@@ -129,18 +123,14 @@ class GifToWebp {
    */
 
 
-  toGif(outputPath) {
-    var _this2 = this;
+  async toGif(outputPath) {
+    const currentGifsicleArgs = [`--no-warnings`, `--output`, outputPath, ...this.uniqueArgs(this.gifsicleArgs), this.file];
 
-    return (0, _asyncToGenerator2.default)(function* () {
-      const currentGifsicleArgs = [`--no-warnings`, `--output`, outputPath, ..._this2.uniqueArgs(_this2.gifsicleArgs), _this2.file];
-
-      try {
-        yield execFileSync(gifsicle, currentGifsicleArgs.flat(), {});
-      } catch (error) {
-        throw error;
-      }
-    })();
+    try {
+      await execFileSync(gifsicle, currentGifsicleArgs.flat(), {});
+    } catch (error) {
+      throw error;
+    }
   }
   /**
    * Converts a gif to webp with the given options, processes gif if need be.
@@ -149,30 +139,26 @@ class GifToWebp {
    */
 
 
-  toWebp(outputPath) {
-    var _this3 = this;
+  async toWebp(outputPath) {
+    try {
+      let tempFileName = ``;
 
-    return (0, _asyncToGenerator2.default)(function* () {
-      try {
-        let tempFileName = ``;
-
-        if (_this3.gifsicleArgs.length !== 0) {
-          tempFileName = temp.path({
-            suffix: '.gif'
-          });
-          yield _this3.toGif(tempFileName);
-        }
-
-        const currentGif2webpArgs = [..._this3.uniqueArgs(_this3.gif2webpArgs), `-mt`, `-quiet`, tempFileName || _this3.file, `-o`, outputPath];
-        yield execFileSync(gif2webp(), currentGif2webpArgs.flat(), {});
-
-        if (tempFileName !== ``) {
-          yield fs.unlinkSync(tempFileName);
-        }
-      } catch (error) {
-        throw error;
+      if (this.gifsicleArgs.length !== 0) {
+        tempFileName = temp.path({
+          suffix: '.gif'
+        });
+        await this.toGif(tempFileName);
       }
-    })();
+
+      const currentGif2webpArgs = [...this.uniqueArgs(this.gif2webpArgs), `-mt`, `-quiet`, tempFileName || this.file, `-o`, outputPath];
+      await execFileSync(gif2webp(), currentGif2webpArgs.flat(), {});
+
+      if (tempFileName !== ``) {
+        await fs.unlinkSync(tempFileName);
+      }
+    } catch (error) {
+      throw error;
+    }
   }
   /**
    * Returns a new array with unique values.
