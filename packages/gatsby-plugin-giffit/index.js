@@ -2,6 +2,10 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _GifToWebp = _interopRequireDefault(require("./GifToWebp"));
 
 try {
@@ -48,22 +52,18 @@ const fs = require(`fs-extra`);
 
 const path = require(`path`);
 
-const {
-  scheduleJob
-} = require('./scheduler');
+const _require = require('./scheduler'),
+      scheduleJob = _require.scheduleJob;
 
-const {
-  createArgsDigest
-} = require('./process-file');
+const _require2 = require('./process-file'),
+      createArgsDigest = _require2.createArgsDigest;
 
-const {
-  reportError
-} = require(`./report-error`);
+const _require3 = require(`./report-error`),
+      reportError = _require3.reportError;
 
-const {
-  getPluginOptions,
-  healOptions
-} = require(`./plugin-options`);
+const _require4 = require(`./plugin-options`),
+      getPluginOptions = _require4.getPluginOptions,
+      healOptions = _require4.healOptions;
 
 const imageSizeCache = new Map();
 
@@ -82,9 +82,8 @@ const getImageSize = file => {
 // The direct require has been left only to avoid breaking changes.
 
 
-let {
-  actions
-} = require(`gatsby/dist/redux/actions`);
+let _require5 = require(`gatsby/dist/redux/actions`),
+    actions = _require5.actions;
 
 exports.setActions = act => {
   actions = act;
@@ -175,48 +174,55 @@ function queueImageResizing({
 
 const defaultBase64Width = () => getPluginOptions().base64Width || 20;
 
-async function generateBase64({
-  file,
-  args,
-  reporter
-}) {
-  const pluginOptions = getPluginOptions();
-  const options = healOptions(pluginOptions, args, file.extension, {
-    width: defaultBase64Width()
+function generateBase64(_x) {
+  return _generateBase.apply(this, arguments);
+}
+
+function _generateBase() {
+  _generateBase = (0, _asyncToGenerator2.default)(function* ({
+    file,
+    args,
+    reporter
+  }) {
+    const pluginOptions = getPluginOptions();
+    const options = healOptions(pluginOptions, args, file.extension, {
+      width: defaultBase64Width()
+    });
+    const processGif = new _GifToWebp.default(file);
+    processGif.resize(options.width, options.height);
+    let frameData;
+
+    try {
+      frameData = yield processGif.toBase64();
+    } catch (err) {
+      reportError(`Failed to process image ${file.absolutePath}`, err, reporter);
+      return null;
+    } // const gifFrameOptions = {
+    //   url: file.absolutePath,
+    //   frames: 0,
+    //   cumulative: true,
+    // }
+    //
+    // let frameData
+    // try {
+    //   frameData = await gifFrames(gifFrameOptions)
+    // } catch (err) {
+    //   reportError(`Failed to process image ${file.absolutePath}`, err, reporter)
+    //   return null
+    // }
+
+
+    const imageBuffer = frameData[0].getImage();
+    const base64String = imageBuffer.read().toString(`base64`);
+    return {
+      src: `data:image/jpg;base64,${base64String}`,
+      width: frameData[0].frameInfo.width,
+      height: frameData[0].frameInfo.height,
+      aspectRatio: frameData[0].frameInfo.width / frameData[0].frameInfo.height,
+      originalName: file.base
+    };
   });
-  const processGif = new _GifToWebp.default(file);
-  processGif.resize(options.width, options.height);
-  let frameData;
-
-  try {
-    frameData = await processGif.toBase64();
-  } catch (err) {
-    reportError(`Failed to process image ${file.absolutePath}`, err, reporter);
-    return null;
-  } // const gifFrameOptions = {
-  //   url: file.absolutePath,
-  //   frames: 0,
-  //   cumulative: true,
-  // }
-  //
-  // let frameData
-  // try {
-  //   frameData = await gifFrames(gifFrameOptions)
-  // } catch (err) {
-  //   reportError(`Failed to process image ${file.absolutePath}`, err, reporter)
-  //   return null
-  // }
-
-
-  const imageBuffer = frameData[0].getImage();
-  const base64String = imageBuffer.read().toString(`base64`);
-  return {
-    src: `data:image/jpg;base64,${base64String}`,
-    width: frameData[0].frameInfo.width,
-    height: frameData[0].frameInfo.height,
-    aspectRatio: frameData[0].frameInfo.width / frameData[0].frameInfo.height,
-    originalName: file.base
-  };
+  return _generateBase.apply(this, arguments);
 }
 
 const base64CacheKey = ({
@@ -226,138 +232,159 @@ const base64CacheKey = ({
 
 const memoizedBase64 = _.memoize(generateBase64, base64CacheKey);
 
-const cachifiedBase64 = async ({
-  cache,
-  ...arg
-}) => {
-  const cacheKey = base64CacheKey(arg);
-  const cachedBase64 = await cache.get(cacheKey);
+const cachifiedBase64 =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(function* (_ref2) {
+    let cache = _ref2.cache,
+        arg = (0, _objectWithoutPropertiesLoose2.default)(_ref2, ["cache"]);
+    const cacheKey = base64CacheKey(arg);
+    const cachedBase64 = yield cache.get(cacheKey);
 
-  if (cachedBase64) {
-    return cachedBase64;
-  }
+    if (cachedBase64) {
+      return cachedBase64;
+    }
 
-  const base64output = await generateBase64(arg);
-  await cache.set(cacheKey, base64output);
-  return base64output;
-};
+    const base64output = yield generateBase64(arg);
+    yield cache.set(cacheKey, base64output);
+    return base64output;
+  });
 
-async function base64(arg) {
-  if (arg.cache) {
-    // Not all tranformer plugins are going to provide cache
-    return await cachifiedBase64(arg);
-  }
+  return function cachifiedBase64(_x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
 
-  return await memoizedBase64(arg);
+function base64(_x3) {
+  return _base.apply(this, arguments);
 }
 
-async function fixed({
-  file,
-  args = {},
-  reporter,
-  cache
-}) {
-  const options = healOptions(getPluginOptions(), args, file.extension); // if no width is passed, we need to resize the image based on the passed height
+function _base() {
+  _base = (0, _asyncToGenerator2.default)(function* (arg) {
+    if (arg.cache) {
+      // Not all tranformer plugins are going to provide cache
+      return yield cachifiedBase64(arg);
+    }
 
-  const fixedDimension = options.width === undefined ? `height` : `width`; // Create sizes for different resolutions — we do 1x, 1.5x, 2x, and 3x.
+    return yield memoizedBase64(arg);
+  });
+  return _base.apply(this, arguments);
+}
 
-  const sizes = [];
-  sizes.push(options[fixedDimension]);
-  sizes.push(options[fixedDimension] * 1.5);
-  sizes.push(options[fixedDimension] * 2);
-  sizes.push(options[fixedDimension] * 3);
-  const dimensions = getImageSize(file);
-  const filteredSizes = sizes.filter(size => size <= dimensions[fixedDimension]); // If there's no fluid images after filtering (e.g. image is smaller than what's
-  // requested, add back the original so there's at least something)
+function fixed(_x4) {
+  return _fixed.apply(this, arguments);
+}
 
-  if (filteredSizes.length === 0) {
-    filteredSizes.push(dimensions[fixedDimension]);
-    console.warn(`
+function _fixed() {
+  _fixed = (0, _asyncToGenerator2.default)(function* ({
+    file,
+    args = {},
+    reporter,
+    cache
+  }) {
+    const options = healOptions(getPluginOptions(), args, file.extension); // if no width is passed, we need to resize the image based on the passed height
+
+    const fixedDimension = options.width === undefined ? `height` : `width`; // Create sizes for different resolutions — we do 1x, 1.5x, 2x, and 3x.
+
+    const sizes = [];
+    sizes.push(options[fixedDimension]);
+    sizes.push(options[fixedDimension] * 1.5);
+    sizes.push(options[fixedDimension] * 2);
+    sizes.push(options[fixedDimension] * 3);
+    const dimensions = getImageSize(file);
+    const filteredSizes = sizes.filter(size => size <= dimensions[fixedDimension]); // If there's no fluid images after filtering (e.g. image is smaller than what's
+    // requested, add back the original so there's at least something)
+
+    if (filteredSizes.length === 0) {
+      filteredSizes.push(dimensions[fixedDimension]);
+      console.warn(`
                  The requested ${fixedDimension} "${options[fixedDimension]}px" for a resolutions field for
                  the file ${file.absolutePath}
                  was larger than the actual image ${fixedDimension} of ${dimensions[fixedDimension]}px!
                  If possible, replace the current image with a larger one.
                  `);
-  } // Sort images for prettiness.
+    } // Sort images for prettiness.
 
 
-  const sortedSizes = _.sortBy(filteredSizes);
+    const sortedSizes = _.sortBy(filteredSizes);
 
-  const images = sortedSizes.map(size => {
-    const arrrgs = { ...options,
-      [fixedDimension]: Math.round(size) // Queue images for processing.
+    const images = sortedSizes.map(size => {
+      const arrrgs = Object.assign({}, options, {
+        [fixedDimension]: Math.round(size) // Queue images for processing.
+
+      });
+
+      if (options.width !== undefined && options.height !== undefined) {
+        arrrgs.height = Math.round(size * (options.height / options.width));
+      }
+
+      return queueImageResizing({
+        file,
+        args: arrrgs,
+        reporter
+      });
+    });
+    let base64Image;
+
+    if (options.base64) {
+      const base64Args = {
+        // height is adjusted accordingly with respect to the aspect ratio
+        width: options.base64Width,
+        duotone: options.duotone,
+        grayscale: options.grayscale,
+        rotate: options.rotate,
+        toFormat: options.toFormat,
+        toFormatBase64: options.toFormatBase64 // Get base64 version
+
+      };
+      base64Image = yield base64({
+        file,
+        args: base64Args,
+        reporter,
+        cache
+      });
+    } // const tracedSVG = await getTracedSVG(options, file)
+
+
+    const fallbackSrc = images[0].src;
+    const srcSet = images.map((image, i) => {
+      let resolution;
+
+      switch (i) {
+        case 0:
+          resolution = `1x`;
+          break;
+
+        case 1:
+          resolution = `1.5x`;
+          break;
+
+        case 2:
+          resolution = `2x`;
+          break;
+
+        case 3:
+          resolution = `3x`;
+          break;
+
+        default:
+      }
+
+      return `${image.src} ${resolution}`;
+    }).join(`,\n`);
+    const originalName = file.base;
+    return {
+      base64: base64Image && base64Image.src,
+      aspectRatio: images[0].aspectRatio,
+      width: images[0].width,
+      height: images[0].height,
+      src: fallbackSrc,
+      srcSet,
+      originalName: originalName // tracedSVG,
 
     };
-
-    if (options.width !== undefined && options.height !== undefined) {
-      arrrgs.height = Math.round(size * (options.height / options.width));
-    }
-
-    return queueImageResizing({
-      file,
-      args: arrrgs,
-      reporter
-    });
   });
-  let base64Image;
-
-  if (options.base64) {
-    const base64Args = {
-      // height is adjusted accordingly with respect to the aspect ratio
-      width: options.base64Width,
-      duotone: options.duotone,
-      grayscale: options.grayscale,
-      rotate: options.rotate,
-      toFormat: options.toFormat,
-      toFormatBase64: options.toFormatBase64 // Get base64 version
-
-    };
-    base64Image = await base64({
-      file,
-      args: base64Args,
-      reporter,
-      cache
-    });
-  } // const tracedSVG = await getTracedSVG(options, file)
-
-
-  const fallbackSrc = images[0].src;
-  const srcSet = images.map((image, i) => {
-    let resolution;
-
-    switch (i) {
-      case 0:
-        resolution = `1x`;
-        break;
-
-      case 1:
-        resolution = `1.5x`;
-        break;
-
-      case 2:
-        resolution = `2x`;
-        break;
-
-      case 3:
-        resolution = `3x`;
-        break;
-
-      default:
-    }
-
-    return `${image.src} ${resolution}`;
-  }).join(`,\n`);
-  const originalName = file.base;
-  return {
-    base64: base64Image && base64Image.src,
-    aspectRatio: images[0].aspectRatio,
-    width: images[0].width,
-    height: images[0].height,
-    src: fallbackSrc,
-    srcSet,
-    originalName: originalName // tracedSVG,
-
-  };
+  return _fixed.apply(this, arguments);
 }
 
 function toArray(buf) {

@@ -2,6 +2,8 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _GifToWebp = _interopRequireDefault(require("./GifToWebp"));
 
 var _reportError = require("./report-error");
@@ -54,77 +56,83 @@ exports.processFile = (file, transforms, options = {}) => {
     processGif.withMetadata();
   }
 
-  return transforms.map(async transform => {
-    const {
-      outputPath,
-      args
-    } = transform;
-    debug(`Start processing ${outputPath}`); // gifsicle only allows ints as height/width. Since both aren't always
-    // set, check first before trying to round them.
+  return transforms.map(
+  /*#__PURE__*/
+  function () {
+    var _ref = (0, _asyncToGenerator2.default)(function* (transform) {
+      const outputPath = transform.outputPath,
+            args = transform.args;
+      debug(`Start processing ${outputPath}`); // gifsicle only allows ints as height/width. Since both aren't always
+      // set, check first before trying to round them.
 
-    let roundedHeight = args.height;
+      let roundedHeight = args.height;
 
-    if (roundedHeight) {
-      roundedHeight = Math.round(roundedHeight);
-    }
-
-    let roundedWidth = args.width;
-
-    if (roundedWidth) {
-      roundedWidth = Math.round(roundedWidth);
-    }
-
-    processGif.resize(roundedWidth, roundedHeight); // // grayscale
-    // if (args.grayscale) {
-    //   clonedPipeline = clonedPipeline.grayscale()
-    // }
-    //
-    // // rotate
-    // if (args.rotate && args.rotate !== 0) {
-    //   clonedPipeline = clonedPipeline.rotate(args.rotate)
-    // }
-    //
-    // // duotone
-    // if (args.duotone) {
-    //   clonedPipeline = await duotone(
-    //     args.duotone,
-    //     args.toFormat,
-    //     clonedPipeline
-    //   )
-    // }
-    // lets decide how we want to save this transform
-    // if (args.toFormat === `png`) {
-    //   await compressPng(clonedPipeline, outputPath, {
-    //     ...args,
-    //     stripMetadata: options.stripMetadata,
-    //   })
-    //   return transform
-    // }
-    //
-    // if (options.useMozJpeg && args.toFormat === `jpg`) {
-    //   await compressJpg(clonedPipeline, outputPath, args)
-    //   return transform
-    // }
-    //
-    // if (args.toFormat === `webp`) {
-    //   await compressWebP(clonedPipeline, outputPath, args)
-    //   return transform
-    // }
-
-    try {
-      if (args.toFormat === `gif`) {
-        await processGif.toGif(outputPath);
+      if (roundedHeight) {
+        roundedHeight = Math.round(roundedHeight);
       }
 
-      if (args.toFormat === `webp`) {
-        await processGif.toWebp(outputPath);
-      }
-    } catch (err) {
-      (0, _reportError.reportError)(`Failed to process image ${file.absolutePath}`, err);
-    }
+      let roundedWidth = args.width;
 
-    return transform;
-  });
+      if (roundedWidth) {
+        roundedWidth = Math.round(roundedWidth);
+      }
+
+      processGif.resize(roundedWidth, roundedHeight); // // grayscale
+      // if (args.grayscale) {
+      //   clonedPipeline = clonedPipeline.grayscale()
+      // }
+      //
+      // // rotate
+      // if (args.rotate && args.rotate !== 0) {
+      //   clonedPipeline = clonedPipeline.rotate(args.rotate)
+      // }
+      //
+      // // duotone
+      // if (args.duotone) {
+      //   clonedPipeline = await duotone(
+      //     args.duotone,
+      //     args.toFormat,
+      //     clonedPipeline
+      //   )
+      // }
+      // lets decide how we want to save this transform
+      // if (args.toFormat === `png`) {
+      //   await compressPng(clonedPipeline, outputPath, {
+      //     ...args,
+      //     stripMetadata: options.stripMetadata,
+      //   })
+      //   return transform
+      // }
+      //
+      // if (options.useMozJpeg && args.toFormat === `jpg`) {
+      //   await compressJpg(clonedPipeline, outputPath, args)
+      //   return transform
+      // }
+      //
+      // if (args.toFormat === `webp`) {
+      //   await compressWebP(clonedPipeline, outputPath, args)
+      //   return transform
+      // }
+
+      try {
+        if (args.toFormat === `gif`) {
+          yield processGif.toGif(outputPath);
+        }
+
+        if (args.toFormat === `webp`) {
+          yield processGif.toWebp(outputPath);
+        }
+      } catch (err) {
+        (0, _reportError.reportError)(`Failed to process image ${file.absolutePath}`, err);
+      }
+
+      return transform;
+    });
+
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }());
 };
 
 exports.createArgsDigest = args => {

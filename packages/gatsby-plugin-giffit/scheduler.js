@@ -1,18 +1,20 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 const _ = require(`lodash`);
 
 const ProgressBar = require(`progress`);
 
-const {
-  existsSync
-} = require(`fs`);
+const _require = require(`fs`),
+      existsSync = _require.existsSync;
 
 const queue = require(`async/queue`);
 
-const {
-  processFile
-} = require(`./process-file`);
+const _require2 = require(`./process-file`),
+      processFile = _require2.processFile;
 
 const toProcess = {};
 let totalJobs = 0;
@@ -24,57 +26,63 @@ const bar = new ProgressBar(`Generating animated image thumbnails [:bar] :curren
   width: 30
 });
 
-exports.scheduleJob = async (job, actions, pluginOptions, reportStatus = true) => {
-  const inputFileKey = job.inputPath.replace(/\./g, `%2E`);
-  const outputFileKey = job.outputPath.replace(/\./g, `%2E`);
-  const jobPath = `${inputFileKey}.${outputFileKey}`; // Check if the job has already been queued. If it has, there's nothing
-  // to do, return.
+exports.scheduleJob =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(function* (job, actions, pluginOptions, reportStatus = true) {
+    const inputFileKey = job.inputPath.replace(/\./g, `%2E`);
+    const outputFileKey = job.outputPath.replace(/\./g, `%2E`);
+    const jobPath = `${inputFileKey}.${outputFileKey}`; // Check if the job has already been queued. If it has, there's nothing
+    // to do, return.
 
-  if (_.has(toProcess, jobPath)) {
-    return _.get(toProcess, `${jobPath}.deferred.promise`);
-  } // Check if the output file already exists so we don't redo work.
-
-
-  if (existsSync(job.outputPath)) {
-    return Promise.resolve(job);
-  }
-
-  let isQueued = false;
-
-  if (toProcess[inputFileKey]) {
-    isQueued = true;
-  } // deferred naming comes from https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Deferred
+    if (_.has(toProcess, jobPath)) {
+      return _.get(toProcess, `${jobPath}.deferred.promise`);
+    } // Check if the output file already exists so we don't redo work.
 
 
-  let deferred = {};
-  deferred.promise = new Promise((resolve, reject) => {
-    deferred.resolve = resolve;
-    deferred.reject = reject;
-  });
-  totalJobs += 1;
+    if (existsSync(job.outputPath)) {
+      return Promise.resolve(job);
+    }
 
-  _.set(toProcess, jobPath, {
-    job: job,
-    deferred
-  });
+    let isQueued = false;
 
-  if (!isQueued) {
-    q.push(cb => {
-      runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb);
+    if (toProcess[inputFileKey]) {
+      isQueued = true;
+    } // deferred naming comes from https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Deferred
+
+
+    let deferred = {};
+    deferred.promise = new Promise((resolve, reject) => {
+      deferred.resolve = resolve;
+      deferred.reject = reject;
     });
-  }
+    totalJobs += 1;
 
-  return deferred.promise;
-};
+    _.set(toProcess, jobPath, {
+      job: job,
+      deferred
+    });
+
+    if (!isQueued) {
+      q.push(cb => {
+        runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb);
+      });
+    }
+
+    return deferred.promise;
+  });
+
+  return function (_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+}();
 
 function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
   const jobs = _.values(toProcess[inputFileKey]);
 
   const findDeferred = job => jobs.find(j => j.job === job).deferred;
 
-  const {
-    job
-  } = jobs[0]; // Delete the input key from the toProcess list so more jobs can be queued.
+  const job = jobs[0].job; // Delete the input key from the toProcess list so more jobs can be queued.
 
   delete toProcess[inputFileKey];
   actions.createJob({
