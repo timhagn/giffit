@@ -5,29 +5,36 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 exports.__esModule = true;
 exports.default = void 0;
 
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
-const execFileSync = require('child_process').execFileSync;
 
 const fs = require('fs');
 
+const util = require('util');
+
+const execFile = util.promisify(require('child_process').execFile);
+
 const temp = require('temp');
+
+const chokidar = require('chokidar');
+
+const ProgressBar = require(`progress`);
 
 const gifFrames = require('gif-frames');
 
 const gifsicle = require('gifsicle');
 
 const gif2webp = require('webp-converter/gwebp');
+
+const GREEN = `\u001b[42m=\u001b[0m`;
+const RED = `\u001b[41m+\u001b[0m`;
 /**
  * Encapsulates processing of gif to webp images.
  */
 
-
 class GifToWebp {
   constructor(file) {
     (0, _defineProperty2.default)(this, "file", void 0);
+    (0, _defineProperty2.default)(this, "bar", void 0);
     (0, _defineProperty2.default)(this, "gifsicleArgs", []);
     (0, _defineProperty2.default)(this, "gif2webpArgs", []);
     (0, _defineProperty2.default)(this, "uniqueArgs", arr => arr.filter((elem, index, self) => index === self.indexOf(elem)));
@@ -37,6 +44,14 @@ class GifToWebp {
     } else {
       this.file = file;
     }
+
+    this.bar = new ProgressBar(`Processing ${this.file} [:bar] :current/:total :elapsed secs :percent`, {
+      // complete: RED,
+      // incomplete: GREEN,
+      // stream: process.stdout,
+      total: 0,
+      width: 30
+    });
   }
   /**
    * Selects if metadata should be stripped.
@@ -96,31 +111,27 @@ class GifToWebp {
    */
 
 
-  toBase64() {
-    var _this = this;
+  async toBase64() {
+    let fileToProcess = this.file;
 
-    return (0, _asyncToGenerator2.default)(function* () {
-      let fileToProcess = _this.file;
+    if (this.gifsicleArgs.length !== 0) {
+      fileToProcess = temp.path({
+        suffix: '.gif'
+      });
+      await this.toGif(fileToProcess);
+    }
 
-      if (_this.gifsicleArgs.length !== 0) {
-        fileToProcess = temp.path({
-          suffix: '.gif'
-        });
-        yield _this.toGif(fileToProcess);
-      }
+    const gifFrameOptions = {
+      url: fileToProcess,
+      frames: 0,
+      cumulative: true
+    };
 
-      const gifFrameOptions = {
-        url: fileToProcess,
-        frames: 0,
-        cumulative: true
-      };
-
-      try {
-        return yield gifFrames(gifFrameOptions);
-      } catch (error) {
-        throw error;
-      }
-    })();
+    try {
+      return await gifFrames(gifFrameOptions);
+    } catch (error) {
+      throw error;
+    }
   }
   /**
    * Processes a gif with the given options.
@@ -129,18 +140,24 @@ class GifToWebp {
    */
 
 
-  toGif(outputPath) {
-    var _this2 = this;
+  async toGif(outputPath) {
+    const currentGifsicleArgs = [`--no-warnings`, `--output`, outputPath, ...this.uniqueArgs(this.gifsicleArgs), this.file];
 
-    return (0, _asyncToGenerator2.default)(function* () {
-      const currentGifsicleArgs = [`--no-warnings`, `--output`, outputPath, ..._this2.uniqueArgs(_this2.gifsicleArgs), _this2.file];
-
-      try {
-        yield execFileSync(gifsicle, currentGifsicleArgs.flat(), {});
-      } catch (error) {
-        throw error;
-      }
-    })();
+    try {
+      // const streamWatcher = this.createProgressStreamWatcher(outputPath)
+      // this.bar.render(undefined, true)
+      const originalFileStatus = fs.statSync(this.file);
+      this.bar.total = originalFileStatus.size;
+      fs.watchFile(outputPath, {
+        interval: 100
+      }, (curr, prev) => {
+        const updateSize = curr.size - prev.size;
+        this.bar.tick(updateSize);
+      });
+      return execFile(gifsicle, currentGifsicleArgs.flat(), {}); // streamWatcher.close()
+    } catch (error) {
+      throw error;
+    }
   }
   /**
    * Converts a gif to webp with the given options, processes gif if need be.
@@ -149,30 +166,26 @@ class GifToWebp {
    */
 
 
-  toWebp(outputPath) {
-    var _this3 = this;
+  async toWebp(outputPath) {
+    try {
+      let tempFileName = ``;
 
-    return (0, _asyncToGenerator2.default)(function* () {
-      try {
-        let tempFileName = ``;
-
-        if (_this3.gifsicleArgs.length !== 0) {
-          tempFileName = temp.path({
-            suffix: '.gif'
-          });
-          yield _this3.toGif(tempFileName);
-        }
-
-        const currentGif2webpArgs = [..._this3.uniqueArgs(_this3.gif2webpArgs), `-mt`, `-quiet`, tempFileName || _this3.file, `-o`, outputPath];
-        yield execFileSync(gif2webp(), currentGif2webpArgs.flat(), {});
-
-        if (tempFileName !== ``) {
-          yield fs.unlinkSync(tempFileName);
-        }
-      } catch (error) {
-        throw error;
+      if (this.gifsicleArgs.length !== 0) {
+        tempFileName = temp.path({
+          suffix: '.gif'
+        });
+        await this.toGif(tempFileName);
       }
-    })();
+
+      const currentGif2webpArgs = [...this.uniqueArgs(this.gif2webpArgs), `-mt`, `-quiet`, tempFileName || this.file, `-o`, outputPath];
+      await execFile(gif2webp(), currentGif2webpArgs.flat(), {});
+
+      if (tempFileName !== ``) {
+        await fs.unlinkSync(tempFileName);
+      }
+    } catch (error) {
+      throw error;
+    }
   }
   /**
    * Returns a new array with unique values.
@@ -180,6 +193,31 @@ class GifToWebp {
    * @return {*}
    */
 
+
+  createProgressStreamWatcher(fileToWatch) {
+    try {
+      // TODO: Create Watcher for file progress bar compared to original file.
+      // TODO: see https://www.npmjs.com/package/progress-stream
+      const originalFileStatus = fs.statSync(this.file);
+      fs.closeSync(fs.openSync(fileToWatch, 'a'));
+      this.bar.total = originalFileStatus.size;
+      return chokidar.watch(fileToWatch, {
+        alwaysStat: true,
+        ignorePermissionErrors: true,
+        persistent: true
+      }).on('change', (event, path, stats) => {
+        console.log(event, path, stats);
+
+        if (stats) {
+          console.log('Our stats: ', stats);
+          const updateSize = stats.size / originalFileStatus.size * 100;
+          this.bar.update(updateSize);
+        }
+      }).on('ready', (path, stats) => console.info('ready ', stats));
+    } catch (error) {
+      throw error;
+    }
+  }
 
 }
 

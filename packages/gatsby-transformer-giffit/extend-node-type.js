@@ -1,22 +1,22 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 // const Promise = require(`bluebird`)
-const _require = require(`gatsby/graphql`),
-      GraphQLObjectType = _require.GraphQLObjectType,
-      GraphQLList = _require.GraphQLList,
-      GraphQLBoolean = _require.GraphQLBoolean,
-      GraphQLString = _require.GraphQLString,
-      GraphQLInt = _require.GraphQLInt,
-      GraphQLFloat = _require.GraphQLFloat;
+const {
+  GraphQLObjectType,
+  GraphQLList,
+  GraphQLBoolean,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLFloat
+} = require(`gatsby/graphql`);
 
-const _require2 = require(`gatsby-plugin-giffit`),
-      queueImageResizing = _require2.queueImageResizing,
-      base64 = _require2.base64,
-      fixed = _require2.fixed; // const sharp = require(`sharp`)
+const {
+  queueImageResizing,
+  base64,
+  // fluid,
+  fixed // traceSVG,
+
+} = require(`gatsby-plugin-giffit`); // const sharp = require(`sharp`)
 
 
 const fs = require(`fs`);
@@ -28,8 +28,13 @@ const imageSize = require(`probe-image-size`);
 const path = require(`path`); // const DEFAULT_PNG_COMPRESSION_SPEED = 4
 
 
-const _require3 = require(`./types`),
-      ImageGifFitFormatType = _require3.ImageGifFitFormatType;
+const {
+  ImageGifFitFormatType // ImageCropFocusType,
+  // DuotoneGradientType,
+  // PotraceType,
+  // ImageFitType,
+
+} = require(`./types`);
 
 function toArray(buf) {
   let arr = new Array(buf.length);
@@ -82,69 +87,53 @@ const fixedNodeType = ({
       },
       srcWebp: {
         type: GraphQLString,
-        resolve: function () {
-          var _resolve = (0, _asyncToGenerator2.default)(function* ({
-            file,
-            image,
-            fieldArgs
-          }) {
-            // If the file is already in webp format or should explicitly
-            // be converted to webp, we do not create additional webp files
-            if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
-              return null;
-            }
-
-            const args = Object.assign({}, fieldArgs, {
-              pathPrefix,
-              toFormat: `webp`
-            });
-            const fixedImage = yield fixed({
-              file,
-              args,
-              reporter,
-              cache
-            });
-            return fixedImage.src;
-          });
-
-          function resolve(_x) {
-            return _resolve.apply(this, arguments);
+        resolve: async ({
+          file,
+          image,
+          fieldArgs
+        }) => {
+          // If the file is already in webp format or should explicitly
+          // be converted to webp, we do not create additional webp files
+          if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
+            return null;
           }
 
-          return resolve;
-        }()
+          const args = { ...fieldArgs,
+            pathPrefix,
+            toFormat: `webp`
+          };
+          const fixedImage = await fixed({
+            file,
+            args,
+            reporter,
+            cache
+          });
+          return fixedImage.src;
+        }
       },
       srcSetWebp: {
         type: GraphQLString,
-        resolve: function () {
-          var _resolve2 = (0, _asyncToGenerator2.default)(function* ({
-            file,
-            image,
-            fieldArgs
-          }) {
-            if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
-              return null;
-            }
-
-            const args = Object.assign({}, fieldArgs, {
-              pathPrefix,
-              toFormat: `webp`
-            });
-            const fixedImage = yield fixed({
-              file,
-              args,
-              reporter,
-              cache
-            });
-            return fixedImage.srcSet;
-          });
-
-          function resolve(_x2) {
-            return _resolve2.apply(this, arguments);
+        resolve: async ({
+          file,
+          image,
+          fieldArgs
+        }) => {
+          if (file.extension === `webp` || fieldArgs.toFormat === `webp`) {
+            return null;
           }
 
-          return resolve;
-        }()
+          const args = { ...fieldArgs,
+            pathPrefix,
+            toFormat: `webp`
+          };
+          const fixedImage = await fixed({
+            file,
+            args,
+            reporter,
+            cache
+          });
+          return fixedImage.srcSet;
+        }
       },
       originalName: {
         type: GraphQLString
@@ -204,31 +193,23 @@ const fixedNodeType = ({
       // },
 
     },
-    resolve: function () {
-      var _resolve3 = (0, _asyncToGenerator2.default)(function* (image, fieldArgs, context) {
-        const file = getNodeAndSavePathDependency(image.parent, context.path);
-        const args = Object.assign({}, fieldArgs, {
-          pathPrefix
-        });
-        const fixedImage = yield fixed({
-          file,
-          args,
-          reporter,
-          cache
-        });
-        return Object.assign({}, fixedImage, {
-          fieldArgs: args,
-          image,
-          file
-        });
+    resolve: async (image, fieldArgs, context) => {
+      const file = getNodeAndSavePathDependency(image.parent, context.path);
+      const args = { ...fieldArgs,
+        pathPrefix
+      };
+      const fixedImage = await fixed({
+        file,
+        args,
+        reporter,
+        cache
       });
-
-      function resolve(_x3, _x4, _x5) {
-        return _resolve3.apply(this, arguments);
-      }
-
-      return resolve;
-    }()
+      return Object.assign({}, fixedImage, {
+        fieldArgs: args,
+        image,
+        file
+      });
+    }
   };
 }; // const fluidNodeType = ({
 //                          type,
@@ -398,9 +379,10 @@ module.exports = ({
     reporter,
     cache
   };
-  const fixedNode = fixedNodeType(Object.assign({
-    name: `ImageGifFitFixed`
-  }, nodeOptions)); // const fluidNode = fluidNodeType({ name: `ImageGifFitFluid`, ...nodeOptions })
+  const fixedNode = fixedNodeType({
+    name: `ImageGifFitFixed`,
+    ...nodeOptions
+  }); // const fluidNode = fluidNodeType({ name: `ImageGifFitFluid`, ...nodeOptions })
 
   const ImageGifFitOriginal = new GraphQLObjectType({
     name: `ImageGifFitOriginal`,
@@ -446,34 +428,26 @@ module.exports = ({
     original: {
       type: () => ImageGifFitOriginal,
       args: {},
-      resolve: function () {
-        var _resolve4 = (0, _asyncToGenerator2.default)(function* (image, fieldArgs, context) {
-          const details = getNodeAndSavePathDependency(image.parent, context.path);
-          const dimensions = imageSize.sync(toArray(fs.readFileSync(details.absolutePath)));
-          const imageName = `${details.name}-${image.internal.contentDigest}${details.ext}`;
-          const publicPath = path.join(process.cwd(), `public`, `static`, imageName);
+      resolve: async (image, fieldArgs, context) => {
+        const details = getNodeAndSavePathDependency(image.parent, context.path);
+        const dimensions = imageSize.sync(toArray(fs.readFileSync(details.absolutePath)));
+        const imageName = `${details.name}-${image.internal.contentDigest}${details.ext}`;
+        const publicPath = path.join(process.cwd(), `public`, `static`, imageName);
 
-          if (!fsExtra.existsSync(publicPath)) {
-            fsExtra.copy(details.absolutePath, publicPath, err => {
-              if (err) {
-                console.error(`error copying file from ${details.absolutePath} to ${publicPath}`, err);
-              }
-            });
-          }
-
-          return {
-            width: dimensions.width,
-            height: dimensions.height,
-            src: `${pathPrefix}/static/${imageName}`
-          };
-        });
-
-        function resolve(_x6, _x7, _x8) {
-          return _resolve4.apply(this, arguments);
+        if (!fsExtra.existsSync(publicPath)) {
+          fsExtra.copy(details.absolutePath, publicPath, err => {
+            if (err) {
+              console.error(`error copying file from ${details.absolutePath} to ${publicPath}`, err);
+            }
+          });
         }
 
-        return resolve;
-      }()
+        return {
+          width: dimensions.width,
+          height: dimensions.height,
+          src: `${pathPrefix}/static/${imageName}`
+        };
+      }
     },
     resize: {
       type: () => ImageGifFitResize,
@@ -528,37 +502,29 @@ module.exports = ({
         // },
 
       },
-      resolve: function () {
-        var _resolve5 = (0, _asyncToGenerator2.default)(function* (image, fieldArgs, context) {
-          const file = getNodeAndSavePathDependency(image.parent, context.path);
-          const args = Object.assign({}, fieldArgs, {
-            pathPrefix
+      resolve: async (image, fieldArgs, context) => {
+        const file = getNodeAndSavePathDependency(image.parent, context.path);
+        const args = { ...fieldArgs,
+          pathPrefix
+        };
+
+        if (fieldArgs.base64) {
+          return await base64({
+            file,
+            cache
           });
-
-          if (fieldArgs.base64) {
-            return yield base64({
-              file,
-              cache
-            });
-          } else {
-            const o = queueImageResizing({
-              file,
-              args
-            });
-            return Object.assign({}, o, {
-              image,
-              file,
-              fieldArgs: args
-            });
-          }
-        });
-
-        function resolve(_x9, _x10, _x11) {
-          return _resolve5.apply(this, arguments);
+        } else {
+          const o = queueImageResizing({
+            file,
+            args
+          });
+          return Object.assign({}, o, {
+            image,
+            file,
+            fieldArgs: args
+          });
         }
-
-        return resolve;
-      }()
+      }
     }
   };
 };
