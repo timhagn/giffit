@@ -1,7 +1,7 @@
 const { onCreateNode } = require(`../gatsby-node.js`)
 
 describe(`Process image nodes correctly`, () => {
-  it(`correctly creates an ImageGiffit node from a file image node`, async () => {
+  it(`correctly creates an ImageGifFit node from a file image node`, async () => {
     const node = {
       extension: `gif`,
       id: `whatever`,

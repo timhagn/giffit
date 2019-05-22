@@ -9,3 +9,74 @@ Object {
   "width": 20,
 }
 `;
+
+exports[`gatsby-plugin-giffit queueImageResizing should process immediately when asked 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "args": Object {
+          "base64": true,
+          "compressionLevel": 4,
+          "loopCompatibility": true,
+          "lossy": "mixed",
+          "maxWidth": 800,
+          "pathPrefix": "",
+          "quality": 75,
+          "sizeByPixelDensity": false,
+          "toFormat": "gif",
+          "toFormatBase64": "",
+          "tryMinimize": false,
+          "width": 3,
+        },
+        "inputPath": "/media/hagn/horsedump/Projects/own_n_oss/giffit/packages/gatsby-plugin-giffit/src/__tests__/images/test.gif",
+        "outputPath": "/media/hagn/horsedump/Projects/own_n_oss/giffit/public/static/1234/f6860/test.gif",
+      },
+      Object {
+        "addThirdPartySchema": [Function],
+        "createJob": [Function],
+        "createNode": [Function],
+        "createNodeField": [Function],
+        "createPage": [Function],
+        "createPageDependency": [Function],
+        "createParentChildLink": [Function],
+        "createRedirect": [Function],
+        "createTypes": [Function],
+        "deleteComponentsDependencies": [Function],
+        "deleteNode": [Function],
+        "deleteNodes": [Function],
+        "deletePage": [Function],
+        "endJob": [Function],
+        "pageQueryRun": [Function],
+        "queryExtracted": [Function],
+        "queryExtractedBabelSuccess": [Function],
+        "queryExtractionBabelError": [Function],
+        "queryExtractionGraphQLError": [Function],
+        "replaceComponentQuery": [Function],
+        "replaceStaticQuery": [Function],
+        "replaceWebpackConfig": [Function],
+        "setBabelOptions": [Function],
+        "setBabelPlugin": [Function],
+        "setBabelPreset": [Function],
+        "setJob": [Function],
+        "setPluginStatus": [Function],
+        "setProgramStatus": [Function],
+        "setWebpackConfig": [Function],
+        "touchNode": [Function],
+      },
+      Object {
+        "defaultQuality": 75,
+        "forceBase64Format": false,
+        "lazyImageGeneration": true,
+        "stripMetadata": true,
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Promise {},
+    },
+  ],
+}
+`;

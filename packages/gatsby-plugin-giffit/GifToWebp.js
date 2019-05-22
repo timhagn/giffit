@@ -97,15 +97,15 @@ class GifToWebp {
 
     this.gifsicleArgs = this.gifsicleArgs.filter(elem => Array.isArray(elem) && !elem[0].startsWith(`--resize`));
 
-    if (width && !height) {
+    if (width && height) {
+      // Add option to resize to set width & height.
+      this.gifsicleArgs.push(`--resize ${width}x${height}`);
+    } else if (width && !height) {
       // Add option to resize width respecting aspect ratio.
       this.gifsicleArgs.push([`--resize-width`, width]);
     } else if (!width && height) {
       // Add option to resize height respecting aspect ratio.
       this.gifsicleArgs.push([`--resize-height`, height]);
-    } else {
-      // Add option to resize to set width & height.
-      this.gifsicleArgs.push(`--resize ${width}x${height}`);
     }
   }
   /**
@@ -142,35 +142,6 @@ class GifToWebp {
     const currentGifsicleArgs = [`--no-warnings`, `--output`, outputPath, ...this.uniqueArgs(this.gifsicleArgs), this.file];
 
     try {
-      // const streamWatcher = this.createProgressStreamWatcher(outputPath)
-      // this.bar.render(undefined, true)
-      // const originalFileStatus = fs.statSync(this.file)
-      // this.bar.total = Math.floor(originalFileStatus.size / 1024)
-      // const watcher = chokidar.watch(outputPath, {
-      //   usePolling: true,
-      //   interval: 10,
-      //   alwaysStat: true,
-      // })
-      //
-      // watcher.on('change', (path, stat) => {
-      //   const updateSize = Math.floor(stat.size / 1024)
-      //   this.bar.tick(updateSize, { add: `to GIF` })
-      // })
-      // watcher.on('close', () => {
-      //   this.bar.interrupt(`Processed ${path.basename(
-      //     this.file
-      //   )} to ${path.basename(outputPath)}`)
-      //   if (tempFileName !== ``) {
-      //     fs.unlinkSync(tempFileName)
-      //   }
-      // })
-      // fs.closeSync(fs.openSync(outputPath, 'a'))
-      // fs.watch(outputPath, { persistent: true }, (eventType, filename) => {
-      //   fs.stat(outputPath, (err, stats) => {
-      //     const updateSize = stats.size / originalFileStatus.size
-      //     this.bar.update(updateSize, { add: `to GIF` })
-      //   })
-      // })
       this.createProgressWatcher(this.file, outputPath, `to GIF`);
       return execFile(gifsicle, currentGifsicleArgs.flat(), {});
     } catch (error) {

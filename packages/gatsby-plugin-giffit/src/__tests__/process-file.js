@@ -14,6 +14,7 @@ describe(`createArgsDigest`, () => {
     duotone: null,
     fit: `COVER`,
     background: `rgb(0,0,0,1)`,
+    stripMetadata: false,
   }
 
   describe(`changes hash if used args are different`, () => {
@@ -93,6 +94,7 @@ describe(`createArgsDigest`, () => {
     describe(`not used arguments`, () => {
       testHashEqual(`maxWidth`, { maxWidth: 500 })
       testHashEqual(`base64`, { base64: true })
+      testHashEqual(`stripMetadata`, { stripMetadata: false })
     })
   })
 })

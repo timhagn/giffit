@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Process image nodes correctly correctly creates an ImageGiffit node from a file image node 1`] = `
+exports[`Process image nodes correctly correctly creates an ImageGifFit node from a file image node 1`] = `
 Array [
   Array [
     Object {
@@ -16,7 +16,7 @@ Array [
 ]
 `;
 
-exports[`Process image nodes correctly correctly creates an ImageGiffit node from a file image node 2`] = `
+exports[`Process image nodes correctly correctly creates an ImageGifFit node from a file image node 2`] = `
 Array [
   Array [
     Object {

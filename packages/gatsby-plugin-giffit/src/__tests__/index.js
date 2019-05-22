@@ -73,7 +73,7 @@ describe(`gatsby-plugin-giffit`, () => {
     })
 
     // re-enable when image processing on demand is implemented
-    it.skip(`should process immediately when asked`, async () => {
+    it(`should process immediately when asked`, async () => {
       scheduleJob.mockClear()
       const result = queueImageResizing({
         file: getFileObject(path.join(__dirname, `images/test.gif`)),
@@ -301,7 +301,7 @@ describe(`gatsby-plugin-giffit`, () => {
       expect(console.warn).toHaveBeenCalledTimes(1)
     })
 
-    it(`correctly infers the width when only the height is given`, async () => {
+    it(`correctly infers width when only height is given`, async () => {
       const args = { height: 10 }
 
       const result = await fixed({
@@ -310,6 +310,40 @@ describe(`gatsby-plugin-giffit`, () => {
       })
 
       expect(result.width).toEqual(10)
+    })
+
+    it(`correctly infers height when only width is given`, async () => {
+      const args = { width: 10 }
+
+      const result = await fixed({
+        file: getFileObject(path.join(__dirname, `images/test.gif`)),
+        args,
+      })
+
+      expect(result.height).toEqual(10)
+    })
+
+    it(`correctly resizes to width & height`, async () => {
+      const args = { width: 15, height: 15 }
+
+      const result = await fixed({
+        file: getFileObject(path.join(__dirname, `images/test.gif`)),
+        args,
+      })
+
+      expect(result.width).toEqual(15)
+      expect(result.height).toEqual(15)
+    })
+
+    it(`doesn't remove metadata if option is set`, async () => {
+      const args = { stripMetadata: false }
+
+      const result = await fixed({
+        file: getFileObject(path.join(__dirname, `images/test.gif`)),
+        args,
+      })
+
+      expect(result.width).toEqual(55)
     })
   })
 
