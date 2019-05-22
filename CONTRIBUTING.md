@@ -1,10 +1,10 @@
-# Contributing to `gatsby-giffit`
+# Contributing to `giffit`
 
 _**First of all, thanks for your time reading this and contributing : )!**_   
 Contributors are always welcome here and can't be thanked enough for their work!
 
 The following shall be some rough guidelines to get you going on your quest to 
-contribute to `gatsby-giffit`.
+contribute to `giffit`.
 
 ## Your Gain from Contributing
 
@@ -39,7 +39,7 @@ enhancement you'd really want to see in the next version of this package?
 Or just have a question pertaining some functionality?
 
 At the moment every one of these cases is tracked as a [GitHub issue](https://guides.github.com/features/issues/).
-Already know how to handle them? Head over to the [issue section](https://github.com/timhagn/gatsby-giffit/issues),
+Already know how to handle them? Head over to the [issue section](https://github.com/timhagn/giffit/issues),
 and please try first to search for any open or closed issues which might already 
 have addressed your's. 
   
@@ -47,7 +47,7 @@ Haven't found one? Open a new issue and follow the template guidelines there!
 
 ### Pull Requests
 
-First of all fork [gatsby-giffit](https://github.com/timhagn/gatsby-giffit)
+First of all fork [giffit](https://github.com/timhagn/giffit)
 and `git clone --depth=1` your fork of it. For textual changes (typos, 
 documentation, addition) just write them and read below about creating a PR.
  
@@ -69,7 +69,7 @@ Now go to to your projects or `gbitest`'s folder and instead of setting the path
 to a clone of the `gatsby` repo, set the link path to your own cloned fork:
 
 ```
-gatsby-dev --set-path-to-repo /your/path/to/your/fork/of/gatsby-giffit
+gatsby-dev --set-path-to-repo /your/path/to/your/fork/of/giffit
 ```
 
 Afterwards, to copy both packages over into your `node_modules` run:

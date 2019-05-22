@@ -1,14 +1,14 @@
 <h1 align="center">
-  gatsby-giffit
+  giffit
 </h1>
 <p align="center">
   <i>Gatsby Plugin and Transformer to easily work with optimized animated GIFs!</i>
 </p>
 <p align="center">
-  <a href="https://github.com/timhagn/gatsby-giffit/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="gatsby-giffit is released under the MIT license." />
+  <a href="https://github.com/timhagn/giffit/blob/master/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="giffit is released under the MIT license." />
   </a>
-  <a href="https://github.com/timhagn/gatsby-giffit/blob/master/CONTRIBUTING.md">
+  <a href="https://github.com/timhagn/giffit/blob/master/CONTRIBUTING.md">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
   </a>
   <a href="https://lerna.js.org/">
@@ -29,8 +29,8 @@ are already (mostly) working.
 
 This is a monorepo managed by [`lerna`](https://lerna.js.org/), so have a look 
 at the individual READMEs of
-- [`gatsby-plugin-giffit`](https://github.com/timhagn/gatsby-giffit/tree/master/packages/gatsby-plugin-giffit#readme)
-- [`gatsby-transformer-giffit`](https://github.com/timhagn/gatsby-giffit/tree/master/packages/gatsby-transformer-giffit#readme)
+- [`gatsby-plugin-giffit`](https://github.com/timhagn/giffit/tree/master/packages/gatsby-plugin-giffit#readme)
+- [`gatsby-transformer-giffit`](https://github.com/timhagn/giffit/tree/master/packages/gatsby-transformer-giffit#readme)
 
 ## Contributing
 

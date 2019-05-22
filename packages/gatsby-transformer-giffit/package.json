@@ -4,7 +4,7 @@
   "description": "Gatsby transformer plugin for animated images using gatsby-plugin-giffit.",
   "author": "Tim Hagn <mail@timhagn.com>",
   "bugs": {
-    "url": "https://github.com/timhagn/gatsby-giffit/issues"
+    "url": "https://github.com/timhagn/giffit/issues"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
@@ -12,7 +12,7 @@
     "fs-extra": "^7.0.1",
     "probe-image-size": "^4.0.0"
   },
-  "homepage": "https://github.com/timhagn/gatsby-giffit/tree/master/gatsby-transformer-giffit#readme",
+  "homepage": "https://github.com/timhagn/giffit/tree/master/gatsby-transformer-giffit#readme",
   "keywords": [
     "gatsby",
     "gatsby-plugin",
@@ -34,7 +34,7 @@
   "engines": {
     "node": ">= 10"
   },
-  "repository": "https://github.com/timhagn/gatsby-giffit/tree/master/gatsby-transformer-giffit",
+  "repository": "https://github.com/timhagn/giffit/tree/master/gatsby-transformer-giffit",
   "scripts": {
     "build": "npm run format && babel src --out-dir . --ignore **/__tests__",
     "format": "prettier --write \"src/*.js\"",

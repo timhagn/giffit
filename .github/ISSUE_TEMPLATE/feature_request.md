@@ -5,10 +5,10 @@ about: Have an enhancement you'd want to see in the next version of this package
 
 <!--
   To make it easier for me to help you, please include as much useful information as possible.
-  Before opening a new issue, please search existing issues https://github.com/timhagn/gatsby-giffit/issues
+  Before opening a new issue, please search existing issues https://github.com/timhagn/giffit/issues
   
   And though I try to include new features right away, be aware, that not every
-  one of them can be added to `gatsby-giffit`. 
+  one of them can be added to `giffit`. 
 -->
 
 ## Summary

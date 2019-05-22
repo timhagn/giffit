@@ -1,11 +1,11 @@
 ---
 name: Question
-about: Usage question or discussion about gatsby-giffit.
+about: Usage question or discussion about giffit.
 ---
 
 <!--
   To make it easier for me to help you, please include as much useful information as possible.
-  Before opening a new issue, please search existing issues https://github.com/timhagn/gatsby-giffit/issues
+  Before opening a new issue, please search existing issues https://github.com/timhagn/giffit/issues
 -->
 
 ## Summary

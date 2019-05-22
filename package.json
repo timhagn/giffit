@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-giffit",
+  "name": "giffit",
   "private": true,
   "devDependencies": {
     "@babel/cli": "^7.4.4",

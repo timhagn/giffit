@@ -5,7 +5,7 @@
 0 silly argv   dir:
 0 silly argv    '/media/hagn/horsedump/Projects/own_n_oss/gatsby-plugin-giffit' }
 1 notice cli v3.14.1
-2 verbose rootPath /media/hagn/horsedump/Projects/own_n_oss/gatsby-giffit
+2 verbose rootPath /media/hagn/horsedump/Projects/own_n_oss/giffit
 3 info versioning independent
 4 error Error: Command failed: git rev-parse HEAD
 4 error fatal: ambiguous argument 'HEAD': unknown revision or path not in the working tree.
