@@ -1,12 +1,15 @@
-const fs = require('fs')
-const util = require('util')
-const execFile = util.promisify(require('child_process').execFile)
-const temp = require('temp')
-const chokidar = require('chokidar')
+const fs = require(`fs`)
+const path = require(`path`)
+const util = require(`util`)
+const execFile = util.promisify(require(`child_process`).execFile)
+
+const temp = require(`temp`)
+const chokidar = require(`chokidar`)
 const ProgressBar = require(`progress`)
-const gifFrames = require('gif-frames')
-const gifsicle = require('gifsicle')
-const gif2webp = require('webp-converter/gwebp')
+
+const gifFrames = require(`gif-frames`)
+const gifsicle = require(`gifsicle`)
+const gif2webp = require(`webp-converter/gwebp`)
 
 const GREEN = `\u001b[42m=\u001b[0m`
 const RED = `\u001b[41m+\u001b[0m`
@@ -20,22 +23,24 @@ export default class GifToWebp {
   gifsicleArgs = []
   gif2webpArgs = []
 
-  constructor(file) {
+  constructor(file, barDescription = ``) {
     if (typeof file === `object`) {
       this.file = file.absolutePath
     } else {
       this.file = file
     }
-    this.bar = new ProgressBar(
-      `Processing ${this.file} [:bar] :current/:total :elapsed secs :percent`,
-      {
-        // complete: RED,
-        // incomplete: GREEN,
-        // stream: process.stdout,
-        total: 0,
-        width: 30,
-      }
-    )
+    const description =
+      barDescription ||
+      `Processing ${path.basename(
+        this.file
+      )} :add [:bar] :current KB/:total KB :elapsed secs :percent`
+    this.bar = new ProgressBar(description, {
+      // complete: RED,
+      // incomplete: GREEN,
+      // stream: process.stderr,
+      total: 0,
+      width: 30,
+    })
   }
 
   /**
@@ -106,11 +111,7 @@ export default class GifToWebp {
       frames: 0,
       cumulative: true,
     }
-    try {
-      return await gifFrames(gifFrameOptions)
-    } catch (error) {
-      throw error
-    }
+    return gifFrames(gifFrameOptions)
   }
 
   /**
@@ -129,18 +130,35 @@ export default class GifToWebp {
     try {
       // const streamWatcher = this.createProgressStreamWatcher(outputPath)
       // this.bar.render(undefined, true)
-      const originalFileStatus = fs.statSync(this.file)
-      this.bar.total = originalFileStatus.size
-      fs.watchFile(outputPath, {interval: 100}, (curr, prev) => {
-        const updateSize = curr.size - prev.size
-        this.bar.tick(updateSize)
-      })
-      return execFile(
-        gifsicle,
-        currentGifsicleArgs.flat(),
-        {}
-      )
-      // streamWatcher.close()
+      // const originalFileStatus = fs.statSync(this.file)
+      // this.bar.total = Math.floor(originalFileStatus.size / 1024)
+      // const watcher = chokidar.watch(outputPath, {
+      //   usePolling: true,
+      //   interval: 10,
+      //   alwaysStat: true,
+      // })
+      //
+      // watcher.on('change', (path, stat) => {
+      //   const updateSize = Math.floor(stat.size / 1024)
+      //   this.bar.tick(updateSize, { add: `to GIF` })
+      // })
+      // watcher.on('close', () => {
+      //   this.bar.interrupt(`Processed ${path.basename(
+      //     this.file
+      //   )} to ${path.basename(outputPath)}`)
+      //   if (tempFileName !== ``) {
+      //     fs.unlinkSync(tempFileName)
+      //   }
+      // })
+      // fs.closeSync(fs.openSync(outputPath, 'a'))
+      // fs.watch(outputPath, { persistent: true }, (eventType, filename) => {
+      //   fs.stat(outputPath, (err, stats) => {
+      //     const updateSize = stats.size / originalFileStatus.size
+      //     this.bar.update(updateSize, { add: `to GIF` })
+      //   })
+      // })
+      this.createProgressWatcher(this.file, outputPath, `to GIF`)
+      return execFile(gifsicle, currentGifsicleArgs.flat(), {})
     } catch (error) {
       throw error
     }
@@ -166,10 +184,12 @@ export default class GifToWebp {
         `-o`,
         outputPath,
       ]
-      await execFile(gif2webp(), currentGif2webpArgs.flat(), {})
-      if (tempFileName !== ``) {
-        await fs.unlinkSync(tempFileName)
-      }
+      this.createProgressWatcher(
+        tempFileName || this.file,
+        outputPath,
+        `to WebP`
+      )
+      return execFile(gif2webp(), currentGif2webpArgs.flat(), {})
     } catch (error) {
       throw error
     }
@@ -183,28 +203,23 @@ export default class GifToWebp {
   uniqueArgs = arr =>
     arr.filter((elem, index, self) => index === self.indexOf(elem))
 
-  createProgressStreamWatcher(fileToWatch) {
+  /**
+   * Creates a file watcher to update the progress bar.
+   * @param originalFile  String  Original file to compare to.
+   * @param fileToWatch   String  File to watch.
+   * @param addText       String  Optional string to add to progress bar.
+   */
+  createProgressWatcher(originalFile, fileToWatch, addText = ``) {
     try {
-      // TODO: Create Watcher for file progress bar compared to original file.
-      // TODO: see https://www.npmjs.com/package/progress-stream
-      const originalFileStatus = fs.statSync(this.file)
+      const originalFileStatus = fs.statSync(originalFile)
+      this.bar.total = Math.floor(originalFileStatus.size / 1024)
       fs.closeSync(fs.openSync(fileToWatch, 'a'))
-      this.bar.total = originalFileStatus.size
-      return chokidar
-        .watch(fileToWatch, {
-          alwaysStat: true,
-          ignorePermissionErrors: true,
-          persistent: true,
+      fs.watch(fileToWatch, { persistent: true }, () => {
+        fs.stat(fileToWatch, (err, stats) => {
+          const updateSize = stats.size / originalFileStatus.size
+          this.bar.update(updateSize, { add: addText })
         })
-        .on('change', (event, path, stats) => {
-          console.log(event, path, stats)
-          if (stats) {
-            console.log('Our stats: ', stats)
-            const updateSize = (stats.size / originalFileStatus.size) * 100
-            this.bar.update(updateSize)
-          }
-        })
-        .on('ready', (path, stats) => console.info('ready ', stats))
+      })
     } catch (error) {
       throw error
     }

@@ -40,8 +40,6 @@ try {
 
 const imageSize = require(`probe-image-size`);
 
-const gifFrames = require('gif-frames');
-
 const _ = require(`lodash`);
 
 const fs = require(`fs-extra`);
@@ -184,7 +182,7 @@ async function generateBase64({
   const options = healOptions(pluginOptions, args, file.extension, {
     width: defaultBase64Width()
   });
-  const processGif = new _GifToWebp.default(file);
+  const processGif = new _GifToWebp.default(file, `Extracting frames of ${file} [:bar] :current/:total :elapsed secs :percent`);
   processGif.resize(options.width, options.height);
   let frameData;
 
@@ -193,20 +191,7 @@ async function generateBase64({
   } catch (err) {
     reportError(`Failed to process image ${file.absolutePath}`, err, reporter);
     return null;
-  } // const gifFrameOptions = {
-  //   url: file.absolutePath,
-  //   frames: 0,
-  //   cumulative: true,
-  // }
-  //
-  // let frameData
-  // try {
-  //   frameData = await gifFrames(gifFrameOptions)
-  // } catch (err) {
-  //   reportError(`Failed to process image ${file.absolutePath}`, err, reporter)
-  //   return null
-  // }
-
+  }
 
   const imageBuffer = frameData[0].getImage();
   const base64String = imageBuffer.read().toString(`base64`);

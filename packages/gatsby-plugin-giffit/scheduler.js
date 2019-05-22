@@ -19,7 +19,7 @@ let totalJobs = 0;
 const q = queue((task, callback) => {
   task(callback);
 }, 1);
-const bar = new ProgressBar(`Generating animated image thumbnails [:bar] :current/:total :elapsed secs :percent`, {
+const bar = new ProgressBar(`Processing animated GIFs [:bar] :current/:total :elapsed secs :percent`, {
   total: 0,
   width: 30
 });

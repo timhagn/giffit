@@ -11,7 +11,7 @@ const q = queue((task, callback) => {
 }, 1)
 
 const bar = new ProgressBar(
-  `Generating animated image thumbnails [:bar] :current/:total :elapsed secs :percent`,
+  `Processing animated GIFs [:bar] :current/:total :elapsed secs :percent`,
   {
     total: 0,
     width: 30,
