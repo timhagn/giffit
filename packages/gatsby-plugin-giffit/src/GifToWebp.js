@@ -84,15 +84,15 @@ export default class GifToWebp {
     this.gifsicleArgs = this.gifsicleArgs.filter(
       elem => Array.isArray(elem) && !elem[0].startsWith(`--resize`)
     )
-    if (width && height) {
-      // Add option to resize to set width & height.
-      this.gifsicleArgs.push(`--resize ${width}x${height}`)
-    } else if (width && !height) {
+    if (width && !height) {
       // Add option to resize width respecting aspect ratio.
       this.gifsicleArgs.push([`--resize-width`, width])
     } else if (!width && height) {
       // Add option to resize height respecting aspect ratio.
       this.gifsicleArgs.push([`--resize-height`, height])
+    } else {
+      // Add option to resize to set width & height.
+      this.gifsicleArgs.push(`--resize ${width}x${height}`)
     }
   }
 
@@ -127,12 +127,8 @@ export default class GifToWebp {
       ...this.uniqueArgs(this.gifsicleArgs),
       this.file,
     ]
-    try {
-      this.createProgressWatcher(this.file, outputPath, `to GIF`)
-      return execFile(gifsicle, currentGifsicleArgs.flat(), {})
-    } catch (error) {
-      throw error
-    }
+    this.createProgressWatcher(this.file, outputPath, `to GIF`)
+    return execFile(gifsicle, currentGifsicleArgs.flat(), {})
   }
 
   /**
@@ -141,29 +137,25 @@ export default class GifToWebp {
    * @return {Promise<void>}
    */
   async toWebp(outputPath) {
-    try {
-      let tempFileName = ``
-      if (this.gifsicleArgs.length !== 0) {
-        tempFileName = temp.path({ suffix: '.gif' })
-        await this.toGif(tempFileName)
-      }
-      const currentGif2webpArgs = [
-        ...this.uniqueArgs(this.gif2webpArgs),
-        `-mt`,
-        `-quiet`,
-        tempFileName || this.file,
-        `-o`,
-        outputPath,
-      ]
-      this.createProgressWatcher(
-        tempFileName || this.file,
-        outputPath,
-        `to WebP`
-      )
-      return execFile(gif2webp(), currentGif2webpArgs.flat(), {})
-    } catch (error) {
-      throw error
+    let tempFileName = ``
+    if (this.gifsicleArgs.length !== 0) {
+      tempFileName = temp.path({ suffix: '.gif' })
+      await this.toGif(tempFileName)
     }
+    const currentGif2webpArgs = [
+      ...this.uniqueArgs(this.gif2webpArgs),
+      `-mt`,
+      `-quiet`,
+      tempFileName || this.file,
+      `-o`,
+      outputPath,
+    ]
+    this.createProgressWatcher(
+      tempFileName || this.file,
+      outputPath,
+      `to WebP`
+    )
+    return execFile(gif2webp(), currentGif2webpArgs.flat(), {})
   }
 
   /**

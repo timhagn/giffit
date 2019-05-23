@@ -1,3 +1,5 @@
+import { getFileObject } from "./mock"
+
 const path = require(`path`)
 const fs = require(`fs-extra`)
 jest.mock(`../scheduler`)
@@ -356,6 +358,18 @@ describe(`gatsby-plugin-giffit`, () => {
 
       expect(result).toMatchSnapshot()
     })
+
+    it(`converts image to base64 and resizes it`, async () => {
+      const result = await base64({
+        file,
+        args: {
+          ...args,
+          width: 10,
+        },
+      })
+
+      expect(result).toMatchSnapshot()
+    })
   })
 
   // describe(`image quirks`, () => {
@@ -369,63 +383,51 @@ describe(`gatsby-plugin-giffit`, () => {
   //   })
   // })
 
-//   describe(`tracedSVG`, () => {
-//     it(`doesn't always run`, async () => {
-//       const args = {
-//         maxWidth: 100,
-//         width: 100,
-//         tracedSVG: { color: `#FF0000` },
-//       }
-//
-//       let result = await fixed({
-//         file,
-//         args,
-//       })
-//
-//       expect(result.tracedSVG).toBeUndefined()
-//
-//       result = await fluid({
-//         file,
-//         args,
-//       })
-//
-//       expect(result.tracedSVG).toBeUndefined()
-//     })
-//
-//     it(`runs on demand`, async () => {
-//       const args = {
-//         maxWidth: 100,
-//         width: 100,
-//         generateTracedSVG: true,
-//         tracedSVG: { color: `#FF0000` },
-//         base64: false,
-//       }
-//
-//       const fixedSvg = await fixed({
-//         file,
-//         args,
-//       })
-//
-//       expect(fixedSvg).toMatchSnapshot()
-//
-//       const fluidSvg = await fluid({
-//         file,
-//         args,
-//       })
-//
-//       expect(fluidSvg).toMatchSnapshot()
-//     })
-//   })
+  //   describe(`tracedSVG`, () => {
+  //     it(`doesn't always run`, async () => {
+  //       const args = {
+  //         maxWidth: 100,
+  //         width: 100,
+  //         tracedSVG: { color: `#FF0000` },
+  //       }
+  //
+  //       let result = await fixed({
+  //         file,
+  //         args,
+  //       })
+  //
+  //       expect(result.tracedSVG).toBeUndefined()
+  //
+  //       result = await fluid({
+  //         file,
+  //         args,
+  //       })
+  //
+  //       expect(result.tracedSVG).toBeUndefined()
+  //     })
+  //
+  //     it(`runs on demand`, async () => {
+  //       const args = {
+  //         maxWidth: 100,
+  //         width: 100,
+  //         generateTracedSVG: true,
+  //         tracedSVG: { color: `#FF0000` },
+  //         base64: false,
+  //       }
+  //
+  //       const fixedSvg = await fixed({
+  //         file,
+  //         args,
+  //       })
+  //
+  //       expect(fixedSvg).toMatchSnapshot()
+  //
+  //       const fluidSvg = await fluid({
+  //         file,
+  //         args,
+  //       })
+  //
+  //       expect(fluidSvg).toMatchSnapshot()
+  //     })
+  //   })
 })
-
-function getFileObject(absolutePath, name = `test`) {
-  return {
-    id: `${absolutePath} absPath of file`,
-    name: name,
-    absolutePath,
-    extension: `gif`,
-    internal: {
-      contentDigest: `1234`,
-    },
-  }
-}
