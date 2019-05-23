@@ -1,13 +1,13 @@
 "use strict";
 
-const reportError = (message, err, reporter) => {
+var reportError = function reportError(message, err, reporter) {
   if (reporter) {
     reporter.error(message, err);
   } else {
     console.error(message, err);
   }
 
-  if (process.env.gatsby_executing_command === `build`) {
+  if (process.env.gatsby_executing_command === "build") {
     process.exit(1);
   }
 };

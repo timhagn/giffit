@@ -92,13 +92,14 @@ export default class GifToWebp {
       this.gifsicleArgs.push([`--resize-height`, height])
     } else {
       // Add option to resize to set width & height.
-      this.gifsicleArgs.push(`--resize ${width}x${height}`)
+      this.gifsicleArgs.push([`--resize`, `${width}x${height}`])
     }
   }
 
   /**
    * Returns a base64 encoded string with the first gif frame.
    * @return {Promise<null|*>}
+   * TODO: add outputType to gifFrameOptions
    */
   async toBase64() {
     let fileToProcess = this.file
@@ -150,11 +151,7 @@ export default class GifToWebp {
       `-o`,
       outputPath,
     ]
-    this.createProgressWatcher(
-      tempFileName || this.file,
-      outputPath,
-      `to WebP`
-    )
+    this.createProgressWatcher(tempFileName || this.file, outputPath, `to WebP`)
     return execFile(gif2webp(), currentGif2webpArgs.flat(), {})
   }
 
@@ -169,19 +166,19 @@ export default class GifToWebp {
   /**
    * Creates a file watcher to update the progress bar.
    * @param originalFile  String  Original file to compare to.
-   * @param fileToWatch   String  File to watch.
+   * @param outputPath    String  File to watch.
    * @param addText       String  Optional string to add to progress bar.
+   * TODO: return watch handler and stop watching after processing...
    */
-  createProgressWatcher(originalFile, fileToWatch, addText = ``) {
+  createProgressWatcher(originalFile, outputPath, addText = ``) {
     try {
       const originalFileStatus = fs.statSync(originalFile)
       this.bar.total = Math.floor(originalFileStatus.size / 1024)
-      fs.closeSync(fs.openSync(fileToWatch, 'a'))
-      fs.watch(fileToWatch, { persistent: true }, () => {
-        fs.stat(fileToWatch, (err, stats) => {
-          const updateSize = stats.size / originalFileStatus.size
-          this.bar.update(updateSize, { add: addText })
-        })
+      fs.closeSync(fs.openSync(outputPath, 'a'))
+      fs.watch(outputPath, { persistent: true }, (event, filename) => {
+        const currStats = fs.statSync(outputPath)
+        const updateSize = currStats.size / originalFileStatus.size
+        this.bar.update(updateSize, { add: addText })
       })
     } catch (error) {
       throw error

@@ -1,127 +1,169 @@
 "use strict";
 
-const _ = require(`lodash`);
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-const ProgressBar = require(`progress`);
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-const {
-  existsSync
-} = require(`fs`);
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-const queue = require(`async/queue`);
+var _ = require("lodash");
 
-const {
-  processFile
-} = require(`./process-file`);
+var ProgressBar = require("progress");
 
-const toProcess = {};
-let totalJobs = 0;
-const q = queue((task, callback) => {
+var _require = require("fs"),
+    existsSync = _require.existsSync;
+
+var queue = require("async/queue");
+
+var _require2 = require("./process-file"),
+    processFile = _require2.processFile;
+
+var toProcess = {};
+var totalJobs = 0;
+var q = queue(function (task, callback) {
   task(callback);
 }, 1);
-const bar = new ProgressBar(`Processing animated GIFs [:bar] :current/:total :elapsed secs :percent`, {
+var bar = new ProgressBar("Processing animated GIFs [:bar] :current/:total :elapsed secs :percent", {
   total: 0,
   width: 30
 });
 
-exports.scheduleJob = async (job, actions, pluginOptions, reportStatus = true) => {
-  const inputFileKey = job.inputPath.replace(/\./g, `%2E`);
-  const outputFileKey = job.outputPath.replace(/\./g, `%2E`);
-  const jobPath = `${inputFileKey}.${outputFileKey}`; // Check if the job has already been queued. If it has, there's nothing
-  // to do, return.
+exports.scheduleJob =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee(job, actions, pluginOptions, reportStatus) {
+    var inputFileKey, outputFileKey, jobPath, isQueued, deferred;
+    return _regenerator["default"].wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (reportStatus === void 0) {
+              reportStatus = true;
+            }
 
-  if (_.has(toProcess, jobPath)) {
-    return _.get(toProcess, `${jobPath}.deferred.promise`);
-  } // Check if the output file already exists so we don't redo work.
+            inputFileKey = job.inputPath.replace(/\./g, "%2E");
+            outputFileKey = job.outputPath.replace(/\./g, "%2E");
+            jobPath = inputFileKey + "." + outputFileKey; // Check if the job has already been queued. If it has, there's nothing
+            // to do, return.
+
+            if (!_.has(toProcess, jobPath)) {
+              _context.next = 6;
+              break;
+            }
+
+            return _context.abrupt("return", _.get(toProcess, jobPath + ".deferred.promise"));
+
+          case 6:
+            if (!existsSync(job.outputPath)) {
+              _context.next = 8;
+              break;
+            }
+
+            return _context.abrupt("return", Promise.resolve(job));
+
+          case 8:
+            isQueued = false;
+
+            if (toProcess[inputFileKey]) {
+              isQueued = true;
+            } // deferred naming comes from https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Deferred
 
 
-  if (existsSync(job.outputPath)) {
-    return Promise.resolve(job);
-  }
+            deferred = {};
+            deferred.promise = new Promise(function (resolve, reject) {
+              deferred.resolve = resolve;
+              deferred.reject = reject;
+            });
+            totalJobs += 1;
 
-  let isQueued = false;
+            _.set(toProcess, jobPath, {
+              job: job,
+              deferred: deferred
+            });
 
-  if (toProcess[inputFileKey]) {
-    isQueued = true;
-  } // deferred naming comes from https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Deferred
+            if (!isQueued) {
+              q.push(function (cb) {
+                runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb);
+              });
+            }
 
+            return _context.abrupt("return", deferred.promise);
 
-  let deferred = {};
-  deferred.promise = new Promise((resolve, reject) => {
-    deferred.resolve = resolve;
-    deferred.reject = reject;
-  });
-  totalJobs += 1;
+          case 16:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
 
-  _.set(toProcess, jobPath, {
-    job: job,
-    deferred
-  });
-
-  if (!isQueued) {
-    q.push(cb => {
-      runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb);
-    });
-  }
-
-  return deferred.promise;
-};
+  return function (_x, _x2, _x3, _x4) {
+    return _ref.apply(this, arguments);
+  };
+}();
 
 function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
-  const jobs = _.values(toProcess[inputFileKey]);
+  var jobs = _.values(toProcess[inputFileKey]);
 
-  const findDeferred = job => jobs.find(j => j.job === job).deferred;
+  var findDeferred = function findDeferred(job) {
+    return jobs.find(function (j) {
+      return j.job === job;
+    }).deferred;
+  };
 
-  const {
-    job
-  } = jobs[0]; // Delete the input key from the toProcess list so more jobs can be queued.
+  var job = jobs[0].job; // Delete the input key from the toProcess list so more jobs can be queued.
 
   delete toProcess[inputFileKey];
   actions.createJob({
-    id: `processing image ${job.inputPath}`,
+    id: "processing image " + job.inputPath,
     imagesCount: _.values(toProcess[inputFileKey]).length
   }, {
-    name: `gatsby-plugin-giffit`
+    name: "gatsby-plugin-giffit"
   }); // We're now processing the file's jobs.
 
-  let imagesFinished = 0;
+  var imagesFinished = 0;
   bar.total = totalJobs;
 
   try {
-    const promises = processFile(job.inputPath, jobs.map(job => job.job), pluginOptions).map(promise => promise.then(job => {
-      findDeferred(job).resolve();
-    }).catch(err => {
-      findDeferred(job).reject({
-        err,
-        message: `Failed to process image ${job.inputPath}`
-      });
-    }).then(() => {
-      imagesFinished += 1; // only show progress on build
-      // if (reportStatus) {
+    var promises = processFile(job.inputPath, jobs.map(function (job) {
+      return job.job;
+    }), pluginOptions).map(function (promise) {
+      return promise.then(function (job) {
+        findDeferred(job).resolve();
+      })["catch"](function (err) {
+        findDeferred(job).reject({
+          err: err,
+          message: "Failed to process image " + job.inputPath
+        });
+      }).then(function () {
+        imagesFinished += 1; // only show progress on build
+        // if (reportStatus) {
 
-      bar.tick(); // }
+        bar.tick(); // }
 
-      actions.setJob({
-        id: `processing image ${job.inputPath}`,
-        imagesFinished
-      }, {
-        name: `gatsby-plugin-giffit`
+        actions.setJob({
+          id: "processing image " + job.inputPath,
+          imagesFinished: imagesFinished
+        }, {
+          name: "gatsby-plugin-giffit"
+        });
       });
-    }));
-    Promise.all(promises).then(() => {
+    });
+    Promise.all(promises).then(function () {
       actions.endJob({
-        id: `processing image ${job.inputPath}`
+        id: "processing image " + job.inputPath
       }, {
-        name: `gatsby-plugin-giffit`
+        name: "gatsby-plugin-giffit"
       });
       cb();
     });
   } catch (err) {
-    jobs.forEach(({
-      deferred
-    }) => {
+    jobs.forEach(function (_ref2) {
+      var deferred = _ref2.deferred;
       deferred.reject({
-        err,
+        err: err,
         message: err.message
       });
     });

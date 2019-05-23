@@ -2,17 +2,21 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _GifToWebp = _interopRequireDefault(require("./GifToWebp"));
 
 var _reportError = require("./report-error");
 
-const fs = require(`fs-extra`);
+var fs = require("fs-extra");
 
-const debug = require(`debug`)(`gatsby:gatsby-plugin-sharp`);
+var debug = require("debug")("gatsby:gatsby-plugin-sharp");
 
-const _ = require(`lodash`);
+var _ = require("lodash");
 
-const crypto = require(`crypto`);
+var crypto = require("crypto");
 /**
  * List of arguments used by `processFile` function.
  * This is used to generate args hash using only
@@ -20,7 +24,7 @@ const crypto = require(`crypto`);
  */
 
 
-const argsWhitelist = [`height`, `width`, `cropFocus`, `toFormat`, `pngCompressionLevel`, `quality`, `jpegProgressive`, `grayscale`, `rotate`, `duotone`, `fit`, `background`];
+var argsWhitelist = ["height", "width", "cropFocus", "toFormat", "pngCompressionLevel", "quality", "jpegProgressive", "grayscale", "rotate", "duotone", "fit", "background"];
 /**
  * @typedef {Object} TransformArgs
  * @property {number} height
@@ -47,88 +51,128 @@ const argsWhitelist = [`height`, `width`, `cropFocus`, `toFormat`, `pngCompressi
  * @param options
  */
 
-exports.processFile = (file, transforms, options = {}) => {
-  const processGif = new _GifToWebp.default(file); // Keep Metadata
+exports.processFile = function (file, transforms, options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  var processGif = new _GifToWebp["default"](file); // Keep Metadata
 
   if (!options.stripMetadata) {
     processGif.withMetadata();
   }
 
-  return transforms.map(async transform => {
-    const {
-      outputPath,
-      args
-    } = transform;
-    debug(`Start processing ${outputPath}`); // gifsicle only allows ints as height/width. Since both aren't always
-    // set, check first before trying to round them.
+  return transforms.map(
+  /*#__PURE__*/
+  function () {
+    var _ref = (0, _asyncToGenerator2["default"])(
+    /*#__PURE__*/
+    _regenerator["default"].mark(function _callee(transform) {
+      var outputPath, args, roundedHeight, roundedWidth;
+      return _regenerator["default"].wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              outputPath = transform.outputPath, args = transform.args;
+              debug("Start processing " + outputPath); // gifsicle only allows ints as height/width. Since both aren't always
+              // set, check first before trying to round them.
 
-    let roundedHeight = args.height;
+              roundedHeight = args.height;
 
-    if (roundedHeight) {
-      roundedHeight = Math.round(roundedHeight);
-    }
+              if (roundedHeight) {
+                roundedHeight = Math.round(roundedHeight);
+              }
 
-    let roundedWidth = args.width;
+              roundedWidth = args.width;
 
-    if (roundedWidth) {
-      roundedWidth = Math.round(roundedWidth);
-    }
+              if (roundedWidth) {
+                roundedWidth = Math.round(roundedWidth);
+              }
 
-    processGif.resize(roundedWidth, roundedHeight); // // grayscale
-    // if (args.grayscale) {
-    //   clonedPipeline = clonedPipeline.grayscale()
-    // }
-    //
-    // // rotate
-    // if (args.rotate && args.rotate !== 0) {
-    //   clonedPipeline = clonedPipeline.rotate(args.rotate)
-    // }
-    //
-    // // duotone
-    // if (args.duotone) {
-    //   clonedPipeline = await duotone(
-    //     args.duotone,
-    //     args.toFormat,
-    //     clonedPipeline
-    //   )
-    // }
-    // lets decide how we want to save this transform
-    // if (args.toFormat === `png`) {
-    //   await compressPng(clonedPipeline, outputPath, {
-    //     ...args,
-    //     stripMetadata: options.stripMetadata,
-    //   })
-    //   return transform
-    // }
-    //
-    // if (options.useMozJpeg && args.toFormat === `jpg`) {
-    //   await compressJpg(clonedPipeline, outputPath, args)
-    //   return transform
-    // }
-    //
-    // if (args.toFormat === `webp`) {
-    //   await compressWebP(clonedPipeline, outputPath, args)
-    //   return transform
-    // }
+              processGif.resize(roundedWidth, roundedHeight); // // grayscale
+              // if (args.grayscale) {
+              //   clonedPipeline = clonedPipeline.grayscale()
+              // }
+              //
+              // // rotate
+              // if (args.rotate && args.rotate !== 0) {
+              //   clonedPipeline = clonedPipeline.rotate(args.rotate)
+              // }
+              //
+              // // duotone
+              // if (args.duotone) {
+              //   clonedPipeline = await duotone(
+              //     args.duotone,
+              //     args.toFormat,
+              //     clonedPipeline
+              //   )
+              // }
+              // lets decide how we want to save this transform
+              // if (args.toFormat === `png`) {
+              //   await compressPng(clonedPipeline, outputPath, {
+              //     ...args,
+              //     stripMetadata: options.stripMetadata,
+              //   })
+              //   return transform
+              // }
+              //
+              // if (options.useMozJpeg && args.toFormat === `jpg`) {
+              //   await compressJpg(clonedPipeline, outputPath, args)
+              //   return transform
+              // }
+              //
+              // if (args.toFormat === `webp`) {
+              //   await compressWebP(clonedPipeline, outputPath, args)
+              //   return transform
+              // }
 
-    try {
-      if (args.toFormat === `gif`) {
-        await processGif.toGif(outputPath);
-      }
+              _context.prev = 7;
 
-      if (args.toFormat === `webp`) {
-        await processGif.toWebp(outputPath);
-      }
-    } catch (err) {
-      (0, _reportError.reportError)(`Failed to process image ${file.absolutePath}`, err);
-    }
+              if (!(args.toFormat === "gif")) {
+                _context.next = 11;
+                break;
+              }
 
-    return transform;
-  });
+              _context.next = 11;
+              return processGif.toGif(outputPath);
+
+            case 11:
+              if (!(args.toFormat === "webp")) {
+                _context.next = 14;
+                break;
+              }
+
+              _context.next = 14;
+              return processGif.toWebp(outputPath);
+
+            case 14:
+              _context.next = 19;
+              break;
+
+            case 16:
+              _context.prev = 16;
+              _context.t0 = _context["catch"](7);
+              (0, _reportError.reportError)("Failed to process image " + file.absolutePath, _context.t0);
+
+            case 19:
+              return _context.abrupt("return", transform);
+
+            case 20:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[7, 16]]);
+    }));
+
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }());
 };
 
-exports.createArgsDigest = args => {
-  const filtered = _.pickBy(args, (value, key) => {
+exports.createArgsDigest = function (args) {
+  var filtered = _.pickBy(args, function (value, key) {
     // remove falsy
     if (!value) return false; // if (args.toFormat.match(/^jp*/) && _.includes(key, `png`)) {
     //   return false
@@ -140,6 +184,6 @@ exports.createArgsDigest = args => {
     return argsWhitelist.includes(key);
   });
 
-  const argsDigest = crypto.createHash(`md5`).update(JSON.stringify(filtered, Object.keys(filtered).sort())).digest(`hex`);
+  var argsDigest = crypto.createHash("md5").update(JSON.stringify(filtered, Object.keys(filtered).sort())).digest("hex");
   return argsDigest.substr(argsDigest.length - 5);
 };

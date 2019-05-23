@@ -1,18 +1,13 @@
 "use strict";
 
-const {
-  setActions // queue: jobQueue,
-  // reportError,
+var _require = require("./index"),
+    setActions = _require.setActions;
 
-} = require(`./index`);
+var _require2 = require("./plugin-options"),
+    setPluginOptions = _require2.setPluginOptions;
 
-const {
-  setPluginOptions
-} = require(`./plugin-options`);
-
-exports.onPreBootstrap = ({
-  actions
-}, pluginOptions) => {
+exports.onPreBootstrap = function (_ref, pluginOptions) {
+  var actions = _ref.actions;
   setActions(actions);
   setPluginOptions(pluginOptions);
 };

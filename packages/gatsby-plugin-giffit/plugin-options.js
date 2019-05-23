@@ -1,54 +1,60 @@
 "use strict";
 
-const _ = require(`lodash`); /// Plugin options are loaded onPreBootstrap in gatsby-node
+var _ = require("lodash"); /// Plugin options are loaded onPreBootstrap in gatsby-node
 
 
-const pluginDefaults = {
+var pluginDefaults = {
   forceBase64Format: false,
   // useMozJpeg: process.env.GATSBY_JPEG_ENCODER === `MOZJPEG`,
   stripMetadata: true,
   lazyImageGeneration: true,
   defaultQuality: 75
 };
-const generalArgs = {
+var generalArgs = {
   quality: 75,
   lossy: 'mixed',
   base64: true,
   tryMinimize: false,
   compressionLevel: 4,
   loopCompatibility: true,
-  pathPrefix: ``,
-  toFormat: ``,
-  toFormatBase64: ``,
+  pathPrefix: "",
+  toFormat: "",
+  toFormatBase64: "",
   sizeByPixelDensity: false
 };
-let pluginOptions = Object.assign({}, pluginDefaults);
+var pluginOptions = Object.assign({}, pluginDefaults);
 
-exports.setPluginOptions = opts => {
+exports.setPluginOptions = function (opts) {
   pluginOptions = Object.assign({}, pluginOptions, opts);
   generalArgs.quality = pluginOptions.defaultQuality;
   return pluginOptions;
 };
 
-exports.getPluginOptions = () => pluginOptions;
+exports.getPluginOptions = function () {
+  return pluginOptions;
+};
 
-const healOptions = ({
-  defaultQuality: quality
-}, args, fileExtension, defaultArgs = {}) => {
-  let options = _.defaults({}, args, {
-    quality
+var healOptions = function healOptions(_ref, args, fileExtension, defaultArgs) {
+  var quality = _ref.defaultQuality;
+
+  if (defaultArgs === void 0) {
+    defaultArgs = {};
+  }
+
+  var options = _.defaults({}, args, {
+    quality: quality
   }, defaultArgs, generalArgs);
 
   options.quality = parseInt(options.quality, 10);
   options.toFormat = options.toFormat.toLowerCase();
   options.toFormatBase64 = options.toFormatBase64.toLowerCase(); // Check to see if have another value than default.
 
-  if (typeof options.lossy !== `boolean` && options.lossy !== `mixed`) {
+  if (typeof options.lossy !== "boolean" && options.lossy !== "mixed") {
     options.lossy = true;
   } // When toFormat is not set we set it based on fileExtension.
 
 
-  if (options.toFormat === ``) {
+  if (options.toFormat === "") {
     options.toFormat = fileExtension.toLowerCase();
   } // Only set width to 400 if neither width nor height is passed.
 

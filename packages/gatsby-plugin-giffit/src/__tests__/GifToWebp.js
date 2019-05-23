@@ -20,6 +20,7 @@ const {
   getImageSize,
 } = require(`../index.js`)
 import GifToWebp from '../GifToWebp'
+import * as temp from "temp"
 
 describe(`GifToWebp`, () => {
   const args = {
@@ -90,9 +91,10 @@ describe(`GifToWebp`, () => {
   })
 
   it(`should add option to resize with width & height`, () => {
+    const expected = [[`--resize`, `10x10`]]
     const processGif = new GifToWebp(absolutePath)
     processGif.resize(10, 10)
-    expect(processGif.gifsicleArgs).toContain(`--resize 10x10`)
+    expect(processGif.gifsicleArgs).toEqual(expect.arrayContaining(expected))
   })
 
   it(`should add option to resize with only width`, () => {
@@ -117,7 +119,7 @@ describe(`GifToWebp`, () => {
     expect(processGif.gifsicleArgs).toEqual(expect.arrayContaining(expected))
   })
 
-  // toGif()
+  // toBase64()
   it(`toBase64() should fail without file`, async () => {
     const processGif = new GifToWebp(``)
     expect.assertions(1)
@@ -135,6 +137,16 @@ describe(`GifToWebp`, () => {
     )
   })
 
+  it(`toGif() should process file`, async () => {
+    const processGif = new GifToWebp(testFile)
+    processGif.resize(20)
+    const tempFileName = temp.path({ suffix: '.gif' })
+    await processGif.toGif(tempFileName)
+    const tempExists = fs.existsSync(tempFileName)
+    expect(tempExists).toBeTruthy()
+    // if (tempExists) fs.unlinkSync(tempFileName)
+  })
+
   // toWebp()
   it(`toWebp() should fail without file`, async () => {
     const processGif = new GifToWebp(``)
@@ -142,6 +154,16 @@ describe(`GifToWebp`, () => {
     await expect(processGif.toWebp()).rejects.toThrow(
       `ENOENT: no such file or directory, stat`
     )
+  })
+
+  it(`toWebp() should process file`, async () => {
+    const processGif = new GifToWebp(testFile)
+    processGif.resize(20)
+    const tempOutputPath = temp.path({ suffix: '.webp' })
+    await processGif.toWebp(tempOutputPath)
+    const tempExists = fs.existsSync(tempOutputPath)
+    expect(tempExists).toBeTruthy()
+    // if (tempExists) fs.unlinkSync(tempOutputPath)
   })
 
   // createProgressWatcher()

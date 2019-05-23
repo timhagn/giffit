@@ -1,13 +1,12 @@
 "use strict";
 
-const {
-  GraphQLObjectType,
-  GraphQLBoolean,
-  GraphQLString,
-  GraphQLInt,
-  GraphQLFloat,
-  GraphQLEnumType
-} = require(`gatsby/graphql`); // const sharp = require(`sharp`)
+const _require = require(`gatsby/graphql`),
+      GraphQLObjectType = _require.GraphQLObjectType,
+      GraphQLBoolean = _require.GraphQLBoolean,
+      GraphQLString = _require.GraphQLString,
+      GraphQLInt = _require.GraphQLInt,
+      GraphQLFloat = _require.GraphQLFloat,
+      GraphQLEnumType = _require.GraphQLEnumType; // const sharp = require(`sharp`)
 // const { Potrace } = require(`potrace`)
 
 
