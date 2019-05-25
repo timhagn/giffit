@@ -99,7 +99,7 @@ export default class GifToWebp {
   /**
    * Returns a base64 encoded string with the first gif frame.
    * @return {Promise<null|*>}
-   * TODO: add outputType to gifFrameOptions
+   * TODO: add variables for outputType & frames choice to gifFrameOptions
    */
   async toBase64() {
     let fileToProcess = this.file

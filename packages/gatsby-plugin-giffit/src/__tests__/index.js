@@ -1,4 +1,4 @@
-import { getFileObject } from "./mock"
+import { getFileObject } from "./mocks/mock"
 
 const path = require(`path`)
 const fs = require(`fs-extra`)
