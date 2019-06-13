@@ -131,13 +131,13 @@ function () {
       this.gifsicleArgs.push(["--resize-height", height]);
     } else {
       // Add option to resize to set width & height.
-      this.gifsicleArgs.push("--resize " + width + "x" + height);
+      this.gifsicleArgs.push(["--resize", width + "x" + height]);
     }
   }
   /**
    * Returns a base64 encoded string with the first gif frame.
    * @return {Promise<null|*>}
-   * TODO: add outputType to gifFrameOptions
+   * TODO: add variables for outputType & frames choice to gifFrameOptions
    */
   ;
 
@@ -283,10 +283,11 @@ function () {
   /**
    * Creates a file watcher to update the progress bar.
    * @param originalFile  String  Original file to compare to.
-   * @param fileToWatch   String  File to watch.
+   * @param outputPath    String  File to watch.
    * @param addText       String  Optional string to add to progress bar.
+   * TODO: return watch handler and stop watching after processing...
    */
-  _proto.createProgressWatcher = function createProgressWatcher(originalFile, fileToWatch, addText) {
+  _proto.createProgressWatcher = function createProgressWatcher(originalFile, outputPath, addText) {
     var _this = this;
 
     if (addText === void 0) {
@@ -296,16 +297,15 @@ function () {
     try {
       var originalFileStatus = fs.statSync(originalFile);
       this.bar.total = Math.floor(originalFileStatus.size / 1024);
-      fs.closeSync(fs.openSync(fileToWatch, 'a'));
-      fs.watch(fileToWatch, {
+      fs.closeSync(fs.openSync(outputPath, 'a'));
+      fs.watch(outputPath, {
         persistent: true
-      }, function () {
-        fs.stat(fileToWatch, function (err, stats) {
-          var updateSize = stats.size / originalFileStatus.size;
+      }, function (event, filename) {
+        var currStats = fs.statSync(outputPath);
+        var updateSize = currStats.size / originalFileStatus.size;
 
-          _this.bar.update(updateSize, {
-            add: addText
-          });
+        _this.bar.update(updateSize, {
+          add: addText
         });
       });
     } catch (error) {
