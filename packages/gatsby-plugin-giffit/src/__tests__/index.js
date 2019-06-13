@@ -75,7 +75,7 @@ describe(`gatsby-plugin-giffit`, () => {
     })
 
     // re-enable when image processing on demand is implemented
-    it(`should process immediately when asked`, async () => {
+    it.skip(`should process immediately when asked`, async () => {
       scheduleJob.mockClear()
       const result = queueImageResizing({
         file: getFileObject(path.join(__dirname, `images/test.gif`)),
