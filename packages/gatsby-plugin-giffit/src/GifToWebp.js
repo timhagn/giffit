@@ -129,7 +129,7 @@ export default class GifToWebp {
       this.file,
     ]
     this.createProgressWatcher(this.file, outputPath, `to GIF`)
-    return execFile(gifsicle, currentGifsicleArgs.flat(), {})
+    return execFile(gifsicle, this.flatten(currentGifsicleArgs), {})
   }
 
   /**
@@ -152,7 +152,7 @@ export default class GifToWebp {
       outputPath,
     ]
     this.createProgressWatcher(tempFileName || this.file, outputPath, `to WebP`)
-    return execFile(gif2webp(), currentGif2webpArgs.flat(), {})
+    return execFile(gif2webp(), this.flatten(currentGif2webpArgs), {})
   }
 
   /**
@@ -162,6 +162,18 @@ export default class GifToWebp {
    */
   uniqueArgs = arr =>
     arr.filter((elem, index, self) => index === self.indexOf(elem))
+
+  /**
+   * Returns a new flattened array.
+   * @param arr
+   * @return {*}
+   */
+  flatten = arr =>
+    arr.reduce(
+      (acc, val) =>
+        Array.isArray(val) ? acc.concat(this.flatten(val)) : acc.concat(val),
+      []
+    )
 
   /**
    * Creates a file watcher to update the progress bar.
