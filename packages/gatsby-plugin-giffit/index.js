@@ -384,9 +384,9 @@ function _fixed() {
               grayscale: options.grayscale,
               rotate: options.rotate,
               toFormat: options.toFormat,
-              toFormatBase64: options.toFormatBase64 // Get base64 version
+              toFormatBase64: options.toFormatBase64
+            }; // Get base64 version
 
-            };
             _context4.next = 17;
             return base64({
               file: file,

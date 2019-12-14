@@ -250,13 +250,9 @@ async function fixed({ file, args = {}, reporter, cache }) {
     filteredSizes.push(dimensions[fixedDimension])
     console.warn(
       `
-                 The requested ${fixedDimension} "${
-        options[fixedDimension]
-      }px" for a resolutions field for
+                 The requested ${fixedDimension} "${options[fixedDimension]}px" for a resolutions field for
                  the file ${file.absolutePath}
-                 was larger than the actual image ${fixedDimension} of ${
-        dimensions[fixedDimension]
-      }px!
+                 was larger than the actual image ${fixedDimension} of ${dimensions[fixedDimension]}px!
                  If possible, replace the current image with a larger one.
                  `
     )

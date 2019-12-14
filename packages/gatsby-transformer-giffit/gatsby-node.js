@@ -1,5 +1,9 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
 const fs = require(`fs-extra`);
 
 exports.setFieldsOnGraphQLNodeType = require(`./extend-node-type`);
@@ -19,34 +23,42 @@ exports.onPreExtractQueries = async ({
   await fs.copy(require.resolve(`gatsby-transformer-giffit/src/fragments.js`), `${program.directory}/.cache/fragments/image-giffit-fragments.js`);
 };
 
+exports.onPreExtractQueries = async ({
+  store
+}) => {
+  const program = store.getState().program; // Add fragments for ImageSharp to .cache/fragments.
+
+  await fs.copy(require.resolve(`gatsby-transformer-sharp/src/fragments.js`), `${program.directory}/.cache/fragments/image-sharp-fragments.js`);
+};
+
 const supportedExtensions = {
   gif: true // webp: true,
 
-  /**
-   *
-   {
-    allSitePlugin(filter: { name: { regex: "/giffit|sharp/" } }) {
-      edges {
-        node {
-          id
-          name
-          resolve
-          nodeAPIs
-        }
+};
+/**
+ *
+ {
+  allSitePlugin(filter: { name: { regex: "/giffit|sharp/" } }) {
+    edges {
+      node {
+        id
+        name
+        resolve
+        nodeAPIs
       }
     }
   }
-   */
-  // TODO: look further into schema.buildObjectType() / sourceNodes at
-  // TODO: [New Schema Customization API](https://www.gatsbyjs.org/blog/2019-03-18-releasing-new-schema-customization/)
+}
+ */
+// TODO: look further into schema.buildObjectType() / sourceNodes at
+// TODO: [New Schema Customization API](https://www.gatsbyjs.org/blog/2019-03-18-releasing-new-schema-customization/)
 
-};
-
-const onCreateNode = async ({
-  node,
-  actions,
-  ...helpers
-}) => {
+const onCreateNode = async (_ref) => {
+  let {
+    node,
+    actions
+  } = _ref,
+      helpers = (0, _objectWithoutPropertiesLoose2.default)(_ref, ["node", "actions"]);
   const {
     createNode,
     createParentChildLink

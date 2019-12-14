@@ -41,6 +41,8 @@ var GifToWebp =
 /*#__PURE__*/
 function () {
   function GifToWebp(file, barDescription) {
+    var _this = this;
+
     if (barDescription === void 0) {
       barDescription = "";
     }
@@ -53,6 +55,11 @@ function () {
       return arr.filter(function (elem, index, self) {
         return index === self.indexOf(elem);
       });
+    });
+    (0, _defineProperty2["default"])(this, "flatten", function (arr) {
+      return arr.reduce(function (acc, val) {
+        return Array.isArray(val) ? acc.concat(_this.flatten(val)) : acc.concat(val);
+      }, []);
     });
 
     if (typeof file === "object") {
@@ -207,7 +214,7 @@ function () {
             case 0:
               currentGifsicleArgs = ["--no-warnings", "--output", outputPath].concat(this.uniqueArgs(this.gifsicleArgs), [this.file]);
               this.createProgressWatcher(this.file, outputPath, "to GIF");
-              return _context2.abrupt("return", execFile(gifsicle, currentGifsicleArgs.flat(), {}));
+              return _context2.abrupt("return", execFile(gifsicle, this.flatten(currentGifsicleArgs), {}));
 
             case 3:
             case "end":
@@ -257,7 +264,7 @@ function () {
             case 5:
               currentGif2webpArgs = [].concat(this.uniqueArgs(this.gif2webpArgs), ["-mt", "-quiet", tempFileName || this.file, "-o", outputPath]);
               this.createProgressWatcher(tempFileName || this.file, outputPath, "to WebP");
-              return _context3.abrupt("return", execFile(gif2webp(), currentGif2webpArgs.flat(), {}));
+              return _context3.abrupt("return", execFile(gif2webp(), this.flatten(currentGif2webpArgs), {}));
 
             case 8:
             case "end":
@@ -288,7 +295,7 @@ function () {
    * TODO: return watch handler and stop watching after processing...
    */
   _proto.createProgressWatcher = function createProgressWatcher(originalFile, outputPath, addText) {
-    var _this = this;
+    var _this2 = this;
 
     if (addText === void 0) {
       addText = "";
@@ -304,7 +311,7 @@ function () {
         var currStats = fs.statSync(outputPath);
         var updateSize = currStats.size / originalFileStatus.size;
 
-        _this.bar.update(updateSize, {
+        _this2.bar.update(updateSize, {
           add: addText
         });
       });
