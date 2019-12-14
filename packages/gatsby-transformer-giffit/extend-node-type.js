@@ -98,10 +98,10 @@ const fixedNodeType = ({
             return null;
           }
 
-          const args = Object.assign({}, fieldArgs, {
+          const args = { ...fieldArgs,
             pathPrefix,
             toFormat: `webp`
-          });
+          };
           const fixedImage = await fixed({
             file,
             args,
@@ -122,10 +122,10 @@ const fixedNodeType = ({
             return null;
           }
 
-          const args = Object.assign({}, fieldArgs, {
+          const args = { ...fieldArgs,
             pathPrefix,
             toFormat: `webp`
-          });
+          };
           const fixedImage = await fixed({
             file,
             args,
@@ -195,9 +195,9 @@ const fixedNodeType = ({
     },
     resolve: async (image, fieldArgs, context) => {
       const file = getNodeAndSavePathDependency(image.parent, context.path);
-      const args = Object.assign({}, fieldArgs, {
+      const args = { ...fieldArgs,
         pathPrefix
-      });
+      };
       const fixedImage = await fixed({
         file,
         args,
@@ -379,9 +379,10 @@ module.exports = ({
     reporter,
     cache
   };
-  const fixedNode = fixedNodeType(Object.assign({
-    name: `ImageGifFitFixed`
-  }, nodeOptions)); // const fluidNode = fluidNodeType({ name: `ImageGifFitFluid`, ...nodeOptions })
+  const fixedNode = fixedNodeType({
+    name: `ImageGifFitFixed`,
+    ...nodeOptions
+  }); // const fluidNode = fluidNodeType({ name: `ImageGifFitFluid`, ...nodeOptions })
 
   const ImageGifFitOriginal = new GraphQLObjectType({
     name: `ImageGifFitOriginal`,
@@ -503,9 +504,9 @@ module.exports = ({
       },
       resolve: async (image, fieldArgs, context) => {
         const file = getNodeAndSavePathDependency(image.parent, context.path);
-        const args = Object.assign({}, fieldArgs, {
+        const args = { ...fieldArgs,
           pathPrefix
-        });
+        };
 
         if (fieldArgs.base64) {
           return await base64({

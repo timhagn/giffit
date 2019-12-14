@@ -4,8 +4,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _ = require("lodash");
 
 var ProgressBar = require("progress");
@@ -28,81 +26,71 @@ var bar = new ProgressBar("Processing animated GIFs [:bar] :current/:total :elap
   width: 30
 });
 
-exports.scheduleJob =
-/*#__PURE__*/
-function () {
-  var _ref = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee(job, actions, pluginOptions, reportStatus) {
-    var inputFileKey, outputFileKey, jobPath, isQueued, deferred;
-    return _regenerator["default"].wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            if (reportStatus === void 0) {
-              reportStatus = true;
-            }
+exports.scheduleJob = function _callee(job, actions, pluginOptions, reportStatus) {
+  var inputFileKey, outputFileKey, jobPath, isQueued, deferred;
+  return _regenerator.default.async(function _callee$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          if (reportStatus === void 0) {
+            reportStatus = true;
+          }
 
-            inputFileKey = job.inputPath.replace(/\./g, "%2E");
-            outputFileKey = job.outputPath.replace(/\./g, "%2E");
-            jobPath = inputFileKey + "." + outputFileKey; // Check if the job has already been queued. If it has, there's nothing
-            // to do, return.
+          inputFileKey = job.inputPath.replace(/\./g, "%2E");
+          outputFileKey = job.outputPath.replace(/\./g, "%2E");
+          jobPath = inputFileKey + "." + outputFileKey; // Check if the job has already been queued. If it has, there's nothing
+          // to do, return.
 
-            if (!_.has(toProcess, jobPath)) {
-              _context.next = 6;
-              break;
-            }
+          if (!_.has(toProcess, jobPath)) {
+            _context.next = 6;
+            break;
+          }
 
-            return _context.abrupt("return", _.get(toProcess, jobPath + ".deferred.promise"));
+          return _context.abrupt("return", _.get(toProcess, jobPath + ".deferred.promise"));
 
-          case 6:
-            if (!existsSync(job.outputPath)) {
-              _context.next = 8;
-              break;
-            }
+        case 6:
+          if (!existsSync(job.outputPath)) {
+            _context.next = 8;
+            break;
+          }
 
-            return _context.abrupt("return", Promise.resolve(job));
+          return _context.abrupt("return", Promise.resolve(job));
 
-          case 8:
-            isQueued = false;
+        case 8:
+          isQueued = false;
 
-            if (toProcess[inputFileKey]) {
-              isQueued = true;
-            } // deferred naming comes from https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Deferred
+          if (toProcess[inputFileKey]) {
+            isQueued = true;
+          } // deferred naming comes from https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Deferred
 
 
-            deferred = {};
-            deferred.promise = new Promise(function (resolve, reject) {
-              deferred.resolve = resolve;
-              deferred.reject = reject;
+          deferred = {};
+          deferred.promise = new Promise(function (resolve, reject) {
+            deferred.resolve = resolve;
+            deferred.reject = reject;
+          });
+          totalJobs += 1;
+
+          _.set(toProcess, jobPath, {
+            job: job,
+            deferred: deferred
+          });
+
+          if (!isQueued) {
+            q.push(function (cb) {
+              runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb);
             });
-            totalJobs += 1;
+          }
 
-            _.set(toProcess, jobPath, {
-              job: job,
-              deferred: deferred
-            });
+          return _context.abrupt("return", deferred.promise);
 
-            if (!isQueued) {
-              q.push(function (cb) {
-                runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb);
-              });
-            }
-
-            return _context.abrupt("return", deferred.promise);
-
-          case 16:
-          case "end":
-            return _context.stop();
-        }
+        case 16:
+        case "end":
+          return _context.stop();
       }
-    }, _callee);
-  }));
-
-  return function (_x, _x2, _x3, _x4) {
-    return _ref.apply(this, arguments);
-  };
-}();
+    }
+  });
+};
 
 function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
   var jobs = _.values(toProcess[inputFileKey]);
@@ -132,7 +120,7 @@ function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
     }), pluginOptions).map(function (promise) {
       return promise.then(function (job) {
         findDeferred(job).resolve();
-      })["catch"](function (err) {
+      }).catch(function (err) {
         findDeferred(job).reject({
           err: err,
           message: "Failed to process image " + job.inputPath
@@ -160,8 +148,8 @@ function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
       cb();
     });
   } catch (err) {
-    jobs.forEach(function (_ref2) {
-      var deferred = _ref2.deferred;
+    jobs.forEach(function (_ref) {
+      var deferred = _ref.deferred;
       deferred.reject({
         err: err,
         message: err.message

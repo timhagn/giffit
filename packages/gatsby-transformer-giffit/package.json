@@ -1,14 +1,14 @@
 {
   "name": "gatsby-transformer-giffit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Gatsby transformer plugin for animated images using gatsby-plugin-giffit.",
   "author": "Tim Hagn <mail@timhagn.com>",
   "bugs": {
     "url": "https://github.com/timhagn/giffit/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.2",
-    "@babel/types": "^7.6.1",
+    "@babel/runtime": "^7.7.6",
+    "@babel/types": "^7.7.4",
     "fs-extra": "^8.1.0",
     "probe-image-size": "^5.0.0"
   },
