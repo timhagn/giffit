@@ -1,8 +1,19 @@
+/**
+ * This streaming adaption of `gifsicle` is based on `gifsicle-stream`, created
+ * by Hung Tran <oohnoitz@gmail.com> in 2015. I updated it to newer standards,
+ * changed its tests from mocha to jest and am expanding on it for `giffit`.
+ *
+ * @see https://github.com/oohnoitz/node-gifsicle-stream
+ * @see ./LICENSE_GIFSICLE_STREAM
+ */
 const memoize = require(`memoizee`)
 const Stream = require(`stream`).Stream
 const spawn = require('child_process').spawn
 const which = require('which')
 
+/**
+ * This class wraps the gifsicle command line utility in a data stream.
+ */
 export default class Gifsicle extends Stream {
   constructor(args) {
     super()
