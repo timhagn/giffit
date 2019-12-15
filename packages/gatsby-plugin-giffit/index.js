@@ -135,7 +135,7 @@ function queueImageResizing(_ref) {
   queue.set(prefixedSrc, job); // schedule job immediately - this will be changed when image processing on demand is implemented
 
   var finishedPromise = scheduleJob(job, actions, pluginOptions).then(function () {
-    queue.delete(prefixedSrc);
+    queue["delete"](prefixedSrc);
   });
   return {
     src: prefixedSrc,
@@ -164,7 +164,7 @@ var defaultBase64Width = function defaultBase64Width() {
 
 function generateBase64(_ref2) {
   var file, args, reporter, pluginOptions, options, processGif, frameData, imageBuffer, base64String;
-  return _regenerator.default.async(function generateBase64$(_context) {
+  return _regenerator["default"].async(function generateBase64$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -173,11 +173,11 @@ function generateBase64(_ref2) {
           options = healOptions(pluginOptions, args, file.extension, {
             width: defaultBase64Width()
           });
-          processGif = new _GifToWebp.default(file, "Extracting frames of " + file + " [:bar] :current/:total :elapsed secs :percent");
+          processGif = new _GifToWebp["default"](file, "Extracting frames of " + file + " [:bar] :current/:total :elapsed secs :percent");
           processGif.resize(options.width, options.height);
           _context.prev = 5;
           _context.next = 8;
-          return _regenerator.default.awrap(processGif.toBase64());
+          return _regenerator["default"].awrap(processGif.toBase64());
 
         case 8:
           frameData = _context.sent;
@@ -219,14 +219,14 @@ var memoizedBase64 = _.memoize(generateBase64, base64CacheKey);
 
 var cachifiedBase64 = function cachifiedBase64(_ref4) {
   var cache, arg, cacheKey, cachedBase64, base64output;
-  return _regenerator.default.async(function cachifiedBase64$(_context2) {
+  return _regenerator["default"].async(function cachifiedBase64$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          cache = _ref4.cache, arg = (0, _objectWithoutPropertiesLoose2.default)(_ref4, ["cache"]);
+          cache = _ref4.cache, arg = (0, _objectWithoutPropertiesLoose2["default"])(_ref4, ["cache"]);
           cacheKey = base64CacheKey(arg);
           _context2.next = 4;
-          return _regenerator.default.awrap(cache.get(cacheKey));
+          return _regenerator["default"].awrap(cache.get(cacheKey));
 
         case 4:
           cachedBase64 = _context2.sent;
@@ -240,12 +240,12 @@ var cachifiedBase64 = function cachifiedBase64(_ref4) {
 
         case 7:
           _context2.next = 9;
-          return _regenerator.default.awrap(generateBase64(arg));
+          return _regenerator["default"].awrap(generateBase64(arg));
 
         case 9:
           base64output = _context2.sent;
           _context2.next = 12;
-          return _regenerator.default.awrap(cache.set(cacheKey, base64output));
+          return _regenerator["default"].awrap(cache.set(cacheKey, base64output));
 
         case 12:
           return _context2.abrupt("return", base64output);
@@ -259,7 +259,7 @@ var cachifiedBase64 = function cachifiedBase64(_ref4) {
 };
 
 function base64(arg) {
-  return _regenerator.default.async(function base64$(_context3) {
+  return _regenerator["default"].async(function base64$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
@@ -269,14 +269,14 @@ function base64(arg) {
           }
 
           _context3.next = 3;
-          return _regenerator.default.awrap(cachifiedBase64(arg));
+          return _regenerator["default"].awrap(cachifiedBase64(arg));
 
         case 3:
           return _context3.abrupt("return", _context3.sent);
 
         case 4:
           _context3.next = 6;
-          return _regenerator.default.awrap(memoizedBase64(arg));
+          return _regenerator["default"].awrap(memoizedBase64(arg));
 
         case 6:
           return _context3.abrupt("return", _context3.sent);
@@ -292,7 +292,7 @@ function base64(arg) {
 function fixed(_ref5) {
   var file, _ref5$args, args, reporter, cache, options, fixedDimension, sizes, dimensions, filteredSizes, sortedSizes, images, base64Image, base64Args, fallbackSrc, srcSet, originalName;
 
-  return _regenerator.default.async(function fixed$(_context4) {
+  return _regenerator["default"].async(function fixed$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
         case 0:
@@ -322,7 +322,7 @@ function fixed(_ref5) {
           images = sortedSizes.map(function (size) {
             var _extends2;
 
-            var arrrgs = (0, _extends3.default)({}, options, (_extends2 = {}, _extends2[fixedDimension] = Math.round(size), _extends2)); // Queue images for processing.
+            var arrrgs = (0, _extends3["default"])({}, options, (_extends2 = {}, _extends2[fixedDimension] = Math.round(size), _extends2)); // Queue images for processing.
 
             if (options.width !== undefined && options.height !== undefined) {
               arrrgs.height = Math.round(size * (options.height / options.width));
@@ -351,7 +351,7 @@ function fixed(_ref5) {
           }; // Get base64 version
 
           _context4.next = 17;
-          return _regenerator.default.awrap(base64({
+          return _regenerator["default"].awrap(base64({
             file: file,
             args: base64Args,
             reporter: reporter,

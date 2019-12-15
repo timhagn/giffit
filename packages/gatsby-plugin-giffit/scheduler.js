@@ -28,7 +28,7 @@ var bar = new ProgressBar("Processing animated GIFs [:bar] :current/:total :elap
 
 exports.scheduleJob = function _callee(job, actions, pluginOptions, reportStatus) {
   var inputFileKey, outputFileKey, jobPath, isQueued, deferred;
-  return _regenerator.default.async(function _callee$(_context) {
+  return _regenerator["default"].async(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -120,7 +120,7 @@ function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
     }), pluginOptions).map(function (promise) {
       return promise.then(function (job) {
         findDeferred(job).resolve();
-      }).catch(function (err) {
+      })["catch"](function (err) {
         findDeferred(job).reject({
           err: err,
           message: "Failed to process image " + job.inputPath

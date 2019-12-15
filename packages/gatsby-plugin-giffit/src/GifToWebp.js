@@ -14,6 +14,8 @@ const gif2webp = require(`webp-converter/gwebp`)
 const GREEN = `\u001b[42m=\u001b[0m`
 const RED = `\u001b[41m+\u001b[0m`
 
+// TODO: Have a look at https://www.npmjs.com/package/gifsicle-stream!
+
 /**
  * Encapsulates processing of gif to webp images.
  */
