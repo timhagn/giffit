@@ -153,6 +153,7 @@ function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            // TODO: change process from gifsicle -> gifFrames to in-stream
             fileToProcess = this.file;
 
             if (!(this.gifsicleArgs.length !== 0)) {

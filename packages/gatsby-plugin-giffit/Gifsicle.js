@@ -11,9 +11,25 @@ var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inh
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
+/**
+ * This streaming adaption of `gifsicle` is based on `gifsicle-stream`, created
+ * by Hung Tran <oohnoitz@gmail.com> in 2015. I updated it to newer standards,
+ * changed its tests from mocha to jest and am expanding on it for `giffit`.
+ *
+ * @see https://github.com/oohnoitz/node-gifsicle-stream
+ * @see ./LICENSE_GIFSICLE_STREAM
+ */
 var memoize = require("memoizee");
 
 var Stream = require("stream").Stream;
+
+var spawn = require('child_process').spawn;
+
+var which = require('which');
+/**
+ * This class wraps the `gifsicle` command line utility in a data stream.
+ */
+
 
 var Gifsicle =
 /*#__PURE__*/
@@ -69,7 +85,7 @@ function (_Stream) {
             _this.seenDataOnStdout = false;
             _this.process = spawn(binary, _this.args); // error
 
-            _this.process.on('error', _this._error.bind((0, _assertThisInitialized2["default"])(_this)));
+            _this.process.on('error', _this._error);
 
             _this.process.stdin.on('error', function () {}); // exit
 

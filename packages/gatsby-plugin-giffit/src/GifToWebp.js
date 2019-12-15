@@ -104,6 +104,7 @@ export default class GifToWebp {
    * TODO: add variables for outputType & frames choice to gifFrameOptions
    */
   async toBase64() {
+    // TODO: change process from gifsicle -> gifFrames to in-stream
     let fileToProcess = this.file
     if (this.gifsicleArgs.length !== 0) {
       fileToProcess = temp.path({ suffix: '.gif' })
