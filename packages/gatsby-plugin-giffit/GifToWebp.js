@@ -25,7 +25,7 @@ var ProgressBar = require("progress");
 
 var gifFrames = require("gif-frames");
 
-var gifsicle = require("gifsicle");
+var Gifsicle = require("gifsicle-stream");
 
 var gif2webp = require("webp-converter/gwebp");
 
@@ -50,6 +50,7 @@ function () {
     (0, _defineProperty2["default"])(this, "bar", void 0);
     (0, _defineProperty2["default"])(this, "gifsicleArgs", []);
     (0, _defineProperty2["default"])(this, "gif2webpArgs", []);
+    (0, _defineProperty2["default"])(this, "gifsicle", null);
     (0, _defineProperty2["default"])(this, "uniqueArgs", function (arr) {
       return arr.filter(function (elem, index, self) {
         return index === self.indexOf(elem);
@@ -190,16 +191,17 @@ function () {
   ;
 
   _proto.toGif = function toGif(outputPath) {
-    var currentGifsicleArgs;
+    var currentGifsicleArgs, gifsicle;
     return _regenerator["default"].async(function toGif$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             currentGifsicleArgs = ["--no-warnings", "--output", outputPath].concat(this.uniqueArgs(this.gifsicleArgs), [this.file]);
             this.createProgressWatcher(this.file, outputPath, "to GIF");
+            gifsicle = new Gifsicle(this.flatten(currentGifsicleArgs));
             return _context2.abrupt("return", execFile(gifsicle, this.flatten(currentGifsicleArgs), {}));
 
-          case 3:
+          case 4:
           case "end":
             return _context2.stop();
         }

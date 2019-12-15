@@ -13,16 +13,13 @@
     "cli-progress": "^3.4.0",
     "fs-extra": "^8.1.0",
     "gif-frames": "^1.0.1",
-    "gifsicle": "^4.0.1",
     "gifsicle-stream": "^1.0.0",
     "lodash": "^4.17.15",
-    "memoizee": "^0.4.14",
     "probe-image-size": "^5.0.0",
     "progress": "^2.0.3",
     "prop-types": "^15.7.2",
     "temp": "^0.9.1",
-    "webp-converter": "^2.2.3",
-    "which": "^2.0.2"
+    "webp-converter": "^2.2.3"
   },
   "peerDependencies": {
     "react": "16.x",

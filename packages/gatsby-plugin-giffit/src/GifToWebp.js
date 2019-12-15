@@ -8,7 +8,7 @@ const chokidar = require(`chokidar`)
 const ProgressBar = require(`progress`)
 
 const gifFrames = require(`gif-frames`)
-const gifsicle = require(`gifsicle`)
+const Gifsicle = require(`gifsicle-stream`)
 const gif2webp = require(`webp-converter/gwebp`)
 
 const GREEN = `\u001b[42m=\u001b[0m`
@@ -24,6 +24,7 @@ export default class GifToWebp {
   bar
   gifsicleArgs = []
   gif2webpArgs = []
+  fileBuffer = null
 
   constructor(file, barDescription = ``) {
     if (typeof file === `object`) {
@@ -31,6 +32,10 @@ export default class GifToWebp {
     } else {
       this.file = file
     }
+    this.fileBuffer = fs.createReadStream(this.file)
+    // TODO: create _error()
+    this.fileBuffer.on('error', this._error)
+
     const description =
       barDescription ||
       `Processing ${path.basename(
@@ -132,6 +137,8 @@ export default class GifToWebp {
       this.file,
     ]
     this.createProgressWatcher(this.file, outputPath, `to GIF`)
+    const gifsicle = new Gifsicle(this.flatten(currentGifsicleArgs))
+    // TODO: create pipeline for gifsicle
     return execFile(gifsicle, this.flatten(currentGifsicleArgs), {})
   }
 
