@@ -44,3 +44,4 @@ Thanks in advance!
 **A friggin lot** ^^.
 
 *For anything else tell me by opening an issue or a PR : )!*
+*I have to tend this a little more % )!*
