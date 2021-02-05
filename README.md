@@ -29,8 +29,8 @@ are already (mostly) working.
 
 This is a monorepo managed by [`lerna`](https://lerna.js.org/), so have a look 
 at the individual READMEs of
-- [`gatsby-plugin-giffit`](https://github.com/timhagn/giffit/tree/master/packages/gatsby-plugin-giffit#readme)
-- [`gatsby-transformer-giffit`](https://github.com/timhagn/giffit/tree/master/packages/gatsby-transformer-giffit#readme)
+- [`gatsby-plugin-giffit`](https://github.com/timhagn/giffit/tree/main/packages/gatsby-plugin-giffit#readme)
+- [`gatsby-transformer-giffit`](https://github.com/timhagn/giffit/tree/main/packages/gatsby-transformer-giffit#readme)
 
 ## Contributing
 
