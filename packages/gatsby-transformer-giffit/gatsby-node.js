@@ -1,5 +1,9 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
 const fs = require(`fs-extra`);
 
 exports.setFieldsOnGraphQLNodeType = require(`./extend-node-type`);
@@ -49,11 +53,12 @@ const supportedExtensions = {
 // TODO: look further into schema.buildObjectType() / sourceNodes at
 // TODO: [New Schema Customization API](https://www.gatsbyjs.org/blog/2019-03-18-releasing-new-schema-customization/)
 
-const onCreateNode = async ({
-  node,
-  actions,
-  ...helpers
-}) => {
+const onCreateNode = async (_ref) => {
+  let {
+    node,
+    actions
+  } = _ref,
+      helpers = (0, _objectWithoutPropertiesLoose2.default)(_ref, ["node", "actions"]);
   const {
     createNode,
     createParentChildLink

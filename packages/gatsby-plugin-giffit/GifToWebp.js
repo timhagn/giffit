@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -45,16 +45,16 @@ function () {
       barDescription = "";
     }
 
-    (0, _defineProperty2.default)(this, "file", void 0);
-    (0, _defineProperty2.default)(this, "bar", void 0);
-    (0, _defineProperty2.default)(this, "gifsicleArgs", []);
-    (0, _defineProperty2.default)(this, "gif2webpArgs", []);
-    (0, _defineProperty2.default)(this, "uniqueArgs", function (arr) {
+    (0, _defineProperty2["default"])(this, "file", void 0);
+    (0, _defineProperty2["default"])(this, "bar", void 0);
+    (0, _defineProperty2["default"])(this, "gifsicleArgs", []);
+    (0, _defineProperty2["default"])(this, "gif2webpArgs", []);
+    (0, _defineProperty2["default"])(this, "uniqueArgs", function (arr) {
       return arr.filter(function (elem, index, self) {
         return index === self.indexOf(elem);
       });
     });
-    (0, _defineProperty2.default)(this, "flatten", function (arr) {
+    (0, _defineProperty2["default"])(this, "flatten", function (arr) {
       return arr.reduce(function (acc, val) {
         return Array.isArray(val) ? acc.concat(_this.flatten(val)) : acc.concat(val);
       }, []);
@@ -148,7 +148,7 @@ function () {
 
   _proto.toBase64 = function toBase64() {
     var fileToProcess, gifFrameOptions;
-    return _regenerator.default.async(function toBase64$(_context) {
+    return _regenerator["default"].async(function toBase64$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -163,7 +163,7 @@ function () {
               suffix: '.gif'
             });
             _context.next = 5;
-            return _regenerator.default.awrap(this.toGif(fileToProcess));
+            return _regenerator["default"].awrap(this.toGif(fileToProcess));
 
           case 5:
             gifFrameOptions = {
@@ -189,7 +189,7 @@ function () {
 
   _proto.toGif = function toGif(outputPath) {
     var currentGifsicleArgs;
-    return _regenerator.default.async(function toGif$(_context2) {
+    return _regenerator["default"].async(function toGif$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
@@ -213,7 +213,7 @@ function () {
 
   _proto.toWebp = function toWebp(outputPath) {
     var tempFileName, currentGif2webpArgs;
-    return _regenerator.default.async(function toWebp$(_context3) {
+    return _regenerator["default"].async(function toWebp$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
@@ -228,7 +228,7 @@ function () {
               suffix: '.gif'
             });
             _context3.next = 5;
-            return _regenerator.default.awrap(this.toGif(tempFileName));
+            return _regenerator["default"].awrap(this.toGif(tempFileName));
 
           case 5:
             currentGif2webpArgs = [].concat(this.uniqueArgs(this.gif2webpArgs), ["-mt", "-quiet", tempFileName || this.file, "-o", outputPath]);
@@ -285,4 +285,4 @@ function () {
   return GifToWebp;
 }();
 
-exports.default = GifToWebp;
+exports["default"] = GifToWebp;

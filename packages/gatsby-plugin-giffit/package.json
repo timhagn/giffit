@@ -19,7 +19,7 @@
     "progress": "^2.0.3",
     "prop-types": "^15.7.2",
     "temp": "^0.9.1",
-    "webp-converter": "^2.2.3"
+    "webp-converter": "2.2.3"
   },
   "peerDependencies": {
     "react": "16.x",

@@ -54,7 +54,7 @@ exports.processFile = function (file, transforms, options) {
     options = {};
   }
 
-  var processGif = new _GifToWebp.default(file); // Keep Metadata
+  var processGif = new _GifToWebp["default"](file); // Keep Metadata
 
   if (!options.stripMetadata) {
     processGif.withMetadata();
@@ -62,7 +62,7 @@ exports.processFile = function (file, transforms, options) {
 
   return transforms.map(function _callee(transform) {
     var outputPath, args, roundedHeight, roundedWidth;
-    return _regenerator.default.async(function _callee$(_context) {
+    return _regenerator["default"].async(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -127,7 +127,7 @@ exports.processFile = function (file, transforms, options) {
             }
 
             _context.next = 11;
-            return _regenerator.default.awrap(processGif.toGif(outputPath));
+            return _regenerator["default"].awrap(processGif.toGif(outputPath));
 
           case 11:
             if (!(args.toFormat === "webp")) {
@@ -136,7 +136,7 @@ exports.processFile = function (file, transforms, options) {
             }
 
             _context.next = 14;
-            return _regenerator.default.awrap(processGif.toWebp(outputPath));
+            return _regenerator["default"].awrap(processGif.toWebp(outputPath));
 
           case 14:
             _context.next = 19;
