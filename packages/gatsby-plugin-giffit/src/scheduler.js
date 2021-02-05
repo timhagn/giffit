@@ -59,7 +59,7 @@ exports.scheduleJob = async (
   })
 
   if (!isQueued) {
-    q.push(cb => {
+    q.push((cb) => {
       runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb)
     })
   }
@@ -69,7 +69,7 @@ exports.scheduleJob = async (
 
 function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
   const jobs = _.values(toProcess[inputFileKey])
-  const findDeferred = job => jobs.find(j => j.job === job).deferred
+  const findDeferred = (job) => jobs.find((j) => j.job === job).deferred
   const { job } = jobs[0]
 
   // Delete the input key from the toProcess list so more jobs can be queued.
@@ -89,14 +89,14 @@ function runJobs(inputFileKey, actions, pluginOptions, reportStatus, cb) {
   try {
     const promises = processFile(
       job.inputPath,
-      jobs.map(job => job.job),
+      jobs.map((job) => job.job),
       pluginOptions
-    ).map(promise =>
+    ).map((promise) =>
       promise
-        .then(job => {
+        .then((job) => {
           findDeferred(job).resolve()
         })
-        .catch(err => {
+        .catch((err) => {
           findDeferred(job).reject({
             err,
             message: `Failed to process image ${job.inputPath}`,

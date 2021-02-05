@@ -23,7 +23,7 @@ const generalArgs = {
 }
 
 let pluginOptions = Object.assign({}, pluginDefaults)
-exports.setPluginOptions = opts => {
+exports.setPluginOptions = (opts) => {
   pluginOptions = Object.assign({}, pluginOptions, opts)
   generalArgs.quality = pluginOptions.defaultQuality
 

@@ -59,7 +59,7 @@ exports.processFile = (file, transforms, options = {}) => {
     processGif.withMetadata()
   }
 
-  return transforms.map(async transform => {
+  return transforms.map(async (transform) => {
     const { outputPath, args } = transform
     debug(`Start processing ${outputPath}`)
 
@@ -129,7 +129,7 @@ exports.processFile = (file, transforms, options = {}) => {
   })
 }
 
-exports.createArgsDigest = args => {
+exports.createArgsDigest = (args) => {
   const filtered = _.pickBy(args, (value, key) => {
     // remove falsy
     if (!value) return false

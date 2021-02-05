@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Layout from '../components/Layout'
-import AstronautImage from '../components/AstronautImage'
+// import AstronautImage from '../components/AstronautImage'
 import SEO from '../components/SEO'
 import StyledBackgroundSection from '../components/BackgroundSection'
 import {

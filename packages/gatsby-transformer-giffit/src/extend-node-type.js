@@ -397,7 +397,7 @@ module.exports = ({
         )
 
         if (!fsExtra.existsSync(publicPath)) {
-          fsExtra.copy(details.absolutePath, publicPath, err => {
+          fsExtra.copy(details.absolutePath, publicPath, (err) => {
             if (err) {
               console.error(
                 `error copying file from ${details.absolutePath} to ${publicPath}`,

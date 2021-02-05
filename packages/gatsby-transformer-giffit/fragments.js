@@ -6,7 +6,7 @@ exports.gatsbyImageGifFitFixedPreferWebp = exports.gatsbyImageGifFitFixed = void
 var _gatsby = require("gatsby");
 
 /* eslint-disable */
-const gatsbyImageGifFitFixed = _gatsby.graphql`
+const gatsbyImageGifFitFixed = (0, _gatsby.graphql)`
   fragment GatsbyImageGifFitFixed on ImageGifFitFixed {
     base64
     width
@@ -26,7 +26,7 @@ const gatsbyImageGifFitFixed = _gatsby.graphql`
 //
 
 exports.gatsbyImageGifFitFixed = gatsbyImageGifFitFixed;
-const gatsbyImageGifFitFixedPreferWebp = _gatsby.graphql`
+const gatsbyImageGifFitFixedPreferWebp = (0, _gatsby.graphql)`
   fragment GatsbyImageGifFitFixed_withWebp on ImageGifFitFixed {
     base64
     width

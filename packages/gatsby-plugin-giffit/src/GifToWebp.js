@@ -55,7 +55,7 @@ export default class GifToWebp {
       // Filter options for the opposite.
       if (this.gif2webpArgs.includes(METADATA_NONE)) {
         this.gif2webpArgs = this.gif2webpArgs.filter(
-          elem => elem !== METADATA_NONE
+          (elem) => elem !== METADATA_NONE
         )
       }
       // Add option.
@@ -64,7 +64,7 @@ export default class GifToWebp {
       // Filter options for the opposite.
       if (this.gif2webpArgs.includes(METADATA_ALL)) {
         this.gif2webpArgs = this.gif2webpArgs.filter(
-          elem => elem !== METADATA_ALL
+          (elem) => elem !== METADATA_ALL
         )
       }
       // Add option.
@@ -82,7 +82,7 @@ export default class GifToWebp {
     if (!width && !height) return false
     // First remove options possibly set previously.
     this.gifsicleArgs = this.gifsicleArgs.filter(
-      elem => Array.isArray(elem) && !elem[0].startsWith(`--resize`)
+      (elem) => Array.isArray(elem) && !elem[0].startsWith(`--resize`)
     )
     if (width && !height) {
       // Add option to resize width respecting aspect ratio.
@@ -160,7 +160,7 @@ export default class GifToWebp {
    * @param arr   Array   Array to be processed.
    * @return {*}
    */
-  uniqueArgs = arr =>
+  uniqueArgs = (arr) =>
     arr.filter((elem, index, self) => index === self.indexOf(elem))
 
   /**
@@ -168,7 +168,7 @@ export default class GifToWebp {
    * @param arr
    * @return {*}
    */
-  flatten = arr =>
+  flatten = (arr) =>
     arr.reduce(
       (acc, val) =>
         Array.isArray(val) ? acc.concat(this.flatten(val)) : acc.concat(val),

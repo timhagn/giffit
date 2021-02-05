@@ -3,11 +3,11 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 var fs = require("fs");
 
@@ -35,9 +35,7 @@ var RED = "\x1B[41m+\x1B[0m";
  * Encapsulates processing of gif to webp images.
  */
 
-var GifToWebp =
-/*#__PURE__*/
-function () {
+var GifToWebp = /*#__PURE__*/function () {
   function GifToWebp(file, barDescription) {
     var _this = this;
 
@@ -45,20 +43,20 @@ function () {
       barDescription = "";
     }
 
-    (0, _defineProperty2["default"])(this, "file", void 0);
-    (0, _defineProperty2["default"])(this, "bar", void 0);
-    (0, _defineProperty2["default"])(this, "gifsicleArgs", []);
-    (0, _defineProperty2["default"])(this, "gif2webpArgs", []);
-    (0, _defineProperty2["default"])(this, "uniqueArgs", function (arr) {
+    this.gifsicleArgs = [];
+    this.gif2webpArgs = [];
+
+    this.uniqueArgs = function (arr) {
       return arr.filter(function (elem, index, self) {
         return index === self.indexOf(elem);
       });
-    });
-    (0, _defineProperty2["default"])(this, "flatten", function (arr) {
+    };
+
+    this.flatten = function (arr) {
       return arr.reduce(function (acc, val) {
         return Array.isArray(val) ? acc.concat(_this.flatten(val)) : acc.concat(val);
       }, []);
-    });
+    };
 
     if (typeof file === "object") {
       this.file = file.absolutePath;
@@ -146,40 +144,50 @@ function () {
    */
   ;
 
-  _proto.toBase64 = function toBase64() {
-    var fileToProcess, gifFrameOptions;
-    return _regenerator["default"].async(function toBase64$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            fileToProcess = this.file;
+  _proto.toBase64 =
+  /*#__PURE__*/
+  function () {
+    var _toBase = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+      var fileToProcess, gifFrameOptions;
+      return _regenerator.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              fileToProcess = this.file;
 
-            if (!(this.gifsicleArgs.length !== 0)) {
+              if (!(this.gifsicleArgs.length !== 0)) {
+                _context.next = 5;
+                break;
+              }
+
+              fileToProcess = temp.path({
+                suffix: '.gif'
+              });
               _context.next = 5;
-              break;
-            }
+              return this.toGif(fileToProcess);
 
-            fileToProcess = temp.path({
-              suffix: '.gif'
-            });
-            _context.next = 5;
-            return _regenerator["default"].awrap(this.toGif(fileToProcess));
+            case 5:
+              gifFrameOptions = {
+                url: fileToProcess,
+                frames: 0,
+                cumulative: true
+              };
+              return _context.abrupt("return", gifFrames(gifFrameOptions));
 
-          case 5:
-            gifFrameOptions = {
-              url: fileToProcess,
-              frames: 0,
-              cumulative: true
-            };
-            return _context.abrupt("return", gifFrames(gifFrameOptions));
-
-          case 7:
-          case "end":
-            return _context.stop();
+            case 7:
+            case "end":
+              return _context.stop();
+          }
         }
-      }
-    }, null, this);
-  }
+      }, _callee, this);
+    }));
+
+    function toBase64() {
+      return _toBase.apply(this, arguments);
+    }
+
+    return toBase64;
+  }()
   /**
    * Processes a gif with the given options.
    * @param outputPath    string    Path to save the processed gif to.
@@ -187,23 +195,33 @@ function () {
    */
   ;
 
-  _proto.toGif = function toGif(outputPath) {
-    var currentGifsicleArgs;
-    return _regenerator["default"].async(function toGif$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            currentGifsicleArgs = ["--no-warnings", "--output", outputPath].concat(this.uniqueArgs(this.gifsicleArgs), [this.file]);
-            this.createProgressWatcher(this.file, outputPath, "to GIF");
-            return _context2.abrupt("return", execFile(gifsicle, this.flatten(currentGifsicleArgs), {}));
+  _proto.toGif =
+  /*#__PURE__*/
+  function () {
+    var _toGif = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(outputPath) {
+      var currentGifsicleArgs;
+      return _regenerator.default.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              currentGifsicleArgs = ["--no-warnings", "--output", outputPath].concat(this.uniqueArgs(this.gifsicleArgs), [this.file]);
+              this.createProgressWatcher(this.file, outputPath, "to GIF");
+              return _context2.abrupt("return", execFile(gifsicle, this.flatten(currentGifsicleArgs), {}));
 
-          case 3:
-          case "end":
-            return _context2.stop();
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
         }
-      }
-    }, null, this);
-  }
+      }, _callee2, this);
+    }));
+
+    function toGif(_x) {
+      return _toGif.apply(this, arguments);
+    }
+
+    return toGif;
+  }()
   /**
    * Converts a gif to webp with the given options, processes gif if need be.
    * @param outputPath  string    Path to save the final webp to.
@@ -211,37 +229,47 @@ function () {
    */
   ;
 
-  _proto.toWebp = function toWebp(outputPath) {
-    var tempFileName, currentGif2webpArgs;
-    return _regenerator["default"].async(function toWebp$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            tempFileName = "";
+  _proto.toWebp =
+  /*#__PURE__*/
+  function () {
+    var _toWebp = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(outputPath) {
+      var tempFileName, currentGif2webpArgs;
+      return _regenerator.default.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              tempFileName = "";
 
-            if (!(this.gifsicleArgs.length !== 0)) {
+              if (!(this.gifsicleArgs.length !== 0)) {
+                _context3.next = 5;
+                break;
+              }
+
+              tempFileName = temp.path({
+                suffix: '.gif'
+              });
               _context3.next = 5;
-              break;
-            }
+              return this.toGif(tempFileName);
 
-            tempFileName = temp.path({
-              suffix: '.gif'
-            });
-            _context3.next = 5;
-            return _regenerator["default"].awrap(this.toGif(tempFileName));
+            case 5:
+              currentGif2webpArgs = [].concat(this.uniqueArgs(this.gif2webpArgs), ["-mt", "-quiet", tempFileName || this.file, "-o", outputPath]);
+              this.createProgressWatcher(tempFileName || this.file, outputPath, "to WebP");
+              return _context3.abrupt("return", execFile(gif2webp(), this.flatten(currentGif2webpArgs), {}));
 
-          case 5:
-            currentGif2webpArgs = [].concat(this.uniqueArgs(this.gif2webpArgs), ["-mt", "-quiet", tempFileName || this.file, "-o", outputPath]);
-            this.createProgressWatcher(tempFileName || this.file, outputPath, "to WebP");
-            return _context3.abrupt("return", execFile(gif2webp(), this.flatten(currentGif2webpArgs), {}));
-
-          case 8:
-          case "end":
-            return _context3.stop();
+            case 8:
+            case "end":
+              return _context3.stop();
+          }
         }
-      }
-    }, null, this);
-  }
+      }, _callee3, this);
+    }));
+
+    function toWebp(_x2) {
+      return _toWebp.apply(this, arguments);
+    }
+
+    return toWebp;
+  }()
   /**
    * Returns a new array with unique values.
    * @param arr   Array   Array to be processed.
@@ -285,4 +313,4 @@ function () {
   return GifToWebp;
 }();
 
-exports["default"] = GifToWebp;
+exports.default = GifToWebp;

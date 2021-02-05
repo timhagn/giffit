@@ -1,16 +1,16 @@
 {
   "name": "gatsby-transformer-giffit",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Gatsby transformer plugin for animated images using gatsby-plugin-giffit.",
   "author": "Tim Hagn <mail@timhagn.com>",
   "bugs": {
     "url": "https://github.com/timhagn/giffit/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.6",
-    "@babel/types": "^7.7.4",
-    "fs-extra": "^8.1.0",
-    "probe-image-size": "^5.0.0"
+    "@babel/runtime": "^7.12.13",
+    "@babel/types": "^7.12.13",
+    "fs-extra": "^9.1.0",
+    "probe-image-size": "^6.0.0"
   },
   "homepage": "https://github.com/timhagn/giffit/tree/master/gatsby-transformer-giffit#readme",
   "keywords": [
@@ -25,11 +25,8 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "gatsby": "^2.3.0",
+    "gatsby": "^2.30+",
     "gatsby-plugin-giffit": "gatsby-dev"
-  },
-  "resolutions": {
-    "gatsby/graphql": "^2.3.0"
   },
   "engines": {
     "node": ">= 10"

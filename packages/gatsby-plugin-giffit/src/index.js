@@ -50,7 +50,7 @@ const { reportError } = require(`./report-error`)
 const { getPluginOptions, healOptions } = require(`./plugin-options`)
 
 const imageSizeCache = new Map()
-const getImageSize = file => {
+const getImageSize = (file) => {
   if (
     process.env.NODE_ENV !== `test` &&
     imageSizeCache.has(file.internal.contentDigest)
@@ -71,7 +71,7 @@ const getImageSize = file => {
 // This can occur in mono repos depending on how dependencies have been hoisted.
 // The direct require has been left only to avoid breaking changes.
 let { actions } = require(`gatsby/dist/redux/actions`)
-exports.setActions = act => {
+exports.setActions = (act) => {
   actions = act
 }
 
@@ -242,7 +242,9 @@ async function fixed({ file, args = {}, reporter, cache }) {
   sizes.push(options[fixedDimension] * 3)
   const dimensions = getImageSize(file)
 
-  const filteredSizes = sizes.filter(size => size <= dimensions[fixedDimension])
+  const filteredSizes = sizes.filter(
+    (size) => size <= dimensions[fixedDimension]
+  )
 
   // If there's no fluid images after filtering (e.g. image is smaller than what's
   // requested, add back the original so there's at least something)
@@ -261,7 +263,7 @@ async function fixed({ file, args = {}, reporter, cache }) {
   // Sort images for prettiness.
   const sortedSizes = _.sortBy(filteredSizes)
 
-  const images = sortedSizes.map(size => {
+  const images = sortedSizes.map((size) => {
     const arrrgs = {
       ...options,
       [fixedDimension]: Math.round(size),
