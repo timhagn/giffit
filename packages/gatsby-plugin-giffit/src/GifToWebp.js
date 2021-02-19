@@ -187,7 +187,7 @@ export default class GifToWebp {
       const originalFileStatus = fs.statSync(originalFile)
       this.bar.total = Math.floor(originalFileStatus.size / 1024)
       fs.closeSync(fs.openSync(outputPath, 'a'))
-      fs.watch(outputPath, { persistent: true }, (event, filename) => {
+      fs.watch(outputPath, { persistent: false }, (event, filename) => {
         const currStats = fs.statSync(outputPath)
         const updateSize = currStats.size / originalFileStatus.size
         this.bar.update(updateSize, { add: addText })

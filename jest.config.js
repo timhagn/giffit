@@ -138,7 +138,7 @@ module.exports = {
   ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  testPathIgnorePatterns: ['/node_modules/', '/mocks/', '.cache'],
+  testPathIgnorePatterns: ['/node_modules/', '/mocks/', '.cache', `<rootDir>.*/public`],
 
   // The regexp pattern Jest uses to detect test files
   // testRegex: "",
@@ -177,4 +177,12 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+  moduleNameMapper: {
+    ".+\\.(css|styl|less|sass|scss)$": `identity-obj-proxy`,
+    ".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": `<rootDir>/giffittest/__mocks__/file-mock.js`,
+  },
+  globals: {
+    __PATH_PREFIX__: ``,
+  },
+  setupFiles: [`<rootDir>/loadershim.js`],
 };

@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import { getFileObject } from "./mocks/mock"
 
 const path = require(`path`)
