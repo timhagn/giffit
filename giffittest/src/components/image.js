@@ -20,7 +20,7 @@ const Image = () => (
   <StaticQuery
     query={graphql`
       query {
-        placeholderImage: file(relativePath: { eq: "tdmac.gif" }) {
+        gifImage: file(relativePath: { eq: "tdmac.gif" }) {
           childImageGifFit {
             fixed(width: 300) {
               ...GatsbyImageGifFitFixed_withWebp
@@ -30,7 +30,7 @@ const Image = () => (
       }
     `}
     render={data => {
-      const image = data.placeholderImage.childImageGifFit
+      const image = data.gifImage.childImageGifFit
       return <Img fixed={image.fixed} style={{ borderRadius: `15px` }} />
     }}
   />

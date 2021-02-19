@@ -170,7 +170,7 @@ describe(`GifToWebp`, () => {
   it(`createProgressWatcher() should fail without file`, () => {
     const processGif = new GifToWebp(``)
     expect(() => processGif.createProgressWatcher()).toThrow(
-      `The "path" argument must be one of type string, Buffer, or URL. Received type undefined`
+      `The \"path\" argument must be of type string or an instance of Buffer or URL. Received undefined`
     )
   })
 

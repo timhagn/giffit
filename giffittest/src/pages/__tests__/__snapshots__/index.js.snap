@@ -60,7 +60,7 @@ exports[`IndexPage renders correctly 1`] = `
     >
       <section
         aria-label="gbitest"
-        class="sc-jrAGrp eDrFkH gbi--802263448-undefined"
+        class="sc-jrAGrp eDrFkH gbi--802263448-73WakrfVbNJBaAmhQtEeDv"
         id="gbitest"
         role="img"
         style="background-position: center; background-repeat: no-repeat; background-size: cover; position: relative; opacity: 0.99;"
@@ -68,8 +68,8 @@ exports[`IndexPage renders correctly 1`] = `
       >
         <style>
           
-          .sc-jrAGrp.eDrFkH.gbi--802263448-undefined:before,
-          .sc-jrAGrp.eDrFkH.gbi--802263448-undefined:after {
+          .sc-jrAGrp.eDrFkH.gbi--802263448-73WakrfVbNJBaAmhQtEeDv:before,
+          .sc-jrAGrp.eDrFkH.gbi--802263448-73WakrfVbNJBaAmhQtEeDv:after {
             content: '';
             display: block;
             position: absolute;
@@ -84,13 +84,13 @@ background-repeat: no-repeat;
 background-size: cover;
 
           }
-          .sc-jrAGrp.eDrFkH.gbi--802263448-undefined:before {
+          .sc-jrAGrp.eDrFkH.gbi--802263448-73WakrfVbNJBaAmhQtEeDv:before {
             z-index: -100;
             
             
             opacity: 1; 
           }
-          .sc-jrAGrp.eDrFkH.gbi--802263448-undefined:after {
+          .sc-jrAGrp.eDrFkH.gbi--802263448-73WakrfVbNJBaAmhQtEeDv:after {
             z-index: -101;
             
             
@@ -133,12 +133,8 @@ background-size: cover;
               >
                 <div
                   class=" gatsby-image-wrapper"
-                  style="position: relative; overflow: hidden; border-radius: 15px;"
+                  style="position: relative; overflow: hidden; display: inline-block; width: 300px; height: 300px; border-radius: 15px;"
                 >
-                  <div
-                    aria-hidden="true"
-                    style="width: 100%; padding-bottom: 100%;"
-                  />
                   <picture>
                     <source
                       sizes="100 200 300"
@@ -146,15 +142,17 @@ background-size: cover;
                     />
                     <img
                       alt=""
+                      height="300"
                       loading="lazy"
                       sizes="100 200 300"
                       src="pretend-i-am-a-base64-encoded-image"
                       srcset="asdfasdf"
                       style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0; transition: opacity 500ms;"
+                      width="300"
                     />
                   </picture>
                   <noscript>
-                    &lt;picture&gt;&lt;source srcset="asdfasdf" sizes="100 200 300" /&gt;&lt;img loading="lazy" sizes="100 200 300" srcset="asdfasdf" src="pretend-i-am-a-base64-encoded-image" alt="" style="position:absolute;top:0;left:0;opacity:1;width:100%;height:100%;object-fit:cover;object-position:center"/&gt;&lt;/picture&gt;
+                    &lt;picture&gt;&lt;source srcset="asdfasdf" sizes="100 200 300" /&gt;&lt;img loading="lazy" width="300" height="300" sizes="100 200 300" srcset="asdfasdf" src="pretend-i-am-a-base64-encoded-image" alt="" style="position:absolute;top:0;left:0;opacity:1;width:100%;height:100%;object-fit:cover;object-position:center"/&gt;&lt;/picture&gt;
                   </noscript>
                 </div>
               </div>

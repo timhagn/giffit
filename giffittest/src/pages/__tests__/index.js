@@ -17,6 +17,19 @@ const fluidMock = {
   },
 }
 
+const gifMock = {
+  childImageGifFit: {
+    fixed: {
+      aspectRatio: 1,
+      sizes: `100 200 300`,
+      src: `pretend-i-am-a-base64-encoded-image`,
+      srcSet: `asdfasdf`,
+      width: 300,
+      height: 300,
+    },
+  },
+}
+
 const mockMetadata = {
   site: {
     siteMetadata: {
@@ -29,10 +42,13 @@ const mockMetadata = {
 
 describe('IndexPage', () => {
   beforeEach(() => {
-    StaticQuery.mockImplementation(({ render }) => render({ ...mockMetadata }))
+    StaticQuery.mockImplementation(({ render }) =>
+      render({ gifImage: gifMock, ...mockMetadata })
+    )
     useStaticQuery.mockImplementation(() => ({
       desktop: fluidMock,
       placeholderImage: fluidMock,
+      gifImage: gifMock,
       ...mockMetadata,
     }))
     // Freeze generated className.
